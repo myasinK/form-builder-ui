@@ -1,0 +1,276 @@
+insert (before)
+
+if head
+	replicate a new node that looks like node at headpointer
+	new node next -> headpointer.next
+	new node previous -> headpointer
+	headpointer -> next should be new node
+	headpointer -> change value and id to new
+	headpointer.next.previous -> new node	
+
+else 	
+	newNode.previous = refNode.previous
+	newNode.next = refNode
+	refnode.previous.next = newNode
+	refnode.previous = newNode
+
+
+// delete node
+if this is head node
+	if head.next === null
+		head = null
+	else 
+		current.value 
+		current.id
+		current.next = current.next.next 
+		if current.next
+			current.next.previous = current
+else if not head node
+	if there's a node before and after it
+		current.previous.next = current.next
+		current.next.previous = current.previous
+	else if there's no node after it/this is the last node
+		current.previous.next = null
+
+// move node with id=id1 to before/after node with id2
+find node with id1
+copy it
+delete it
+insert copied node to before/after node with id2
+	
+// convert list to array
+convert list to array
+if node.value is a list
+	init empty array
+	init currentnode to head
+	endreached = currentnode ? false : true // if currentnode exists end not reached
+	while end not reached 
+		let arrayElement = null
+		if currentnode.value is not a list
+			arrayelement = currentnode.value 
+		else
+			arrayelement = currentnode.value.convertoarray
+		emptyarray.push arrayelement
+		currentnode = currentnode.next
+		endreached = currentnode ? false : true		
+	return array with node values
+
+// dropNode inputs: node, depthFlag outputs: droppedNode
+
+if dropp
+
+if node.isHead
+	copy node
+	if node.next		
+		node.value = node.next.value
+		node.id = node.next.id
+		node.next = node.next.next ? node.next.next : null
+		node.next.next.previous = node
+	else
+		node = null
+	return copied node
+else if node.isLast
+	copy node
+	node.previous = null
+	return copied node
+else if node.isMiddle
+	copy node
+	node.previous.next = node.next
+	node.next.previous = node.previous
+	return copied node
+
+Form Components
+=======
+	metaName(s)
+question-medium-{type}-input (text,number,email,etc)
+question-xlarge-input (textarea)
+question-checkbox-input
+question-radio-input
+paragraph
+paragraph-initial-end
+paragraph-initial-start
+
+case question-medium-{type}-input
+	init node with value = linkedlist
+	init (child) nodes for question prompt and empty input
+	push children to linkedlist in relevant order (1->prompt, 2->input)
+
+		
+handlers
+=======
+add component node
+	check metaname
+		if metaname is primary
+			initialize node and insert value = PrimaryElement of type corresponding to metaname
+		if metaname is secondary
+			// it is necessarily a List
+			initialize node and insert value = linkedlist
+			push requisite child nodes to list
+	push component node to form list
+
+
+
+delete question
+
+clickRegistrar (listener on App)
+	inputs: setstate funcs for lastidclicked secondtolastidclicked event to grab id from
+	logic:
+		onclick 
+			copy lastclickedid 
+			set lastclickedid to e.target.id
+			set secondtolastclickedid to lastclickedid
+			
+
+
+components
+==========
+editable text with self id
+	
+when to display plaintext
+	lastclickedid and selfid do not match
+when to display editabletext
+	lastclickedid and selfid match
+	or
+
+question -> array with 0th element being the headerinfo
+	then it depends on q type
+	create q header:
+		q type, q id, parent id
+	create responseOptions header:
+		q type, q id + response-options-datenow, q id
+	case text
+		init empty q array
+		create q header
+		push q header
+		push primaryelement for prompt
+		create empty array for response-options
+		create responseOptions header
+		push ro header to empty ro array
+		push primaryelement for response to ro array
+		push ro array to q array
+
+init component (componentType, componentId, parentId)
+	create empty array
+	if question component
+		push q header
+	if not question component
+		push primary element
+
+add array with id to array with id
+
+take array, push payload, targetid
+	updatated array = map each array element
+		if this element is an array with targetid
+			push payload to this element which is an array
+			return element
+		return element
+	return updated array
+
+take array, removeid, targetid
+	filteredarray = array.filter -> elementid != targetid 
+	if array and filteredarray have the same length
+		filteredarray.map -> element, index 
+			if element is an array
+				run base function on element
+				return updatedelement
+			return element
+	
+add question to form
+	question = array
+	push header to array
+	check type
+
+add 
+
+pick a data type:
+valid types are primaryelement and primarycollection
+
+pick a componentType
+	question, responseSet (primarycollection)
+	paragraph,header,response,prompt (primaryelement)
+
+rules for id generation:
+	form is a primary collection with preset id
+	any primary element or collection being inserted to a collection gets id = parentid-componenttype-
+
+component
+componentDescription[]
+
+take a collectionObj and push payload to collectionobj with id
+	if collectionObj has id = id
+		push payload to collectionobj.componentlist
+		return collectionobj
+	else
+		on collectionobj.componentlist map
+			if element is a collection 
+				run base function on this element
+			else 
+				return element // i.e. do nothing
+		return collectionobj
+
+delete object with id starting with form/collection
+	filteredcomponentlist = form.componentlist filter -> el.id != id 
+	if filteredform and form have equal length
+		updatedcomponentlist = form.componentList map -> el ->
+			if el is a collection
+				updatedel = run base function on el
+				return updatedel
+			else 
+				return el
+		return form
+	else 
+		form.componentlist = filteredcomponentlist
+		return form
+
+return collection with id
+	currentcoll -> form
+	does currentcoll have id in children
+	if yes
+		return currentcoll
+	else 
+		currentcoll.map 
+
+=========
+React stuff
+
+componenttypes:
+	question-text/email/etc
+	question-radio
+	question-checkbox
+	question-textarea
+	paragraph
+	header
+	paragraph with initial
+	list-ordered
+	list-unordered
+
+CollectionView
+ElementView
+	definitely specify tag name during initialization
+
+tables -> 
+	responsesObj for rows complist -> []
+	responsesObj for columns
+
+
+render table:
+have rows and columns
+structure
+table
+	theadrow (has column.length - 1 columns + 1 empty corner cell)
+	tbody (has row.length - 1 rows)
+
+header row 
+	prepend columns array with an empty string
+	if length of columns is zero add "click to add"
+	columns map -> each to th element 
+
+body row 
+	if length of rows is zero add "click to add" to rows array
+	for each row create an array with row header as prefix, followed by columns = body row
+	body row map -> each to th if index === 0, else to td > input with value = body row value 
+
+body
+	for each rows Array element render body row 
+					
+	 

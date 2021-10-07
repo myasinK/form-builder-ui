@@ -1,0 +1,29 @@
+.question-card {
+  width: 100%;
+  border: 1px solid black;
+}
+
+/* .question-prompt-card {
+  width: 100%;
+}
+
+label {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+span {
+  display: inline-block;
+  width: 50%;
+}
+
+input[type="text"] {
+  width: 50%;
+}
+
+.response-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+} */
