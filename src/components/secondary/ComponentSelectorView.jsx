@@ -6,12 +6,14 @@ function ComponentSelectorView({ handlers }) {
   //   (type) => !type.includes("responses")
   // );
 
-  const formComponentTypes = Object.values(definitions.formComponentTypes);
-  const innerTextDictionary = definitions.formComponentInnerText;
+  const formComponentTypesArray = Object.values(definitions.formComponentTypes);
+
+  const innerTextDictionary = definitions.formComponentInnerText; // what to put in the button/selector as user-facing label
 
   return (
     <div className={"container-form-components"}>
-      {formComponentTypes.map((ft) => (
+      {console.log(formComponentTypesArray)}
+      {formComponentTypesArray.map((ft) => (
         <div
           onClick={() => handlers.addNewQuestion(ft)}
         >{`${ft} ${innerTextDictionary[ft]}`}</div>
