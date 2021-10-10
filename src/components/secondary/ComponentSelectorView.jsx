@@ -12,7 +12,6 @@ function ComponentSelectorView({ handlers }) {
 
   return (
     <div className={"container-form-components"}>
-      {console.log(formComponentTypesArray)}
       {formComponentTypesArray.map((ft) => (
         <div
           onClick={() => handlers.addNewQuestion(ft)}
