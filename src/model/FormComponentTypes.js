@@ -30,9 +30,11 @@ definitions.formComponentTypes = {
   QRADIOTABULAR: "question-radio-tabular",
   QCHECKBOX: "question-checkbox",
   QCHECKBOXTABULAR: "question-checkbox-tabular",
+  STANDALONEPARAGRAPH: "standalone/standalone-paragraph",
 };
 
 definitions.formComponentInnerText = {
+  [definitions.formComponentTypes.STANDALONEPARAGRAPH]: "Parapraph",
   [definitions.formComponentTypes.QTEXT]: "Short Alphanumeric",
   [definitions.formComponentTypes.QTEXTTABULAR]:
     "Short Alphanumeric (tabulated)",

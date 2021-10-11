@@ -5,15 +5,22 @@ function FormView({ form, lastClickedOnId, handlers }) {
   const thereAreObjectsToRender = form.componentList.length > 0;
   if (thereAreObjectsToRender) {
     return form.componentList.map((q) => {
-      return (
-        <QuestionView
-          questionObject={q}
-          lastClickedOnId={lastClickedOnId}
-          handlers={handlers}
-        />
-      );
+      if (q.componentType.includes("question")) {
+        console.log(q.componentType);
+        return (
+          <QuestionView
+            questionObject={q}
+            lastClickedOnId={lastClickedOnId}
+            handlers={handlers}
+          />
+        );
+      } else if (q.componentType.includes("standalone")) {
+        return <div>standalone</div>
+      }
+      else return null;
     });
-  } else {
+  } 
+  else {
     return <div className={"form-container"}>Form doesn't exist yet</div>;
   }
 }

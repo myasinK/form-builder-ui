@@ -14,7 +14,7 @@ function ComponentSelectorView({ handlers }) {
     <div className={"container-form-components"}>
       {formComponentTypesArray.map((ft) => (
         <div
-          onClick={() => handlers.addNewQuestion(ft)}
+          onClick={() => handlers.addFormComponent(ft)}
         >{`${ft} ${innerTextDictionary[ft]}`}</div>
       ))}
     </div>

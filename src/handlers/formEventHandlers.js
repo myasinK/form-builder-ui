@@ -72,6 +72,14 @@ class formEventHandlers {
     console.log(targetId, updateInstructions);
   };
 
+  addFormComponent = (formComponentType) => {
+    if (formComponentType.includes("question")) {
+      this.addNewQuestion(formComponentType);
+    } else if (formComponentType.includes("standalone")) {
+      console.log(formComponentType);
+    }
+  };
+
   addNewQuestion = (questionType) => {
     this.form.initializeNewQuestionObject(questionType);
     const form = Object.assign(new InterfaceCollection(), this.form);
