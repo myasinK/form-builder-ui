@@ -45,6 +45,7 @@ definitions.formComponentInnerText = {
   [definitions.formComponentTypes.QCHECKBOX]: "Multiple choices",
   [definitions.formComponentTypes.QCHECKBOXTABULAR]:
     "Multiple choices (tabulated)",
+  [definitions.formComponentTypes.STANDALONEPARAGRAPH]: "Paragraphs",
 };
 
 definitions.responsesTypes = {
@@ -64,6 +65,7 @@ definitions.responsesTypes = {
     "responses-checkbox-tabular-rows",
     "responses-checkbox-tabular-columns",
   ],
+  [definitions.formComponentTypes.STANDALONEPARAGRAPH]: [],
 };
 
 const possibleResponses = Object.values(definitions.responsesTypes).flat(
@@ -91,58 +93,6 @@ allValidTypes.map((type) => {
   definitions.endUserHtmlInputType[type] = returnInputType(type);
   return type;
 });
-
-// const FORM_TYPE_TEXT_DESCRIPTION = {
-//   [VALID_FORM_TYPES.QTEXT]: "Short text input",
-//   [VALID_FORM_TYPES.QTEXTTABULAR]: "Short text input (tabulated)",
-//   [VALID_FORM_TYPES.QCHECKBOX]: "Multiple choice",
-//   [VALID_FORM_TYPES.QCHECKBOXTABULAR]: "Multiple choice (tabulated)",
-//   [VALID_FORM_TYPES.QRADIO]: "Multiple choice (pick one)",
-//   [VALID_FORM_TYPES.QRADIOTABULAR]: "Multiple choice (pick one - tabulated)",
-//   [VALID_FORM_TYPES.QTEXTAREA]: "Long text input",
-// };
-
-// const LOGICAL_CHILDREN = {
-//   FORM: [...Object.values(VALID_FORM_TYPES), "standalone-element"],
-//   [VALID_FORM_TYPES.QTEXT]: ["standalone-element", "responses"],
-//   [VALID_FORM_TYPES.QTEXTAREA]: ["standalone-element", "responses"],
-//   [VALID_FORM_TYPES.QRADIO]: ["standalone-element", "responses"],
-//   [VALID_FORM_TYPES.QRADIOTABULAR]: ["standalone-element", "responses"],
-//   [VALID_FORM_TYPES.QCHECKBOX]: ["standalone-element", "responses"],
-//   [VALID_FORM_TYPES.QCHECKBOXTABULAR]: ["standalone-element", "responses"],
-//   RESPONSES: ["standalone-element"],
-// };
-
-// const LOGICAL_RESPONSES_COMPONENT_TYPE = {
-//   FORM: null,
-//   [VALID_FORM_TYPES.QTEXT]: VALID_FORM_TYPES.RTEXT,
-//   [VALID_FORM_TYPES.QTEXTTABULAR]: [
-//     VALID_FORM_TYPES.RTEXTTABULAR_ROWS,
-//     VALID_FORM_TYPES.RTEXTTABULAR_COLUMNS,
-//   ],
-//   [VALID_FORM_TYPES.RTEXT]: null,
-//   [VALID_FORM_TYPES.RTEXTTABULAR_COLUMNS]: null,
-//   [VALID_FORM_TYPES.RTEXTTABULAR_ROWS]: null,
-//   [VALID_FORM_TYPES.QTEXTAREA]: VALID_FORM_TYPES.RTEXTAREA,
-//   [VALID_FORM_TYPES.RTEXTAREA]: null,
-//   [VALID_FORM_TYPES.QRADIO]: VALID_FORM_TYPES.RRADIO,
-//   [VALID_FORM_TYPES.RRADIO]: null,
-//   [VALID_FORM_TYPES.QRADIOTABULAR]: [
-//     VALID_FORM_TYPES.RRADIOTABULAR_ROWS,
-//     VALID_FORM_TYPES.RRADIOTABULAR_COLUMNS,
-//   ],
-//   [VALID_FORM_TYPES.QCHECKBOXTABULAR]: [
-//     VALID_FORM_TYPES.RCHECKBOXTABULAR_ROWS,
-//     VALID_FORM_TYPES.RCHECKBOXTABULAR_COLUMNS,
-//   ],
-//   [VALID_FORM_TYPES.RRADIOTABULAR_COLUMNS]: null,
-//   [VALID_FORM_TYPES.RRADIOTABULAR_ROWS]: null,
-//   [VALID_FORM_TYPES.QCHECKBOX]: VALID_FORM_TYPES.RCHECKBOX,
-//   [VALID_FORM_TYPES.RCHECKBOX]: null,
-//   [VALID_FORM_TYPES.RCHECKBOXTABULAR_COLUMNS]: null,
-//   [VALID_FORM_TYPES.RCHECKBOXTABULAR_ROWS]: null,
-//   RESPONSES: null,
-// };
 
 export default VALID_FORM_TYPES;
 export { definitions };

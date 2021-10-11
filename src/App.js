@@ -3,7 +3,7 @@ import "./css/App.css";
 import clickRegistrar from "./handlers/clickRegistrar";
 import handleFormOperations from "./handlers/handleFormOperations";
 import FormView from "./components/secondary/FormView";
-import VALID_FORM_TYPES from "./model/FormComponentTypes";
+import VALID_FORM_TYPES, { definitions } from "./model/FormComponentTypes";
 import formEventHandlers from "./handlers/formEventHandlers";
 import ComponentSelectorView from "./components/secondary/ComponentSelectorView";
 import InterfaceElement from "./Interface/InterfaceElement";
@@ -16,7 +16,7 @@ function App() {
   let [form, setForm] = useState(null);
 
   const handlers = new formEventHandlers(form, setForm);
-
+  
   return (
     <div
       className={"App"}

@@ -76,8 +76,12 @@ class formEventHandlers {
     if (formComponentType.includes("question")) {
       this.addNewQuestion(formComponentType);
     } else if (formComponentType.includes("standalone")) {
-      console.log(formComponentType);
+      this.addStandalone(formComponentType);
     }
+  };
+
+  addStandalone = (type) => {
+    console.log(type);
   };
 
   addNewQuestion = (questionType) => {
