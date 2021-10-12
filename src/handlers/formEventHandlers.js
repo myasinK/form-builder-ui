@@ -52,17 +52,17 @@ class formEventHandlers {
     }
   };
 
-  createHeader1 = (standaloneType, parentId) => {
-    if (definitions.formComponentTypes.STANDALONEHEADER1 === standaloneType) {
-      return new InterfaceElement({
-        componentType: standaloneType,
-        componentDescriptor: {},
-        htmlInnerText: "Click to edit header text",
-        htmlClassAttr: "standalone-paragraph-entity",
-        parentId,
-        htmlTagName: "h1",
-      }).getElement();
-    }
+  createHeader = (standaloneType, parentId) => {
+    const htmlTagName = definitions.standaloneHtmlTagName[standaloneType];
+
+    return new InterfaceElement({
+      componentType: standaloneType,
+      componentDescriptor: {},
+      htmlInnerText: "Click to edit header text",
+      htmlClassAttr: "standalone-paragraph-entity",
+      parentId,
+      htmlTagName,
+    }).getElement();
   };
 
   // probably will need to merge addStandalone with addNewQuestion
@@ -71,8 +71,8 @@ class formEventHandlers {
     let seededElement;
     if (type.includes("paragraph")) {
       seededElement = this.createParagraphElement(type, parentId);
-    } else if (type.includes("header-1")) {
-      seededElement = this.createHeader1(type, parentId);
+    } else if (type.includes("header")) {
+      seededElement = this.createHeader(type, parentId);
     }
     this.form.initializeNewStandaloneObject(type, seededElement);
     const form = Object.assign(new InterfaceCollection(), this.form);

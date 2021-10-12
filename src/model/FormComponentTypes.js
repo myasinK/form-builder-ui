@@ -32,6 +32,21 @@ definitions.formComponentTypes = {
   QCHECKBOXTABULAR: "question-checkbox-tabular",
   STANDALONEPARAGRAPH: "standalone-paragraph",
   STANDALONEHEADER1: "standalone-header-1",
+  STANDALONEHEADER2: "standalone-header-2",
+  STANDALONEHEADER3: "standalone-header-3",
+  STANDALONEHEADER4: "standalone-header-4",
+  STANDALONEHEADER5: "standalone-header-5",
+  STANDALONEHEADER6: "standalone-header-6",
+};
+
+definitions.standaloneHtmlTagName = {
+  [definitions.formComponentTypes.STANDALONEPARAGRAPH]: "p",
+  [definitions.formComponentTypes.STANDALONEHEADER1]: "h1",
+  [definitions.formComponentTypes.STANDALONEHEADER2]: "h2",
+  [definitions.formComponentTypes.STANDALONEHEADER3]: "h3",
+  [definitions.formComponentTypes.STANDALONEHEADER4]: "h4",
+  [definitions.formComponentTypes.STANDALONEHEADER5]: "h5",
+  [definitions.formComponentTypes.STANDALONEHEADER6]: "h6",
 };
 
 definitions.formComponentInnerText = {
@@ -48,6 +63,11 @@ definitions.formComponentInnerText = {
     "Multiple choices (tabulated)",
   [definitions.formComponentTypes.STANDALONEPARAGRAPH]: "Paragraphs",
   [definitions.formComponentTypes.STANDALONEHEADER1]: "Header 1",
+  [definitions.formComponentTypes.STANDALONEHEADER2]: "Header 2",
+  [definitions.formComponentTypes.STANDALONEHEADER3]: "Header 3",
+  [definitions.formComponentTypes.STANDALONEHEADER4]: "Header 4",
+  [definitions.formComponentTypes.STANDALONEHEADER5]: "Header 5",
+  [definitions.formComponentTypes.STANDALONEHEADER6]: "Header 6",
 };
 
 definitions.responsesTypes = {
@@ -69,6 +89,11 @@ definitions.responsesTypes = {
   ],
   [definitions.formComponentTypes.STANDALONEPARAGRAPH]: [],
   [definitions.formComponentTypes.STANDALONEHEADER1]: [],
+  [definitions.formComponentTypes.STANDALONEHEADER2]: [],
+  [definitions.formComponentTypes.STANDALONEHEADER3]: [],
+  [definitions.formComponentTypes.STANDALONEHEADER4]: [],
+  [definitions.formComponentTypes.STANDALONEHEADER5]: [],
+  [definitions.formComponentTypes.STANDALONEHEADER6]: [],
 };
 
 const possibleResponses = Object.values(definitions.responsesTypes).flat(
