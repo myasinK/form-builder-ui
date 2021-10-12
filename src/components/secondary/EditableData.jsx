@@ -4,6 +4,7 @@ import InterfaceElement from "../../Interface/InterfaceElement";
 import Paragraph from "../primary/Paragraph";
 import Span from "../primary/Span";
 import withWrapper from "../../hoc/withWrapper";
+import Header from "../primary/Header";
 
 function EditableData({
   primaryElement = null,
@@ -28,8 +29,8 @@ function EditableData({
       return [Paragraph, "textarea"];
     } else if (tagName === "span") {
       return [Span, "text"];
-    } else if (tagName === "h1") {
-      return [Span, "text"];
+    } else if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(tagName)) {
+      return [Header, "text"];
     }
   };
 

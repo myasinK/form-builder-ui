@@ -1,7 +1,5 @@
 import React from "react";
-import Paragraph from "../primary/Paragraph";
 import EditableData from "./EditableData";
-import Header1 from "../primary/Header1";
 
 function StandaloneView({ standaloneObject, lastClickedOnId, handlers }) {
   const { id = null } = standaloneObject;
