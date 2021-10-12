@@ -1,5 +1,4 @@
 import React from "react";
-import withWrapper from "../../hoc/withWrapper";
 
 function Input({ primaryElement, handlers, disabled = true }) {
   const {
