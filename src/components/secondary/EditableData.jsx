@@ -23,10 +23,12 @@ function EditableData({
     }).getElement();
   };
 
-  const determinePlainTextComponentAndInputType = (promptTagName) => {
-    if (promptTagName === "paragraph") {
+  const determinePlainTextComponentAndInputType = (tagName) => {
+    if (tagName === "paragraph" || tagName === "p") {
       return [Paragraph, "textarea"];
-    } else if (promptTagName === "span") {
+    } else if (tagName === "span") {
+      return [Span, "text"];
+    } else if (tagName === "h1") {
       return [Span, "text"];
     }
   };

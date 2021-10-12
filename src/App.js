@@ -1,15 +1,9 @@
 import React, { useState } from "react";
 import "./css/App.css";
 import clickRegistrar from "./handlers/clickRegistrar";
-import handleFormOperations from "./handlers/handleFormOperations";
 import FormView from "./components/secondary/FormView";
-import VALID_FORM_TYPES, { definitions } from "./model/FormComponentTypes";
 import formEventHandlers from "./handlers/formEventHandlers";
 import ComponentSelectorView from "./components/secondary/ComponentSelectorView";
-import InterfaceElement from "./Interface/InterfaceElement";
-import EditableData from "./components/secondary/EditableData";
-import Span from "./components/primary/Span";
-import QuestionTextarea from "./components/secondary/QuestionTextarea";
 
 function App() {
   let [lastIdClicked, setLastIdClicked] = useState(false);

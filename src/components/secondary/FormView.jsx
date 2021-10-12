@@ -1,5 +1,6 @@
 import React from "react";
 import QuestionView from "./QuestionView";
+import StandaloneView from "./StandaloneView";
 
 function FormView({ form, lastClickedOnId, handlers }) {
   const thereAreObjectsToRender = form.componentList.length > 0;
@@ -14,7 +15,13 @@ function FormView({ form, lastClickedOnId, handlers }) {
           />
         );
       } else if (q.componentType.includes("standalone")) {
-        return <div>standalone</div>;
+        return (
+          <StandaloneView
+            standaloneObject={q}
+            lastClickedOnId={lastClickedOnId}
+            handlers={handlers}
+          />
+        );
       } else return null;
     });
   } else {

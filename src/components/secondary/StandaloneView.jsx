@@ -3,34 +3,35 @@ import Paragraph from "../primary/Paragraph";
 import EditableData from "./EditableData";
 import Header1 from "../primary/Header1";
 
-function StandaloneView({ elementCollection, formHandler, lastClickedOnId }) {
-  const type = elementCollection.componentList[0].componentType;
-  const RawComponent = (function () {
-    switch (type) {
-      case "paragraph":
-        return Paragraph;
-      case "header1":
-        return Header1;
-      default:
-        break;
-    }
-  })();
-
+function StandaloneView({ standaloneObject, lastClickedOnId, handlers }) {
+  const { id = null } = standaloneObject;
   return (
     <div className={"standalone-container"}>
-      {elementCollection.componentList.map((el, index) => {
-        return (
-          <div></div>
-          // <EditableData
-          //   key={"asfdadf"}
-          //   primaryElement={el}
-          //   PlainTextComponent={RawComponent}
-          //   inputType={"textarea"}
-          //   lastClickedOnId={lastClickedOnId}
-          //   formHandler={formHandler}
-          // />
-        );
+      {standaloneObject.componentList.map((component) => {
+        if (
+          component.htmlTagName === "p" ||
+          component.htmlTagName === "paragraph" // because I'm an idiot
+        ) {
+          return (
+            <EditableData
+              primaryElement={component}
+              lastClickedOnId={lastClickedOnId}
+              handlers={handlers}
+            />
+          );
+        } else if (component.htmlTagName === "h1") {
+          return (
+            <EditableData
+              primaryElement={component}
+              lastClickedOnId={lastClickedOnId}
+              handlers={handlers}
+            />
+          );
+        } else {
+          return null;
+        }
       })}
+      <button onClick={() => handlers.delete(id)}>Delete question</button>
     </div>
   );
 }
