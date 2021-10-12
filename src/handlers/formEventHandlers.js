@@ -54,7 +54,6 @@ class formEventHandlers {
 
   createHeader = (standaloneType, parentId) => {
     const htmlTagName = definitions.standaloneHtmlTagName[standaloneType];
-
     return new InterfaceElement({
       componentType: standaloneType,
       componentDescriptor: {},

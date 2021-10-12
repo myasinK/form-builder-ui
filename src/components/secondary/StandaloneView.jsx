@@ -17,7 +17,9 @@ function StandaloneView({ standaloneObject, lastClickedOnId, handlers }) {
               handlers={handlers}
             />
           );
-        } else if (component.htmlTagName === "h1") {
+        } else if (
+          ["h1", "h2", "h3", "h4", "h5", "h6"].includes(component.htmlTagName)
+        ) {
           return (
             <EditableData
               primaryElement={component}
