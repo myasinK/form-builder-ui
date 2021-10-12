@@ -9,6 +9,7 @@ function FormView({ form, lastClickedOnId, handlers }) {
       if (q.componentType.includes("question")) {
         return (
           <QuestionView
+            key={q.id}
             questionObject={q}
             lastClickedOnId={lastClickedOnId}
             handlers={handlers}
@@ -17,6 +18,7 @@ function FormView({ form, lastClickedOnId, handlers }) {
       } else if (q.componentType.includes("standalone")) {
         return (
           <StandaloneView
+            key={q.id}
             standaloneObject={q}
             lastClickedOnId={lastClickedOnId}
             handlers={handlers}

@@ -13,7 +13,7 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
         <th></th>
         {columnsArray.map((el) => {
           return (
-            <th>
+            <th key={`${el.id}-header-row`}>
               <EditableData
                 primaryElement={el}
                 lastClickedOnId={lastClickedOnId}
@@ -26,8 +26,9 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
       </tr>
       {/* <Body rArray={rowsArray} cArray={columnsArray} /> */}
       {rowsArray.map((el) => {
+        const rowId = el.id;
         return (
-          <tr>
+          <tr key={rowId}>
             <th>
               <EditableData
                 primaryElement={el}
@@ -37,8 +38,9 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
               <span onClick={() => handlers.delete(el.id)}>-</span>
             </th>
             {columnsArray.map((el) => {
+              const cellId = `${rowId}-${el.id}`;
               return (
-                <td>
+                <td key={cellId}>
                   <Input
                     primaryElement={displayElement}
                     disabled={true}

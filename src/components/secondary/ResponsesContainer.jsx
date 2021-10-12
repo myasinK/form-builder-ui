@@ -77,7 +77,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
           {rows.componentList.length > 0 &&
             rows.componentList.map((r) => {
               return (
-                <div className={responseContainerClassName}>
+                <div key={r.id} className={responseContainerClassName}>
                   <WrappedEditableObj
                     wrapperClassName={labelClassName}
                     primaryElement={r}
