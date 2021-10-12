@@ -6,7 +6,6 @@ function FormView({ form, lastClickedOnId, handlers }) {
   if (thereAreObjectsToRender) {
     return form.componentList.map((q) => {
       if (q.componentType.includes("question")) {
-        console.log(q.componentType);
         return (
           <QuestionView
             questionObject={q}
@@ -15,12 +14,10 @@ function FormView({ form, lastClickedOnId, handlers }) {
           />
         );
       } else if (q.componentType.includes("standalone")) {
-        return <div>standalone</div>
-      }
-      else return null;
+        return <div>standalone</div>;
+      } else return null;
     });
-  } 
-  else {
+  } else {
     return <div className={"form-container"}>Form doesn't exist yet</div>;
   }
 }

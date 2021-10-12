@@ -27,19 +27,18 @@ function EditableData({
     if (promptTagName === "paragraph") {
       return [Paragraph, "textarea"];
     } else if (promptTagName === "span") {
-      const foo = [Span, "text"];
       return [Span, "text"];
     }
   };
-  console.log("phtmltn", primaryElement.htmlTagName);
-  // const [PlainTextComponent, inputTagName] =
-  //   determinePlainTextComponentAndInputType(primaryElement.htmlTagName);
+
   const PlainTextComponent = determinePlainTextComponentAndInputType(
     primaryElement.htmlTagName
   )[0];
+
   const inputTagName = determinePlainTextComponentAndInputType(
     primaryElement.htmlTagName
   )[1];
+
   const selfId = primaryElement.id;
   const didUserLastClickOnSelf = selfId === lastClickedOnId;
 

@@ -30,7 +30,8 @@ definitions.formComponentTypes = {
   QRADIOTABULAR: "question-radio-tabular",
   QCHECKBOX: "question-checkbox",
   QCHECKBOXTABULAR: "question-checkbox-tabular",
-  STANDALONEPARAGRAPH: "standalone/standalone-paragraph",
+  STANDALONEPARAGRAPH: "standalone-paragraph",
+  STANDALONEHEADER1: "standalone-header-1",
 };
 
 definitions.formComponentInnerText = {
@@ -46,6 +47,7 @@ definitions.formComponentInnerText = {
   [definitions.formComponentTypes.QCHECKBOXTABULAR]:
     "Multiple choices (tabulated)",
   [definitions.formComponentTypes.STANDALONEPARAGRAPH]: "Paragraphs",
+  [definitions.formComponentTypes.STANDALONEHEADER1]: "Header 1",
 };
 
 definitions.responsesTypes = {
@@ -66,6 +68,7 @@ definitions.responsesTypes = {
     "responses-checkbox-tabular-columns",
   ],
   [definitions.formComponentTypes.STANDALONEPARAGRAPH]: [],
+  [definitions.formComponentTypes.STANDALONEHEADER1]: [],
 };
 
 const possibleResponses = Object.values(definitions.responsesTypes).flat(

@@ -252,6 +252,14 @@ class InterfaceCollection extends ElementCollection {
     return newObject;
   };
 
+  createElCollection = (parentId, componentType) => {
+    const newObject = new InterfaceCollection({
+      parentId,
+      componentType,
+    }).getAll();
+    return newObject;
+  };
+
   createResponsesObjects = (parentId, responsesTypeArray) => {
     const responsesObjects = responsesTypeArray.map((r) =>
       new InterfaceCollection({ parentId, componentType: r }).getAll()
@@ -318,6 +326,14 @@ class InterfaceCollection extends ElementCollection {
       responsesObject.componentList.push(responseLabel);
       return Object.assign({}, responsesObject);
     }
+  };
+
+  initializeNewStandaloneObject = (type, obj = false) => {
+    const parentId = this.id;
+    const standalone = this.createElCollection(parentId, type);
+    if (obj) standalone.componentList.push(obj);
+    this.componentList.push(standalone);
+    return this;
   };
 
   initializeNewQuestionObject = (questionType) => {

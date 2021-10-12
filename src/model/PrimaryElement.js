@@ -13,14 +13,14 @@ class PrimaryElement {
       parentId = "parent-list-id-not-specified",
       htmlTagName = "optional-field",
       conditional = false,
-      draggable = false,
+      draggable = true,
       id = null,
     } = memberObject;
     this.generateRandN = () => {
       const rand = new Uint16Array(1);
-      // window.crypto.getRandomValues(rand);
-      // return rand[0];
-      return Math.floor(Math.random() * 10000);
+      window.crypto.getRandomValues(rand);
+      return rand[0];
+      // return Math.floor(Math.random() * 10000);
     };
     this.componentDescriptor = componentDescriptor;
     this.componentType = componentType;

@@ -2,9 +2,6 @@ import React from "react";
 import { definitions } from "../../model/FormComponentTypes";
 
 function ComponentSelectorView({ handlers }) {
-  // const form_types = Object.values(VALID_FORM_TYPES).filter(
-  //   (type) => !type.includes("responses")
-  // );
 
   const formComponentTypesArray = Object.values(definitions.formComponentTypes);
 

@@ -1,46 +1,6 @@
 import InterfaceCollection from "../Interface/InterfaceCollection";
-
-// const addNewQuestion = (form, formSetter) => {
-//   return function (questionType) {
-//     console.log("a;ldsfj;ldsaf;ldsajf");
-//     return;
-//   };
-// };
-
-// const addResponseOption = (form, formSetter) => {
-//   return function (
-//     targetId // targetId is the id of the responses object that the newly created response option will be inserted to
-//   ) {
-//     // logic:
-//     // fetch responses with targetId
-//     // use interface to add a new option (new payload)
-//     // update targetid with new payload
-//     const responses = form.fetchDeleteId(targetId, "f");
-//     const responsesInterface = new InterfaceResponses(responses.getAll());
-//     const updatedResponses = responsesInterface.loadResponse().getAll();
-//     form.updateId(targetId, updatedResponses);
-//     const updatedForm = Object.assign(new InterfaceForm(), form);
-//     formSetter(updatedForm);
-//   };
-// };
-
-// const clearForm = (form, formSetter) => {
-//   return function () {
-//     form.componentList = [];
-//     const updatedForm = Object.assign(new InterfaceForm(), form);
-//     formSetter(updatedForm);
-//   };
-// };
-
-// const startNewForm = (formSetter) => {
-//   return function (name = "base") {
-//     const newForm = new InterfaceForm({
-//       parentId: name,
-//       componentType: "form",
-//     });
-//     formSetter(newForm);
-//   };
-// };
+import InterfaceElement from "../Interface/InterfaceElement";
+import { definitions } from "../model/FormComponentTypes";
 
 class formEventHandlers {
   constructor(form, formSetter) {
@@ -53,7 +13,6 @@ class formEventHandlers {
 
   addResponse = (responsesId) => {
     const responsesObj = this.form.fetchId(responsesId);
-    console.log("fetched object", responsesObj[0]);
     const updatedResponses = this.form.addNewResponseToResponses(
       responsesObj[0]
     );
@@ -69,7 +28,6 @@ class formEventHandlers {
   updateNamedMemberWithValue = (targetId, updateInstructions) => {
     const updatedForm = this.form.updateId(targetId, null, updateInstructions);
     this.formSetter(updatedForm);
-    console.log(targetId, updateInstructions);
   };
 
   addFormComponent = (formComponentType) => {
@@ -80,8 +38,29 @@ class formEventHandlers {
     }
   };
 
+  createParagraphElement = (standaloneType, parentId) => {
+    if (definitions.formComponentTypes.STANDALONEPARAGRAPH === standaloneType) {
+      return new InterfaceElement({
+        componentType: standaloneType,
+        componentDescriptor: {},
+        htmlInnerText: "Click to edit paragraph text",
+        htmlClassAttr: "standalone-paragraph-entity",
+        parentId,
+        htmlTagName: "p",
+      }).getElement();
+    }
+  };
+
+  // probably will need to merge addStandalone with addNewQuestion
   addStandalone = (type) => {
-    console.log(type);
+    const parentId = this.form.id;
+    let seededElement;
+    if (type.includes("paragraph")) {
+      seededElement = this.createParagraphElement(type, parentId);
+    }
+    this.form.initializeNewStandaloneObject(type, seededElement);
+    const form = Object.assign(new InterfaceCollection(), this.form);
+    this.formSetter(form);
   };
 
   addNewQuestion = (questionType) => {
