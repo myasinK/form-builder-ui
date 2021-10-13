@@ -14,16 +14,16 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
         {columnsArray.map((el, index) => {
           return (
             <>
-              {index === 0 && (
-                <div
-                  onDrop={(event) => handlers.handleOnDrop(event, index)}
-                  onDragOver={(event) => handlers.handleOnDragOver(event)}
-                  className={"column-drop-zone"}
-                >
-                  Drop zone
-                </div>
-              )}
               <th key={`${el.id}-header-row`}>
+                {index === 0 && (
+                  <div
+                    onDrop={(event) => handlers.handleOnDrop(event, index)}
+                    onDragOver={(event) => handlers.handleOnDragOver(event)}
+                    className={"column-drop-zone"}
+                  >
+                    Drop zone
+                  </div>
+                )}
                 <div
                   onDragStart={() =>
                     handlers.handleDragStart(index, columns.id)
@@ -40,14 +40,14 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
                 />
                 &nbsp;
                 <span onClick={() => handlers.delete(el.id)}>-</span>
+                <div
+                  onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
+                  onDragOver={(event) => handlers.handleOnDragOver(event)}
+                  className={"column-drop-zone"}
+                >
+                  Drop zone
+                </div>
               </th>
-              <div
-                onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
-                onDragOver={(event) => handlers.handleOnDragOver(event)}
-                className={"column-drop-zone"}
-              >
-                Drop zone
-              </div>
             </>
           );
         })}
