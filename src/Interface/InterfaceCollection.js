@@ -43,7 +43,7 @@ class InterfaceCollection extends ElementCollection {
   fetchId = (targetId) => {
     function fetch(targetId, origin, fetchedObj = []) {
       if (origin.id === targetId) {
-        return origin;
+        return [origin];
       } else {
         const hasTargetObject = origin.componentList
           .map((el) => el.id === targetId)

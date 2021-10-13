@@ -6,30 +6,23 @@ import Table from "./Table";
 function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
   let rows,
     columns,
-    rowsId,
-    columnsId,
-    id,
     isTabular,
     componentDescriptor,
     respondentInputType,
     displayElement,
-    componentDescriptorRows,
-    componentDescriptorColumns;
+    componentDescriptorRows;
+
   if (responses.length === 1) {
     rows = responses[0];
-    id = rows.id;
     componentDescriptor = rows.componentDescriptor;
     isTabular = componentDescriptor.isTabular;
     respondentInputType = componentDescriptor.displayElement.htmlTagName;
     displayElement = Object.assign({}, componentDescriptor.displayElement);
   } else if (responses.length === 2) {
     [rows, columns] = responses;
-    rowsId = rows.id;
-    columnsId = columns.id;
     componentDescriptorRows = rows.componentDescriptor;
     respondentInputType = componentDescriptorRows.displayElement.htmlTagName;
     isTabular = componentDescriptorRows.isTabular;
-    componentDescriptorColumns = columns.componentDescriptor;
     displayElement = Object.assign({}, componentDescriptorRows.displayElement);
   }
 
@@ -75,27 +68,54 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
       return (
         <>
           {rows.componentList.length > 0 &&
-            rows.componentList.map((r) => {
+            rows.componentList.map((r, index) => {
               return (
-                <div key={r.id} className={responseContainerClassName}>
-                  <WrappedEditableObj
-                    wrapperClassName={labelClassName}
-                    primaryElement={r}
-                    lastClickedOnId={lastClickedOnId}
-                    handlers={handlers}
-                  />
-                  <div className={inputModeClassName}>
-                    <Input
-                      primaryElement={displayElement}
+                <>
+                  {index === 0 && (
+                    <div
+                      onDrop={(event) => handlers.handleOnDrop(event, index)}
+                      onDragOver={(event) => handlers.handleOnDragOver(event)}
+                      className={"drop-zone"}
+                    >
+                      Drop zone
+                    </div>
+                  )}
+                  <div key={r.id} className={responseContainerClassName}>
+                    <div
+                      onDragStart={() =>
+                        handlers.handleDragStart(index, rows.id)
+                      }
+                      draggable={true}
+                      className={"drag-bar"}
+                    >
+                      Drag bar
+                    </div>
+                    <WrappedEditableObj
+                      wrapperClassName={labelClassName}
+                      primaryElement={r}
+                      lastClickedOnId={lastClickedOnId}
                       handlers={handlers}
                     />
+                    <div className={inputModeClassName}>
+                      <Input
+                        primaryElement={displayElement}
+                        handlers={handlers}
+                      />
+                    </div>
+                    <div className={"options-panel"}>
+                      <button onClick={() => handlers.delete(r.id)}>
+                        Delete
+                      </button>
+                    </div>
                   </div>
-                  <div className={"options-panel"}>
-                    <button onClick={() => handlers.delete(r.id)}>
-                      Delete
-                    </button>
+                  <div
+                    onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
+                    onDragOver={(event) => handlers.handleOnDragOver(event)}
+                    className={"drop-zone"}
+                  >
+                    Drop zone
                   </div>
-                </div>
+                </>
               );
             })}
           <button onClick={() => handlers.addResponse(rows.id)}>

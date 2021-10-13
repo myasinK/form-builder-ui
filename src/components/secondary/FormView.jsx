@@ -2,12 +2,10 @@ import React from "react";
 import QuestionView from "./QuestionView";
 import StandaloneView from "./StandaloneView";
 
-function FormView({ form, lastClickedOnId, handlers, dragInfo }) {
+function FormView({ form, lastClickedOnId, handlers }) {
   const thereAreObjectsToRender = form.componentList.length > 0;
 
   const formId = form.id;
-
-  const hasDragStarted = dragInfo.originIndex && dragInfo.parentId;
 
   if (thereAreObjectsToRender) {
     return form.componentList.map((q, index) => {
@@ -20,7 +18,7 @@ function FormView({ form, lastClickedOnId, handlers, dragInfo }) {
                 onDragOver={(event) => handlers.handleOnDragOver(event)}
                 className={"question-drag-drop-spacer"}
               >
-                Drop
+                Drop zone
               </div>
             )}
             <div
@@ -42,7 +40,7 @@ function FormView({ form, lastClickedOnId, handlers, dragInfo }) {
                 onDragOver={(event) => handlers.handleOnDragOver(event)}
                 className={"question-drag-drop-spacer"}
               >
-                Drop
+                Drop zone
               </div>
             }
           </>
@@ -56,7 +54,7 @@ function FormView({ form, lastClickedOnId, handlers, dragInfo }) {
                 onDragOver={(event) => handlers.handleOnDragOver(event)}
                 className={"question-drag-drop-spacer"}
               >
-                Drop
+                Drop zone
               </div>
             )}
             <div
@@ -78,7 +76,7 @@ function FormView({ form, lastClickedOnId, handlers, dragInfo }) {
                 onDragOver={(event) => handlers.handleOnDragOver(event)}
                 className={"question-drag-drop-spacer"}
               >
-                Drop
+                Drop zone
               </div>
             }
           </>

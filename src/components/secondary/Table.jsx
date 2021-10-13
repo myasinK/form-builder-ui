@@ -11,45 +11,102 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
     <table>
       <tr>
         <th></th>
-        {columnsArray.map((el) => {
+        {columnsArray.map((el, index) => {
           return (
-            <th key={`${el.id}-header-row`}>
-              <EditableData
-                primaryElement={el}
-                lastClickedOnId={lastClickedOnId}
-                handlers={handlers}
-              />
-              <span onClick={() => handlers.delete(el.id)}>-</span>
-            </th>
+            <>
+              {index === 0 && (
+                <div
+                  onDrop={(event) => handlers.handleOnDrop(event, index)}
+                  onDragOver={(event) => handlers.handleOnDragOver(event)}
+                  className={"column-drop-zone"}
+                >
+                  Drop zone
+                </div>
+              )}
+              <th key={`${el.id}-header-row`}>
+                <div
+                  onDragStart={() =>
+                    handlers.handleDragStart(index, columns.id)
+                  }
+                  draggable={true}
+                  className={"column-drag-bar"}
+                >
+                  Drag bar
+                </div>
+                <EditableData
+                  primaryElement={el}
+                  lastClickedOnId={lastClickedOnId}
+                  handlers={handlers}
+                />
+                &nbsp;
+                <span onClick={() => handlers.delete(el.id)}>-</span>
+              </th>
+              <div
+                onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+                className={"column-drop-zone"}
+              >
+                Drop zone
+              </div>
+            </>
           );
         })}
       </tr>
-      {/* <Body rArray={rowsArray} cArray={columnsArray} /> */}
-      {rowsArray.map((el) => {
+      {rowsArray.map((el, index) => {
         const rowId = el.id;
         return (
-          <tr key={rowId}>
-            <th>
-              <EditableData
-                primaryElement={el}
-                lastClickedOnId={lastClickedOnId}
-                handlers={handlers}
-              />
-              <span onClick={() => handlers.delete(el.id)}>-</span>
-            </th>
-            {columnsArray.map((el) => {
-              const cellId = `${rowId}-${el.id}`;
-              return (
-                <td key={cellId}>
-                  <Input
-                    primaryElement={displayElement}
-                    disabled={true}
-                    handlers={null}
-                  />
-                </td>
-              );
-            })}
-          </tr>
+          <>
+            <tr>
+              {index === 0 && (
+                <div
+                  onDrop={(event) => handlers.handleOnDrop(event, index)}
+                  onDragOver={(event) => handlers.handleOnDragOver(event)}
+                  className={"row-drop-zone"}
+                >
+                  Drop zone
+                </div>
+              )}
+            </tr>
+            <tr key={rowId}>
+              <th>
+                <div
+                  onDragStart={() => handlers.handleDragStart(index, rows.id)}
+                  draggable={true}
+                  className={"row-drag-bar"}
+                >
+                  Drag bar
+                </div>
+                <EditableData
+                  primaryElement={el}
+                  lastClickedOnId={lastClickedOnId}
+                  handlers={handlers}
+                />
+                &nbsp;
+                <span onClick={() => handlers.delete(el.id)}>-</span>
+              </th>
+              {columnsArray.map((el) => {
+                const cellId = `${rowId}-${el.id}`;
+                return (
+                  <td key={cellId}>
+                    <Input
+                      primaryElement={displayElement}
+                      disabled={true}
+                      handlers={null}
+                    />
+                  </td>
+                );
+              })}
+            </tr>
+            <tr>
+              <div
+                onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+                className={"row-drop-zone"}
+              >
+                Drop zone
+              </div>
+            </tr>
+          </>
         );
       })}
     </table>

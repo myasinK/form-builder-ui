@@ -112,10 +112,9 @@ class formEventHandlers {
   handleOnDrop = (event, destinationIndex) => {
     event.preventDefault();
     const { originIndex, parentId } = this.dragInfo;
-    console.log("parent", parentId);
     this.dragInfoSetter({ originIndex: null, parentId: null });
 
-    const parentObject = Object.assign({}, this.form.fetchId(parentId));
+    const parentObject = Object.assign({}, this.form.fetchId(parentId)[0]);
     const componentList = Object.assign([], parentObject.componentList);
 
     const targetObjectToBeMoved = { ...componentList[originIndex] };
@@ -130,6 +129,13 @@ class formEventHandlers {
       this.formSetter(updatedForm);
     } else {
       // to be done later
+      parentObject.componentList = updatedList;
+      const updatedForm = this.form.updateId(
+        parentObject.id,
+        parentObject,
+        null
+      );
+      this.formSetter(updatedForm);
     }
   };
 }
