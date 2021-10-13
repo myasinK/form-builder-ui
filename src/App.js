@@ -8,9 +8,13 @@ import ComponentSelectorView from "./components/secondary/ComponentSelectorView"
 function App() {
   let [lastIdClicked, setLastIdClicked] = useState(false);
   let [form, setForm] = useState(null);
+  let [dragInfo, setDragInfo] = useState({
+    originIndex: false,
+    parentId: false,
+  });
 
-  const handlers = new formEventHandlers(form, setForm);
-  
+  const handlers = new formEventHandlers(form, setForm, dragInfo, setDragInfo);
+
   return (
     <div
       className={"App"}
@@ -25,6 +29,7 @@ function App() {
           form={form}
           lastClickedOnId={lastIdClicked}
           handlers={handlers}
+          dragInfo={dragInfo}
         />
       )}
     </div>

@@ -2,31 +2,91 @@ import React from "react";
 import QuestionView from "./QuestionView";
 import StandaloneView from "./StandaloneView";
 
-function FormView({ form, lastClickedOnId, handlers }) {
+function FormView({ form, lastClickedOnId, handlers, dragInfo }) {
   const thereAreObjectsToRender = form.componentList.length > 0;
+
+  const formId = form.id;
+
+  const hasDragStarted = dragInfo.originIndex && dragInfo.parentId;
+
   if (thereAreObjectsToRender) {
-    return form.componentList.map((q) => {
+    return form.componentList.map((q, index) => {
       if (q.componentType.includes("question")) {
         return (
-          <QuestionView
-            key={q.id}
-            questionObject={q}
-            lastClickedOnId={lastClickedOnId}
-            handlers={handlers}
-          />
+          <>
+            {index === 0 && (
+              <div
+                onDrop={(event) => handlers.handleOnDrop(event, index)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+                className={"question-drag-drop-spacer"}
+              >
+                Drop
+              </div>
+            )}
+            <div
+              className={"move-area"}
+              draggable={true}
+              onDragStart={() => handlers.handleDragStart(index, formId)}
+            >
+              Move
+            </div>
+            <QuestionView
+              key={q.id}
+              questionObject={q}
+              lastClickedOnId={lastClickedOnId}
+              handlers={handlers}
+            />
+            {
+              <div
+                onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+                className={"question-drag-drop-spacer"}
+              >
+                Drop
+              </div>
+            }
+          </>
         );
       } else if (q.componentType.includes("standalone")) {
         return (
-          <StandaloneView
-            key={q.id}
-            standaloneObject={q}
-            lastClickedOnId={lastClickedOnId}
-            handlers={handlers}
-          />
+          <>
+            {index === 0 && (
+              <div
+                onDrop={(event) => handlers.handleOnDrop(event, index)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+                className={"question-drag-drop-spacer"}
+              >
+                Drop
+              </div>
+            )}
+            <div
+              draggable={true}
+              onDragStart={() => handlers.handleDragStart(index, formId)}
+              className={"move-area"}
+            >
+              Move
+            </div>
+            <StandaloneView
+              key={q.id}
+              standaloneObject={q}
+              lastClickedOnId={lastClickedOnId}
+              handlers={handlers}
+            />
+            {
+              <div
+                onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+                className={"question-drag-drop-spacer"}
+              >
+                Drop
+              </div>
+            }
+          </>
         );
       } else return null;
     });
   } else {
+    // if there are no objects to render
     return <div className={"form-container"}>Form doesn't exist yet</div>;
   }
 }

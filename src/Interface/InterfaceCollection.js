@@ -41,26 +41,30 @@ class InterfaceCollection extends ElementCollection {
   };
 
   fetchId = (targetId) => {
-    function fetch(targetId, origin, action = "f", fetchedObj = []) {
-      const hasTargetObject = origin.componentList
-        .map((el) => el.id === targetId)
-        .reduce((prev, current) => {
-          return prev || current;
-        }, false);
-      if (hasTargetObject) {
-        fetchedObj = origin.componentList.filter(function (el) {
-          return el.id === targetId ? true : false;
-        });
-        return fetchedObj;
+    function fetch(targetId, origin, fetchedObj = []) {
+      if (origin.id === targetId) {
+        return origin;
       } else {
-        origin.componentList.map(function (el) {
-          if (el.componentList) {
-            fetchedObj = fetch(targetId, el, action, fetchedObj);
-          }
-          return el;
-        });
+        const hasTargetObject = origin.componentList
+          .map((el) => el.id === targetId)
+          .reduce((prev, current) => {
+            return prev || current;
+          }, false);
+        if (hasTargetObject) {
+          fetchedObj = origin.componentList.filter(function (el) {
+            return el.id === targetId ? true : false;
+          });
+          return fetchedObj;
+        } else {
+          origin.componentList.map(function (el) {
+            if (el.componentList) {
+              fetchedObj = fetch(targetId, el, fetchedObj);
+            }
+            return el;
+          });
+        }
+        return fetchedObj;
       }
-      return fetchedObj;
     }
 
     return fetch(targetId, this.getAll());
@@ -144,6 +148,7 @@ class InterfaceCollection extends ElementCollection {
       startingCollection.componentList = updatedComponentList;
       return { ...startingCollection };
     }
+
     let origin = Object.assign({}, this.getAll());
     let updatedCollection = updateAtId(
       targetId,
