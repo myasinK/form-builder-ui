@@ -1,6 +1,8 @@
 import React from "react";
 import { WrappedEditableObj } from "./EditableData";
 import ResponsesContainer from "./ResponsesContainer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 function QuestionView({ questionObject, lastClickedOnId, handlers }) {
   const { id = null } = questionObject;
@@ -23,7 +25,7 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
           handlers={handlers}
         />
       </div>
-      <button onClick={() => handlers.delete(id)}>Delete question</button>
+      <FontAwesomeIcon onClick={() => handlers.delete(id)} icon={faTrashAlt} />
     </div>
   );
 }

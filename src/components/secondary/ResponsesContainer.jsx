@@ -4,6 +4,8 @@ import Input from "../primary/Input";
 import Span from "../primary/Span";
 import { WrappedEditableObj } from "./EditableData";
 import Table from "./Table";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 
 function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
   let rows,
@@ -116,9 +118,10 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                       />
                     </div>
                     <div className={"options-panel"}>
-                      <button onClick={() => handlers.delete(r.id)}>
-                        Delete
-                      </button>
+                      <FontAwesomeIcon
+                        onClick={() => handlers.delete(r.id)}
+                        icon={faMinusCircle}
+                      />
                     </div>
                   </div>
                   <Span

@@ -3,6 +3,8 @@ import InterfaceElement from "../../Interface/InterfaceElement";
 import Input from "../primary/Input";
 import Span from "../primary/Span";
 import EditableData from "./EditableData";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 
 function Table({ rows, columns, lastClickedOnId, handlers }) {
   const columnsArray = [...columns.componentList];
@@ -65,7 +67,10 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
                   handlers={handlers}
                 />
                 &nbsp;
-                <span onClick={() => handlers.delete(el.id)}>-</span>
+                <FontAwesomeIcon
+                  onClick={() => handlers.delete(el.id)}
+                  icon={faMinusCircle}
+                />
                 <Span
                   primaryElement={dropColumnElement}
                   handlers={handlers}
@@ -113,7 +118,10 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
                   handlers={handlers}
                 />
                 &nbsp;
-                <span onClick={() => handlers.delete(el.id)}>-</span>
+                <FontAwesomeIcon
+                  onClick={() => handlers.delete(el.id)}
+                  icon={faMinusCircle}
+                />
               </th>
               {columnsArray.map((el) => {
                 const cellId = `${rowId}-${el.id}`;

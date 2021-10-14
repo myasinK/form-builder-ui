@@ -1,5 +1,7 @@
 import React from "react";
 import EditableData from "./EditableData";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 function StandaloneView({ standaloneObject, lastClickedOnId, handlers }) {
   const { id = null } = standaloneObject;
@@ -31,7 +33,7 @@ function StandaloneView({ standaloneObject, lastClickedOnId, handlers }) {
           return null;
         }
       })}
-      <button onClick={() => handlers.delete(id)}>Delete question</button>
+      <FontAwesomeIcon onClick={() => handlers.delete(id)} icon={faTrashAlt} />
     </div>
   );
 }
