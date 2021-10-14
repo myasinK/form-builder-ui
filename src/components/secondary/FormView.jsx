@@ -1,4 +1,6 @@
 import React from "react";
+import InterfaceElement from "../../Interface/InterfaceElement";
+import Span from "../primary/Span";
 import QuestionView from "./QuestionView";
 import StandaloneView from "./StandaloneView";
 
@@ -7,27 +9,39 @@ function FormView({ form, lastClickedOnId, handlers }) {
 
   const formId = form.id;
 
+  const dragElement = new InterfaceElement({
+    htmlInnerText: "drag bar (for questions/standalone objects)",
+    htmlClassAttr: "question-drag-bar",
+    htmlTagName: "span",
+    draggable: true,
+  }).getElement();
+
+  const dropElement = new InterfaceElement({
+    htmlInnerText: "drop area (for questions/standalone objects)",
+    htmlClassAttr: "question-drop-area",
+    htmlTagName: "span",
+    draggable: false,
+  }).getElement();
+
   if (thereAreObjectsToRender) {
     return form.componentList.map((q, index) => {
       if (q.componentType.includes("question")) {
         return (
           <>
             {index === 0 && (
-              <div
-                onDrop={(event) => handlers.handleOnDrop(event, index)}
-                onDragOver={(event) => handlers.handleOnDragOver(event)}
-                className={"question-drag-drop-spacer"}
-              >
-                Drop zone
-              </div>
+              <Span
+                primaryElement={dropElement}
+                handlers={handlers}
+                action={"drop"}
+                dragInfo={{ parentId: formId, destinationIndex: index }}
+              />
             )}
-            <div
-              className={"move-area"}
-              draggable={true}
-              onDragStart={() => handlers.handleDragStart(index, formId)}
-            >
-              Move
-            </div>
+            <Span
+              primaryElement={dragElement}
+              handlers={handlers}
+              action={"drag"}
+              dragInfo={{ parentId: formId, originIndex: index }}
+            />
             <QuestionView
               key={q.id}
               questionObject={q}
@@ -35,13 +49,12 @@ function FormView({ form, lastClickedOnId, handlers }) {
               handlers={handlers}
             />
             {
-              <div
-                onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
-                onDragOver={(event) => handlers.handleOnDragOver(event)}
-                className={"question-drag-drop-spacer"}
-              >
-                Drop zone
-              </div>
+              <Span
+                primaryElement={dropElement}
+                handlers={handlers}
+                action={"drop"}
+                dragInfo={{ parentId: formId, destinationIndex: index + 1 }}
+              />
             }
           </>
         );
@@ -49,21 +62,19 @@ function FormView({ form, lastClickedOnId, handlers }) {
         return (
           <>
             {index === 0 && (
-              <div
-                onDrop={(event) => handlers.handleOnDrop(event, index)}
-                onDragOver={(event) => handlers.handleOnDragOver(event)}
-                className={"question-drag-drop-spacer"}
-              >
-                Drop zone
-              </div>
+              <Span
+                primaryElement={dropElement}
+                handlers={handlers}
+                action={"drop"}
+                dragInfo={{ parentId: formId, destinationIndex: index }}
+              />
             )}
-            <div
-              draggable={true}
-              onDragStart={() => handlers.handleDragStart(index, formId)}
-              className={"move-area"}
-            >
-              Move
-            </div>
+            <Span
+              primaryElement={dragElement}
+              handlers={handlers}
+              action={"drag"}
+              dragInfo={{ parentId: formId, originIndex: index }}
+            />
             <StandaloneView
               key={q.id}
               standaloneObject={q}
@@ -71,13 +82,12 @@ function FormView({ form, lastClickedOnId, handlers }) {
               handlers={handlers}
             />
             {
-              <div
-                onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
-                onDragOver={(event) => handlers.handleOnDragOver(event)}
-                className={"question-drag-drop-spacer"}
-              >
-                Drop zone
-              </div>
+              <Span
+                primaryElement={dropElement}
+                handlers={handlers}
+                action={"drop"}
+                dragInfo={{ parentId: formId, destinationIndex: index + 1 }}
+              />
             }
           </>
         );

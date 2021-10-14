@@ -1,11 +1,41 @@
 import React from "react";
+import InterfaceElement from "../../Interface/InterfaceElement";
 import Input from "../primary/Input";
+import Span from "../primary/Span";
 import EditableData from "./EditableData";
 
 function Table({ rows, columns, lastClickedOnId, handlers }) {
   const columnsArray = [...columns.componentList];
   const rowsArray = rows.componentList;
   const { displayElement } = rows.componentDescriptor;
+
+  const dragRowElement = new InterfaceElement({
+    htmlInnerText: "drag bar (for row objects)",
+    htmlClassAttr: "row-drag-bar",
+    htmlTagName: "span",
+    draggable: true,
+  }).getElement();
+
+  const dropRowElement = new InterfaceElement({
+    htmlInnerText: "drop area (for row objects)",
+    htmlClassAttr: "row-drop-area",
+    htmlTagName: "span",
+    draggable: false,
+  }).getElement();
+
+  const dragColumnElement = new InterfaceElement({
+    htmlInnerText: "drag bar (for column objects)",
+    htmlClassAttr: "column-drag-bar",
+    htmlTagName: "span",
+    draggable: true,
+  }).getElement();
+
+  const dropColumnElement = new InterfaceElement({
+    htmlInnerText: "drop area (for column objects)",
+    htmlClassAttr: "column-drop-area",
+    htmlTagName: "span",
+    draggable: false,
+  }).getElement();
 
   return (
     <table>
@@ -16,23 +46,19 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
             <>
               <th key={`${el.id}-header-row`}>
                 {index === 0 && (
-                  <div
-                    onDrop={(event) => handlers.handleOnDrop(event, index)}
-                    onDragOver={(event) => handlers.handleOnDragOver(event)}
-                    className={"column-drop-zone"}
-                  >
-                    Drop zone
-                  </div>
+                  <Span
+                    primaryElement={dropColumnElement}
+                    handlers={handlers}
+                    action={"drop"}
+                    dragInfo={{ parentId: columns.id, desinationIndex: index }}
+                  />
                 )}
-                <div
-                  onDragStart={() =>
-                    handlers.handleDragStart(index, columns.id)
-                  }
-                  draggable={true}
-                  className={"column-drag-bar"}
-                >
-                  Drag bar
-                </div>
+                <Span
+                  primaryElement={dragColumnElement}
+                  handlers={handlers}
+                  action={"drag"}
+                  dragInfo={{ parentId: columns.id, originIndex: index }}
+                />
                 <EditableData
                   primaryElement={el}
                   lastClickedOnId={lastClickedOnId}
@@ -40,13 +66,15 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
                 />
                 &nbsp;
                 <span onClick={() => handlers.delete(el.id)}>-</span>
-                <div
-                  onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
-                  onDragOver={(event) => handlers.handleOnDragOver(event)}
-                  className={"column-drop-zone"}
-                >
-                  Drop zone
-                </div>
+                <Span
+                  primaryElement={dropColumnElement}
+                  handlers={handlers}
+                  action={"drop"}
+                  dragInfo={{
+                    parentId: columns.id,
+                    desinationIndex: index + 1,
+                  }}
+                />
               </th>
             </>
           );
@@ -58,24 +86,27 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
           <>
             <tr>
               {index === 0 && (
-                <div
-                  onDrop={(event) => handlers.handleOnDrop(event, index)}
-                  onDragOver={(event) => handlers.handleOnDragOver(event)}
-                  className={"row-drop-zone"}
-                >
-                  Drop zone
-                </div>
+                <td>
+                  <Span
+                    primaryElement={dropRowElement}
+                    handlers={handlers}
+                    action={"drop"}
+                    dragInfo={{
+                      parentId: rows.id,
+                      desinationIndex: index,
+                    }}
+                  />
+                </td>
               )}
             </tr>
             <tr key={rowId}>
               <th>
-                <div
-                  onDragStart={() => handlers.handleDragStart(index, rows.id)}
-                  draggable={true}
-                  className={"row-drag-bar"}
-                >
-                  Drag bar
-                </div>
+                <Span
+                  primaryElement={dragRowElement}
+                  handlers={handlers}
+                  action={"drag"}
+                  dragInfo={{ parentId: rows.id, originIndex: index }}
+                />
                 <EditableData
                   primaryElement={el}
                   lastClickedOnId={lastClickedOnId}
@@ -97,14 +128,18 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
                 );
               })}
             </tr>
-            <tr>
-              <div
-                onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
-                onDragOver={(event) => handlers.handleOnDragOver(event)}
-                className={"row-drop-zone"}
-              >
-                Drop zone
-              </div>
+            <tr className={"drop-area-row"}>
+              <td>
+                <Span
+                  primaryElement={dropRowElement}
+                  handlers={handlers}
+                  action={"drop"}
+                  dragInfo={{
+                    parentId: rows.id,
+                    desinationIndex: index + 1,
+                  }}
+                />
+              </td>
             </tr>
           </>
         );

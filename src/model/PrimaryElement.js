@@ -13,7 +13,7 @@ class PrimaryElement {
       parentId = "parent-list-id-not-specified",
       htmlTagName = "optional-field",
       conditional = false,
-      draggable = true,
+      draggable = false,
       id = null,
     } = memberObject;
     this.generateRandN = () => {

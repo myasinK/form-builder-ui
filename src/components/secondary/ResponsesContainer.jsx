@@ -1,5 +1,7 @@
 import React from "react";
+import InterfaceElement from "../../Interface/InterfaceElement";
 import Input from "../primary/Input";
+import Span from "../primary/Span";
 import { WrappedEditableObj } from "./EditableData";
 import Table from "./Table";
 
@@ -19,6 +21,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
     respondentInputType = componentDescriptor.displayElement.htmlTagName;
     displayElement = Object.assign({}, componentDescriptor.displayElement);
   } else if (responses.length === 2) {
+    // i.e. if it's a table
     [rows, columns] = responses;
     componentDescriptorRows = rows.componentDescriptor;
     respondentInputType = componentDescriptorRows.displayElement.htmlTagName;
@@ -29,6 +32,20 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
   const responseContainerClassName = "response-container";
   const labelClassName = "response-label-container";
   const inputModeClassName = "input-mode-container";
+
+  const dragRowElement = new InterfaceElement({
+    htmlInnerText: "drag bar (for response objects)",
+    htmlClassAttr: "response-drag-bar",
+    htmlTagName: "span",
+    draggable: true,
+  }).getElement();
+
+  const dropRowElement = new InterfaceElement({
+    htmlInnerText: "drop area (for response objects)",
+    htmlClassAttr: "response-drop-area",
+    htmlTagName: "span",
+    draggable: false,
+  }).getElement();
 
   if (isTabular) {
     return (
@@ -72,24 +89,20 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
               return (
                 <>
                   {index === 0 && (
-                    <div
-                      onDrop={(event) => handlers.handleOnDrop(event, index)}
-                      onDragOver={(event) => handlers.handleOnDragOver(event)}
-                      className={"drop-zone"}
-                    >
-                      Drop zone
-                    </div>
+                    <Span
+                      primaryElement={dropRowElement}
+                      handlers={handlers}
+                      action={"drop"}
+                      dragInfo={{ parentId: rows.id, desinationIndex: index }}
+                    />
                   )}
                   <div key={r.id} className={responseContainerClassName}>
-                    <div
-                      onDragStart={() =>
-                        handlers.handleDragStart(index, rows.id)
-                      }
-                      draggable={true}
-                      className={"drag-bar"}
-                    >
-                      Drag bar
-                    </div>
+                    <Span
+                      primaryElement={dragRowElement}
+                      handlers={handlers}
+                      action={"drag"}
+                      dragInfo={{ parentId: rows.id, originIndex: index }}
+                    />
                     <WrappedEditableObj
                       wrapperClassName={labelClassName}
                       primaryElement={r}
@@ -108,13 +121,12 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                       </button>
                     </div>
                   </div>
-                  <div
-                    onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
-                    onDragOver={(event) => handlers.handleOnDragOver(event)}
-                    className={"drop-zone"}
-                  >
-                    Drop zone
-                  </div>
+                  <Span
+                    primaryElement={dropRowElement}
+                    handlers={handlers}
+                    action={"drop"}
+                    dragInfo={{ parentId: rows.id, desinationIndex: index + 1 }}
+                  />
                 </>
               );
             })}

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Div({ primaryElement, handler1, handler2 }) {
+export default function Div({ primaryElement, handlers }) {
   const {
     componentDescriptor = {},
     htmlInnerText = "",
