@@ -1,14 +1,56 @@
 import React from "react";
 
-export default function Div({ primaryElement, handlers }) {
+function Div({
+  primaryElement,
+  handlers,
+  action = "standard",
+  dragInfo = null,
+}) {
   const {
-    componentDescriptor = {},
     htmlInnerText = "",
     htmlClassAttr = "class-not-specified",
+    draggable,
+    id,
   } = primaryElement;
-  return (
-    <div id={primaryElement.id} className={htmlClassAttr}>
-      {htmlInnerText}
-    </div>
-  );
+  if (action === "standard") {
+    return (
+      <div className={htmlClassAttr} id={id}>
+        {htmlInnerText}
+      </div>
+    );
+  } else if (action === "drag") {
+    return (
+      <div
+        onDragStart={() =>
+          handlers.handleDragStart(dragInfo.originIndex, dragInfo.parentId)
+        }
+        draggable={draggable}
+        className={htmlClassAttr}
+        id={id}
+      >
+        {htmlInnerText}
+      </div>
+    );
+  } else if (action === "drop") {
+    return (
+      <div
+        onDrop={(event) =>
+          handlers.handleOnDrop(event, dragInfo.destinationIndex)
+        }
+        onDragOver={(event) => handlers.handleOnDragOver(event)}
+        className={htmlClassAttr}
+        id={id}
+      >
+        {htmlInnerText}
+      </div>
+    );
+  } else {
+    return (
+      <div className={htmlClassAttr} id={id}>
+        {htmlInnerText}
+      </div>
+    );
+  }
 }
+
+export default Div;

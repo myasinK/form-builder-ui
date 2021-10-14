@@ -1,6 +1,7 @@
 import React from "react";
 import InterfaceElement from "../../Interface/InterfaceElement";
 import Span from "../primary/Span";
+import Div from "../primary/Div";
 import QuestionView from "./QuestionView";
 import StandaloneView from "./StandaloneView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,27 +20,31 @@ function FormView({ form, lastClickedOnId, handlers }) {
   }).getElement();
 
   const dropElement = new InterfaceElement({
-    htmlInnerText: "drop area (for questions/standalone objects)",
+    htmlInnerText: "",
     htmlClassAttr: "question-drop-area",
     htmlTagName: "span",
     draggable: false,
   }).getElement();
 
   if (thereAreObjectsToRender) {
+    let questionCount = 0;
     return form.componentList.map((q, index) => {
       if (q.componentType.includes("question")) {
+        questionCount++;
+        let dragBar = Object.assign({}, dragElement);
+        dragBar.htmlInnerText = `#${questionCount}`;
         return (
           <>
             {index === 0 && (
-              <Span
+              <Div
                 primaryElement={dropElement}
                 handlers={handlers}
                 action={"drop"}
                 dragInfo={{ parentId: formId, destinationIndex: index }}
               />
             )}
-            <Span
-              primaryElement={dragElement}
+            <Div
+              primaryElement={dragBar}
               handlers={handlers}
               action={"drag"}
               dragInfo={{ parentId: formId, originIndex: index }}
@@ -51,7 +56,7 @@ function FormView({ form, lastClickedOnId, handlers }) {
               handlers={handlers}
             />
             {
-              <Span
+              <Div
                 primaryElement={dropElement}
                 handlers={handlers}
                 action={"drop"}
@@ -61,18 +66,20 @@ function FormView({ form, lastClickedOnId, handlers }) {
           </>
         );
       } else if (q.componentType.includes("standalone")) {
+        let dragBar = Object.assign({}, dragElement);
+        dragBar.htmlInnerText = "";
         return (
           <>
             {index === 0 && (
-              <Span
+              <Div
                 primaryElement={dropElement}
                 handlers={handlers}
                 action={"drop"}
                 dragInfo={{ parentId: formId, destinationIndex: index }}
               />
             )}
-            <Span
-              primaryElement={dragElement}
+            <Div
+              primaryElement={dragBar}
               handlers={handlers}
               action={"drag"}
               dragInfo={{ parentId: formId, originIndex: index }}
@@ -84,7 +91,7 @@ function FormView({ form, lastClickedOnId, handlers }) {
               handlers={handlers}
             />
             {
-              <Span
+              <Div
                 primaryElement={dropElement}
                 handlers={handlers}
                 action={"drop"}

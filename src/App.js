@@ -32,14 +32,17 @@ function App() {
       <button onClick={() => handlers.startNewForm()}>Start new form</button>
       <button onClick={() => handlers.clearForm()}>Clear form</button>
       <ComponentSelectorView handlers={handlers} />
-      {form && (
-        <FormView
-          form={form}
-          lastClickedOnId={lastIdClicked}
-          handlers={handlers}
-          dragInfo={dragInfo}
-        />
-      )}
+      <div className={"form-container"}>
+        {/* <div id={"test-block"}></div> */}
+        {form && (
+          <FormView
+            form={form}
+            lastClickedOnId={lastIdClicked}
+            handlers={handlers}
+            dragInfo={dragInfo}
+          />
+        )}
+      </div>
     </div>
   );
 }

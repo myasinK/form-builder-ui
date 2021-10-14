@@ -1,29 +1,49 @@
-.question-card {
-  width: 100%;
-  border: 1px solid black;
+* {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
 }
 
-/* .question-prompt-card {
-  width: 100%;
-}
-
-label {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-span {
-  display: inline-block;
-  width: 50%;
-}
-
-input[type="text"] {
-  width: 50%;
-}
-
-.response-card {
-  width: 100%;
+.form-container {
+  width: 80%;
   display: flex;
   flex-direction: column;
-} */
+  align-items: center;
+}
+
+.question-container,
+.standalone-container {
+  border: 1px solid black;
+  width: 80%;
+  margin-bottom: 10px;
+}
+
+.question-drag-bar {
+  width: 10%;
+  margin-left: 10%;
+  min-height: 20px;
+  margin-top: 10px;
+  border: 1px solid black;
+  border-radius: 4px 4px 0 0;
+  align-self: flex-start;
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+.question-drag-bar:hover {
+  cursor: grab;
+}
+
+.question-drop-area {
+  width: 100%;
+  min-height: 10px;
+  max-height: 40px;
+  background-color: gray;
+}
+
+#test-block {
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+}
