@@ -5,7 +5,7 @@ import Span from "../primary/Span";
 import { WrappedEditableObj } from "./EditableData";
 import Table from "./Table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faMinusCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
   let rows,
@@ -52,17 +52,19 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
   if (isTabular) {
     return (
       <>
-        <div
-          onClick={() => handlers.addResponse(rows.id)}
-          className={"options-menu"}
-        >
-          Add row
+        <div>
+          <FontAwesomeIcon
+            onClick={() => handlers.addResponse(rows.id)}
+            icon={faPlusCircle}
+          />
+          <span>Row</span>
         </div>
-        <div
-          onClick={() => handlers.addResponse(columns.id)}
-          className={"options-menu"}
-        >
-          Add column
+        <div>
+          <FontAwesomeIcon
+            onClick={() => handlers.addResponse(columns.id)}
+            icon={faPlusCircle}
+          />
+          <span>Column</span>
         </div>
         <Table
           rows={rows}
@@ -133,9 +135,10 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                 </>
               );
             })}
-          <button onClick={() => handlers.addResponse(rows.id)}>
-            Add response
-          </button>
+          <FontAwesomeIcon
+            onClick={() => handlers.addResponse(rows.id)}
+            icon={faPlusCircle}
+          />
         </>
       );
     }
