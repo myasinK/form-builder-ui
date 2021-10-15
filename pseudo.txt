@@ -285,4 +285,13 @@ D 3
 E 4
 5
 					
-	 
+
+given two arrays[m] rows & columns[n]
+
+build a table with	
+	header row -> 1 (empty) 1 + 2n
+	body
+		2m + 1 rows
+	
+body.row	
+	label.cell 1+2n cells
