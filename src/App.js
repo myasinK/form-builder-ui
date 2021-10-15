@@ -27,6 +27,7 @@ function App() {
       className={"App"}
       onClick={(event) => clickRegistrar(setLastIdClicked)(event)}
     >
+      <div id={"test-block"}></div>
       <FontAwesomeIcon icon={faMugHot} />
       {console.log(form)}
       <button onClick={() => handlers.startNewForm()}>Start new form</button>

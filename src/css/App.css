@@ -4,6 +4,12 @@
   margin: 0px;
 }
 
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .form-container {
   width: 80%;
   display: flex;
@@ -76,6 +82,7 @@
   display: flex;
   flex-direction: column;
   width: 80%;
+  overflow: auto;
 }
 
 .response-container {
@@ -146,5 +153,59 @@
 #test-block {
   height: 50px;
   width: 50px;
-  border: 1px solid black;
+  border: 1px dashed black;
+}
+
+#test-block:hover {
+  background-color: black;
+}
+
+th.column-drop-cell,
+td.column-drop-cell {
+  background-color: black;
+  min-width: 5px;
+  height: 10px;
+}
+
+.drop-row {
+  height: 10px;
+  background-color: black;
+}
+
+.column-header-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 90px;
+}
+
+.column-move-and-delete-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-container-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-container-cell input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+}
+
+.first.column-header-cell {
+  max-width: 80px;
+}
+
+.row-label-cell {
+  max-width: 80px;
+  overflow: auto;
+}
+
+.row-label-cell input {
+  max-width: 80%;
 }
