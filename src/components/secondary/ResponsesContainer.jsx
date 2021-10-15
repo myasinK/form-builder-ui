@@ -91,7 +91,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
           />
         </div>
       );
-    } else if (["text", "radio", "checkbox"].includes(respondentInputType)) {
+    } else if (["text"].includes(respondentInputType)) {
       return (
         <>
           {rows.componentList.length > 0 &&
@@ -113,18 +113,79 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                       action={"drag"}
                       dragInfo={{ parentId: rows.id, originIndex: index }}
                     />
-                    <WrappedEditableObj
-                      wrapperClassName={labelClassName}
-                      primaryElement={r}
-                      lastClickedOnId={lastClickedOnId}
-                      handlers={handlers}
+                    <div className={"input-and-label-container"}>
+                      <WrappedEditableObj
+                        wrapperClassName={labelClassName}
+                        primaryElement={r}
+                        lastClickedOnId={lastClickedOnId}
+                        handlers={handlers}
+                      />
+                      <div className={inputModeClassName}>
+                        <Input
+                          primaryElement={displayElement}
+                          handlers={handlers}
+                        />
+                      </div>
+                    </div>
+                    <FontAwesomeIcon
+                      className={"delete-response-row"}
+                      onClick={() => handlers.delete(r.id)}
+                      icon={faMinusCircle}
                     />
-                    <div className={inputModeClassName}>
-                      <Input
-                        primaryElement={displayElement}
+                  </div>
+                  <Div
+                    primaryElement={dropRowElement}
+                    handlers={handlers}
+                    action={"drop"}
+                    dragInfo={{ parentId: rows.id, desinationIndex: index + 1 }}
+                  />
+                </>
+              );
+            })}
+          <FontAwesomeIcon
+            className={"add-response-row"}
+            onClick={() => handlers.addResponse(rows.id)}
+            icon={faPlusCircle}
+          />
+        </>
+      );
+    } else if (["radio", "checkbox"].includes(respondentInputType)) {
+      return (
+        <>
+          {rows.componentList.length > 0 &&
+            rows.componentList.map((r, index) => {
+              return (
+                <>
+                  {index === 0 && (
+                    <Div
+                      primaryElement={dropRowElement}
+                      handlers={handlers}
+                      action={"drop"}
+                      dragInfo={{ parentId: rows.id, desinationIndex: index }}
+                    />
+                  )}
+                  <div key={r.id} className={responseContainerClassName}>
+                    <Span
+                      primaryElement={dragRowElement}
+                      handlers={handlers}
+                      action={"drag"}
+                      dragInfo={{ parentId: rows.id, originIndex: index }}
+                    />
+                    <div className={"input-and-label-container"}>
+                      <div className={inputModeClassName}>
+                        <Input
+                          primaryElement={displayElement}
+                          handlers={handlers}
+                        />
+                      </div>
+                      <WrappedEditableObj
+                        wrapperClassName={labelClassName}
+                        primaryElement={r}
+                        lastClickedOnId={lastClickedOnId}
                         handlers={handlers}
                       />
                     </div>
+
                     <FontAwesomeIcon
                       className={"delete-response-row"}
                       onClick={() => handlers.delete(r.id)}

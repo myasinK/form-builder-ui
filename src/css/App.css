@@ -47,7 +47,7 @@
 }
 
 .response-drag-bar {
-  width: fit-content;
+  width: 10%;
 }
 
 .response-drop-area {
@@ -90,15 +90,36 @@
   margin-left: 6px;
 }
 
+.response-label-container input {
+  max-width: 100%;
+}
+
 .response-label-container span {
+  max-width: 100%;
+}
+
+.input-mode-container.radio,
+.input-mode-container.checkbox {
+  max-width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .delete-response-row {
+  width: 10%;
+  margin-left: 10px;
 }
 
 .delete-response-row:hover {
   cursor: pointer;
   color: rgba(255, 0, 0, 0.73);
+}
+
+.input-and-label-container {
+  display: flex;
+  flex-direction: row;
+  width: 85%;
 }
 
 .delete-standalone,
