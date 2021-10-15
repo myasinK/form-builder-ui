@@ -33,7 +33,11 @@ function StandaloneView({ standaloneObject, lastClickedOnId, handlers }) {
           return null;
         }
       })}
-      <FontAwesomeIcon onClick={() => handlers.delete(id)} icon={faTrashAlt} />
+      <FontAwesomeIcon
+        className={"delete-standalone"}
+        onClick={() => handlers.delete(id)}
+        icon={faTrashAlt}
+      />
     </div>
   );
 }

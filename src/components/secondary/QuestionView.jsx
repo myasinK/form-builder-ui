@@ -25,7 +25,11 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
           handlers={handlers}
         />
       </div>
-      <FontAwesomeIcon onClick={() => handlers.delete(id)} icon={faTrashAlt} />
+      <FontAwesomeIcon
+        className={"delete-question"}
+        onClick={() => handlers.delete(id)}
+        icon={faTrashAlt}
+      />
     </div>
   );
 }

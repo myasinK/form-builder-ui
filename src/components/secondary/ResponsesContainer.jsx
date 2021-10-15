@@ -2,10 +2,15 @@ import React from "react";
 import InterfaceElement from "../../Interface/InterfaceElement";
 import Input from "../primary/Input";
 import Span from "../primary/Span";
+import Div from "../primary/Div";
 import { WrappedEditableObj } from "./EditableData";
 import Table from "./Table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinusCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMinusCircle,
+  faPlusCircle,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
 
 function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
   let rows,
@@ -33,17 +38,18 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
 
   const responseContainerClassName = "response-container";
   const labelClassName = "response-label-container";
-  const inputModeClassName = "input-mode-container";
+  let inputModeClassName =
+    "input-mode-container " + rows.componentDescriptor.endUserHtmlInputType;
 
   const dragRowElement = new InterfaceElement({
-    htmlInnerText: "drag bar (for response objects)",
+    htmlInnerText: <FontAwesomeIcon icon={faBars} />,
     htmlClassAttr: "response-drag-bar",
     htmlTagName: "span",
     draggable: true,
   }).getElement();
 
   const dropRowElement = new InterfaceElement({
-    htmlInnerText: "drop area (for response objects)",
+    htmlInnerText: "",
     htmlClassAttr: "response-drop-area",
     htmlTagName: "span",
     draggable: false,
@@ -93,7 +99,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
               return (
                 <>
                   {index === 0 && (
-                    <Span
+                    <Div
                       primaryElement={dropRowElement}
                       handlers={handlers}
                       action={"drop"}
@@ -119,14 +125,13 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                         handlers={handlers}
                       />
                     </div>
-                    <div className={"options-panel"}>
-                      <FontAwesomeIcon
-                        onClick={() => handlers.delete(r.id)}
-                        icon={faMinusCircle}
-                      />
-                    </div>
+                    <FontAwesomeIcon
+                      className={"delete-response-row"}
+                      onClick={() => handlers.delete(r.id)}
+                      icon={faMinusCircle}
+                    />
                   </div>
-                  <Span
+                  <Div
                     primaryElement={dropRowElement}
                     handlers={handlers}
                     action={"drop"}
@@ -136,6 +141,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
               );
             })}
           <FontAwesomeIcon
+            className={"add-response-row"}
             onClick={() => handlers.addResponse(rows.id)}
             icon={faPlusCircle}
           />

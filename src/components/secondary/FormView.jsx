@@ -4,8 +4,6 @@ import Span from "../primary/Span";
 import Div from "../primary/Div";
 import QuestionView from "./QuestionView";
 import StandaloneView from "./StandaloneView";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 function FormView({ form, lastClickedOnId, handlers }) {
   const thereAreObjectsToRender = form.componentList.length > 0;

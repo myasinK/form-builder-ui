@@ -16,6 +16,21 @@
   border: 1px solid black;
   width: 80%;
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.prompt-container {
+  width: 80%;
+  max-height: fit-content;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.prompt-container textarea,
+.prompt-container p {
+  width: 100%;
 }
 
 .question-drag-bar {
@@ -31,6 +46,21 @@
   text-align: center;
 }
 
+.response-drag-bar {
+  width: fit-content;
+}
+
+.response-drop-area {
+  display: block;
+  width: 100%;
+  height: 5px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.response-drag-bar:hover {
+  cursor: grab;
+}
+
 .question-drag-bar:hover {
   cursor: grab;
 }
@@ -40,6 +70,56 @@
   min-height: 10px;
   max-height: 40px;
   background-color: gray;
+}
+
+.responses-container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+
+.response-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.response-label-container {
+  width: 45%;
+  margin-left: 6px;
+}
+
+.response-label-container span {
+}
+
+.delete-response-row {
+}
+
+.delete-response-row:hover {
+  cursor: pointer;
+  color: rgba(255, 0, 0, 0.73);
+}
+
+.delete-standalone,
+.delete-question {
+  align-self: flex-end;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+.delete-standalone:hover,
+.delete-question:hover {
+  cursor: pointer;
+  color: rgba(255, 0, 0, 0.73);
+}
+
+.add-response-row {
+  cursor: pointer;
+  align-self: flex-end;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 #test-block {
