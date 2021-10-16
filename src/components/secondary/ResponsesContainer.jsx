@@ -11,6 +11,7 @@ import {
   faPlusCircle,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
+import TableAlt from "./TableAlt";
 
 function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
   let rows,
@@ -72,9 +73,14 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
           />
           <span>Column</span>
         </div>
-        <Table
+        {/* <Table
           rows={rows}
           columns={columns}
+          lastClickedOnId={lastClickedOnId}
+          handlers={handlers}
+        /> */}
+        <TableAlt
+          responses={responses}
           lastClickedOnId={lastClickedOnId}
           handlers={handlers}
         />
