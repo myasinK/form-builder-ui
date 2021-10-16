@@ -54,27 +54,22 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
                 <th
                   key={`${el.id}-header-row-${index}`}
                   className={"column-drop-cell"}
-                >
-                  <Span
-                    primaryElement={dropColumnElement}
-                    handlers={handlers}
-                    action={"drop"}
-                    dragInfo={{
-                      parentId: columns.id,
-                      desinationIndex: index,
-                    }}
-                  />
-                </th>
+                  onDrop={(event) => handlers.handleOnDrop(event, index)}
+                  onDragOver={(event) => handlers.handleOnDragOver(event)}
+                ></th>
               )}
               <th className={"column-header-cell"}>
                 <div className={"column-move-and-delete-container"}>
-                  <Span
-                    primaryElement={dragColumnElement}
-                    handlers={handlers}
-                    action={"drag"}
-                    dragInfo={{ parentId: columns.id, originIndex: index }}
+                  <FontAwesomeIcon
+                    className={"drag-hamburger-in-cell"}
+                    icon={faBars}
+                    draggable={true}
+                    onDragStart={() =>
+                      handlers.handleDragStart(index, columns.id)
+                    }
                   />
                   <FontAwesomeIcon
+                    className={"delete-column-icon"}
                     onClick={() => handlers.delete(el.id)}
                     icon={faMinusCircle}
                   />
@@ -85,17 +80,11 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
                   handlers={handlers}
                 />
               </th>
-              <th className={"column-drop-cell"}>
-                <Span
-                  primaryElement={dropColumnElement}
-                  handlers={handlers}
-                  action={"drop"}
-                  dragInfo={{
-                    parentId: columns.id,
-                    desinationIndex: index + 1,
-                  }}
-                />
-              </th>
+              <th
+                className={"column-drop-cell"}
+                onDrop={(event) => handlers.handleOnDrop(event, index)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+              ></th>
             </>
           );
         })}
@@ -106,26 +95,20 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
           <>
             {index === 0 && (
               <tr className={"drop-row"}>
-                <td className={"row-drop-cell"}>
-                  <Span
-                    primaryElement={dropRowElement}
-                    handlers={handlers}
-                    action={"drop"}
-                    dragInfo={{
-                      parentId: rows.id,
-                      desinationIndex: index,
-                    }}
-                  />
-                </td>
+                <td
+                  className={"row-drop-cell"}
+                  onDrop={(event) => handlers.handleOnDrop(event, index)}
+                  onDragOver={(event) => handlers.handleOnDragOver(event)}
+                ></td>
               </tr>
             )}
             <tr key={rowId} className={"input-row"}>
               <th className={"row-label-cell"}>
-                <Span
-                  primaryElement={dragRowElement}
-                  handlers={handlers}
-                  action={"drag"}
-                  dragInfo={{ parentId: rows.id, originIndex: index }}
+                <FontAwesomeIcon
+                  className={"drag-hamburger-in-cell"}
+                  icon={faBars}
+                  draggable={true}
+                  onDragStart={() => handlers.handleDragStart(index, rows.id)}
                 />
                 <EditableData
                   primaryElement={el}
@@ -133,6 +116,7 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
                   handlers={handlers}
                 />
                 <FontAwesomeIcon
+                  className={"delete-column-icon"}
                   onClick={() => handlers.delete(el.id)}
                   icon={faMinusCircle}
                 />

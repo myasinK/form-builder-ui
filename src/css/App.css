@@ -209,3 +209,12 @@ td.column-drop-cell {
 .row-label-cell input {
   max-width: 80%;
 }
+
+.drag-hamburger-in-cell:hover {
+  cursor: grab;
+}
+
+.delete-column-icon:hover {
+  cursor: pointer;
+  color: rgba(255, 0, 0, 0.73);
+}
