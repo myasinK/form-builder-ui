@@ -11,34 +11,9 @@ function Table({ rows, columns, lastClickedOnId, handlers }) {
   const rowsArray = rows.componentList;
   const { displayElement } = rows.componentDescriptor;
 
-  const dragRowElement = new InterfaceElement({
-    htmlInnerText: (
-      <FontAwesomeIcon className={"drag-hamburger-in-cell"} icon={faBars} />
-    ),
-    htmlClassAttr: "row-drag-bar",
-    htmlTagName: "span",
-    draggable: true,
-  }).getElement();
-
   const dropRowElement = new InterfaceElement({
     htmlInnerText: "",
     htmlClassAttr: "row-drop-zone",
-    htmlTagName: "span",
-    draggable: false,
-  }).getElement();
-
-  const dragColumnElement = new InterfaceElement({
-    htmlInnerText: (
-      <FontAwesomeIcon className={"drag-hamburger-in-cell"} icon={faBars} />
-    ),
-    htmlClassAttr: "column-drag-bar",
-    htmlTagName: "span",
-    draggable: true,
-  }).getElement();
-
-  const dropColumnElement = new InterfaceElement({
-    htmlInnerText: "",
-    htmlClassAttr: "column-drop-zone",
     htmlTagName: "span",
     draggable: false,
   }).getElement();
