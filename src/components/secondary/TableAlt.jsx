@@ -109,9 +109,18 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
                 <div
                   className={"move-column-icon-container"}
                   draggable={true}
-                  onDragStart={() =>
-                    handlers.handleDragStart(index, columns.id)
-                  }
+                  onDragStart={() => {
+                    [
+                      ...document.getElementsByClassName("column gutter cell"),
+                    ].map((el) => (el.style.visibility = "visible"));
+                    handlers.handleDragStart(index, columns.id);
+                  }}
+                  onDragEnd={(event) => {
+                    event.preventDefault();
+                    [
+                      ...document.getElementsByClassName("column gutter cell"),
+                    ].map((el) => (el.style.visibility = "hidden"));
+                  }}
                 >
                   <FaLeftRight />
                 </div>
@@ -151,7 +160,18 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
               <div className={"cell row-title"}>
                 <div
                   draggable={true}
-                  onDragStart={() => handlers.handleDragStart(index, rows.id)}
+                  onDragStart={() => {
+                    [...document.getElementsByClassName("row gutter")].map(
+                      (el) => (el.style.visibility = "visible")
+                    );
+                    handlers.handleDragStart(index, rows.id);
+                  }}
+                  onDragEnd={(event) => {
+                    event.preventDefault();
+                    [...document.getElementsByClassName("row gutter")].map(
+                      (el) => (el.style.visibility = "hidden")
+                    );
+                  }}
                 >
                   <FaUpDown />
                 </div>
