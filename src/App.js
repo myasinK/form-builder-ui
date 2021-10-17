@@ -11,6 +11,7 @@ import {
   faTrashAlt,
   faMugHot,
 } from "@fortawesome/free-solid-svg-icons";
+import FaUpDown from "./components/icons/FaUpDown";
 
 function App() {
   let [lastIdClicked, setLastIdClicked] = useState(false);
@@ -27,8 +28,6 @@ function App() {
       className={"App"}
       onClick={(event) => clickRegistrar(setLastIdClicked)(event)}
     >
-      <div id={"test-block"}></div>
-      <FontAwesomeIcon icon={faMugHot} />
       {console.log(form)}
       <button onClick={() => handlers.startNewForm()}>Start new form</button>
       <button onClick={() => handlers.clearForm()}>Clear form</button>

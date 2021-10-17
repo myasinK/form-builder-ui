@@ -218,3 +218,45 @@ td.column-drop-cell {
   cursor: pointer;
   color: rgba(255, 0, 0, 0.73);
 }
+
+div.table-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 80%;
+}
+
+div.row {
+  display: flex;
+  flex-direction: row;
+  min-width: 100%;
+}
+
+div.cell {
+  width: 70px;
+  min-width: 70px;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.cell.input[type="text"] {
+  width: 100%;
+}
+
+div.row.gutter {
+  min-width: 100%;
+  min-height: 10px;
+  border: 1px dashed black;
+}
+
+div.column.gutter.cell {
+  width: 10px;
+  min-width: 10px;
+  min-height: 100%;
+  border: 1px dashed black;
+}
+
+
+
+
