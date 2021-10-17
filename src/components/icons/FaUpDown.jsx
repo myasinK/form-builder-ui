@@ -14,10 +14,10 @@ function FaUpDown() {
     cursor: isHovering ? GRAB : DEFAULT,
   };
   const cssFaCaretUp = {
-    "margin-bottom": "1px",
+    "margin-bottom": "-4px",
   };
   const cssFaCaretDown = {
-    "margin-top": "1px",
+    "margin-top": "-4px",
   };
   return (
     <span
