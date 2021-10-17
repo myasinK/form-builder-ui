@@ -99,6 +99,8 @@ class formEventHandlers {
   };
 
   handleDragStart = (originIndex, parentId) => {
+    console.log(originIndex, parentId);
+    console.log("this got fired");
     this.dragInfo.originIndex = originIndex;
     this.dragInfo.parentId = parentId;
     const updatedDragInfo = Object.assign({}, this.dragInfo);

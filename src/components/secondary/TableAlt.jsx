@@ -18,7 +18,13 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
         {columns.componentList.map((el, index) => {
           return (
             <>
-              {index === 0 && <div className={"column gutter cell"}></div>}
+              {index === 0 && (
+                <div
+                  onDrop={(event) => handlers.handleOnDrop(event, index)}
+                  onDragOver={(event) => handlers.handleOnDragOver(event)}
+                  className={"column gutter cell"}
+                ></div>
+              )}
               <div className={"cell column-header"}>
                 <div className={"move-column-icon-container"}>
                   <FaLeftRight
@@ -33,32 +39,35 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
                   lastClickedOnId={lastClickedOnId}
                   handlers={handlers}
                 />
-                <div
-                  onClick={() => handlers.delete(el.id)}
-                  className={"delete-column-icon-container"}
-                >
+                <div className={"delete-column-icon-container"}>
                   <FontAwesomeIcon
+                    onClick={() => handlers.delete(el.id)}
                     className={"delete-column-icon"}
                     icon={faMinusCircle}
-                    draggable={true}
-                    onDragStart={() => handlers.handleDragStart(index, rows.id)}
                   />
                 </div>
               </div>
-              <div className={"column gutter cell"}></div>
+              <div
+                onDrop={(event) => handlers.handleOnDrop(event, index)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+                className={"column gutter cell"}
+              ></div>
             </>
           );
         })}
       </div>
     );
   };
-  const BodyRow = ({ rowEl, columns }) => {
+  const BodyRow = ({ index, id, rowEl, columns }) => {
     return (
       <>
         <div className={"row body"}>
           <div className={"cell row-title"}>
-            <div draggable={true}>
-              <FaUpDown draggable={true} />
+            <div
+              draggable={true}
+              onDragStart={() => handlers.handleDragStart(index, id)}
+            >
+              <FaUpDown />
             </div>
             <EditableData
               primaryElement={rowEl}
@@ -81,15 +90,96 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
       </>
     );
   };
+
   return (
     <div className={"table-container"}>
-      <FirstRow />
+      <div className={"header row"}>
+        <div className="cell"></div>
+        {columns.componentList.map((el, index) => {
+          return (
+            <>
+              {index === 0 && (
+                <div
+                  onDrop={(event) => handlers.handleOnDrop(event, index)}
+                  onDragOver={(event) => handlers.handleOnDragOver(event)}
+                  className={"column gutter cell"}
+                ></div>
+              )}
+              <div className={"cell column-header"}>
+                <div
+                  className={"move-column-icon-container"}
+                  draggable={true}
+                  onDragStart={() =>
+                    handlers.handleDragStart(index, columns.id)
+                  }
+                >
+                  <FaLeftRight />
+                </div>
+                <EditableData
+                  primaryElement={el}
+                  lastClickedOnId={lastClickedOnId}
+                  handlers={handlers}
+                />
+                <div className={"delete-column-icon-container"}>
+                  <FontAwesomeIcon
+                    onClick={() => handlers.delete(el.id)}
+                    className={"delete-column-icon"}
+                    icon={faMinusCircle}
+                  />
+                </div>
+              </div>
+              <div
+                onDrop={(event) => handlers.handleOnDrop(event, index)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+                className={"column gutter cell"}
+              ></div>
+            </>
+          );
+        })}
+      </div>
       {rows.componentList.map((el, index) => {
         return (
           <>
-            {index === 0 && <div className={"row gutter"}></div>}
-            <BodyRow rowEl={el} columns={columns} />
-            <div className={"row gutter"}></div>
+            {index === 0 && (
+              <div
+                onDrop={(event) => handlers.handleOnDrop(event, index)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+                className={"row gutter"}
+              ></div>
+            )}
+            <div className={"row body"}>
+              <div className={"cell row-title"}>
+                <div
+                  draggable={true}
+                  onDragStart={() => handlers.handleDragStart(index, rows.id)}
+                >
+                  <FaUpDown />
+                </div>
+                <EditableData
+                  primaryElement={el}
+                  lastClickedOnId={lastClickedOnId}
+                  handlers={handlers}
+                />
+              </div>
+              {columns.componentList.map((el, index) => {
+                return (
+                  <>
+                    {index === 0 && (
+                      <div className={"column gutter cell"}></div>
+                    )}
+                    <div className={"input cell"}>
+                      <Input primaryElement={displayElement} disabled={true} />
+                    </div>
+                    <div className={"column gutter cell"}></div>
+                  </>
+                );
+              })}
+            </div>
+            <div
+              onDrop={(event) => handlers.handleOnDrop(event, index)}
+              onDragOver={(event) => handlers.handleOnDragOver(event)}
+              className={"row gutter"}
+            ></div>
           </>
         );
       })}
