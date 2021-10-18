@@ -150,17 +150,28 @@
   margin-bottom: 5px;
 }
 
-#test-block {
+#test-block1 {
   height: 50px;
   width: 50px;
   border: 1px dashed black;
+  background-color: rgba(255, 220, 176, 0.15);
 }
 
-#test-block:hover {
-  background-color: black;
+#test-block2 {
+  height: 50px;
+  width: 50px;
+  border: 1px dashed black;
+  background-color: rgba(128, 92, 112, 0.65);
 }
 
-th.column-drop-cell,
+#test-block3 {
+  height: 50px;
+  width: 50px;
+  border: 1px dashed black;
+  background-color: rgba(64, 100, 48, 0.9);
+}
+/* for table.jsx */
+/* th.column-drop-cell,
 td.column-drop-cell {
   background-color: black;
   min-width: 5px;
@@ -179,37 +190,6 @@ td.column-drop-cell {
   min-width: 90px;
 }
 
-.column-move-and-delete-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.input-container-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.input-container-cell input {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-}
-
-.first.column-header-cell {
-  max-width: 80px;
-}
-
-.row-label-cell {
-  max-width: 80px;
-  overflow: auto;
-}
-
-.row-label-cell input {
-  max-width: 80%;
-}
-
 .drag-hamburger-in-cell:hover {
   cursor: grab;
 }
@@ -217,7 +197,8 @@ td.column-drop-cell {
 .delete-column-icon:hover {
   cursor: pointer;
   color: rgba(255, 0, 0, 0.73);
-}
+} */
+/* for table.jsx */
 
 div.table-container {
   display: flex;
@@ -228,19 +209,21 @@ div.table-container {
 div.row {
   display: flex;
   flex-direction: row;
-  min-width: 100%;
+  width: 100%;
+}
+
+div.row.delete-icon-container {
 }
 
 div.cell {
-  width: 70px;
-  min-width: 70px;
+  width: 90px;
   overflow: auto;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
-div.cell.input[type="text"] {
+div.cell input[type="text"] {
   width: 100%;
 }
 
@@ -257,4 +240,12 @@ div.column.gutter.cell {
   min-height: 100%;
   border: 1px dashed black;
   visibility: hidden;
+}
+
+.column.header.cell.text-container {
+  width: fit-content;
+}
+
+.row.header.cell.text-container {
+  width: fit-content;
 }
