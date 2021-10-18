@@ -24,8 +24,7 @@ function App() {
       <div id={"test-block2"}></div>
       <div id={"test-block3"}></div> */}
       {console.log(form)}
-      <button onClick={() => handlers.startNewForm()}>Start new form</button>
-      <button onClick={() => handlers.clearForm()}>Clear form</button>
+
       <ComponentSelectorView handlers={handlers} />
       <div className={"form-container"}>
         {/* <div id={"test-block"}></div> */}
