@@ -81,8 +81,8 @@ class formEventHandlers {
   };
 
   addNewQuestion = (questionType) => {
-    this.form.initializeNewQuestionObject(questionType);
-    const form = Object.assign(new InterfaceCollection(), this.form);
+    const updatedForm = this.form.initializeNewQuestionObject(questionType);
+    const form = Object.assign(new InterfaceCollection(), updatedForm);
     this.formSetter(form);
   };
 
@@ -99,8 +99,6 @@ class formEventHandlers {
   };
 
   handleDragStart = (originIndex, parentId) => {
-    console.log(originIndex, parentId);
-    console.log("this got fired");
     this.dragInfo.originIndex = originIndex;
     this.dragInfo.parentId = parentId;
     const updatedDragInfo = Object.assign({}, this.dragInfo);
@@ -119,18 +117,19 @@ class formEventHandlers {
     const parentObject = Object.assign({}, this.form.fetchId(parentId)[0]);
     const componentList = Object.assign([], parentObject.componentList);
 
-    const targetObjectToBeMoved = { ...componentList[originIndex] };
+    // clone object that needs to be moved
+    const objectBeingMoved = { ...componentList[originIndex] };
+    // flag object to be deleted
     componentList[originIndex].id = "delete-this";
-    componentList.splice(destinationIndex, 0, targetObjectToBeMoved);
+    componentList.splice(destinationIndex, 0, objectBeingMoved);
     const updatedList = componentList.filter(
       (el) => !(el.id === "delete-this")
     );
     if (this.form.id === parentId) {
       this.form.componentList = updatedList;
-      const updatedForm = Object.assign({}, this.form);
+      const updatedForm = Object.assign(new InterfaceCollection(), this.form);
       this.formSetter(updatedForm);
     } else {
-      // to be done later
       parentObject.componentList = updatedList;
       const updatedForm = this.form.updateId(
         parentObject.id,
