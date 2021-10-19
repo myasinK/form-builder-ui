@@ -55,134 +55,211 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
 
   return (
     <div className={TABLECONTAINER}>
-      <div className={`${HEADER} ${ROW}`}>
-        <div className={`${BLANK} ${CELL} ${COLUMN} ${HEADER}`}></div>
-        {columns.componentList.map((el, index) => {
-          return (
-            <>
-              {index === 0 && (
-                <div
-                  onDrop={(event) => handlers.handleOnDrop(event, index)}
-                  onDragOver={(event) => handlers.handleOnDragOver(event)}
-                  className={`${GUTTER} ${COLUMN} ${CELL}`}
-                ></div>
-              )}
-              <div className={`${COLUMN} ${CELL} ${HEADER}`}>
-                <div
-                  className={`${COLUMN} ${MOVEICONCONTAINER}`}
-                  draggable={true}
-                  onDragStart={() => {
-                    [
-                      ...document.getElementsByClassName(
-                        `${COLUMN} ${GUTTER} ${CELL}`
-                      ),
-                    ].map((el) => (el.style.visibility = "visible"));
-                    handlers.handleDragStart(index, columns.id);
-                  }}
-                  onDragEnd={(event) => {
-                    event.preventDefault();
-                    [
-                      ...document.getElementsByClassName(
-                        `${COLUMN} ${GUTTER} ${CELL}`
-                      ),
-                    ].map((el) => (el.style.visibility = "hidden"));
-                  }}
-                >
-                  <FaLeftRight />
-                </div>
-                <div className={`${COLUMN} ${HEADER} ${CELL} ${TEXTCONTAINER}`}>
-                  <EditableData
-                    primaryElement={el}
-                    lastClickedOnId={lastClickedOnId}
-                    handlers={handlers}
-                  />
-                </div>
-                <div className={`${COLUMN} ${DELETEICONCONTAINER}`}>
-                  <FontAwesomeIcon
-                    onClick={() => handlers.delete(el.id)}
-                    className={`${COLUMN} ${DELETEICON}`}
-                    icon={faMinusCircle}
-                  />
-                </div>
-              </div>
-              <div
-                onDrop={(event) => handlers.handleOnDrop(event, index)}
-                onDragOver={(event) => handlers.handleOnDragOver(event)}
-                className={`${GUTTER} ${COLUMN} ${CELL}`}
-              ></div>
-            </>
-          );
-        })}
-      </div>
+      <HeaderRow
+        classDictionary={classDictionary}
+        lastClickedOnId={lastClickedOnId}
+        columns={columns}
+        handlers={handlers}
+      />
       {rows.componentList.map((el, index) => {
         return (
           <>
             {index === 0 && (
-              <div
-                onDrop={(event) => handlers.handleOnDrop(event, index)}
-                onDragOver={(event) => handlers.handleOnDragOver(event)}
-                className={`${ROW} ${GUTTER}`}
-              ></div>
+              <RowGutter
+                handlers={handlers}
+                classDictionary={classDictionary}
+                index={index}
+              />
             )}
             <div className={`${ROW} ${BODY}`}>
-              <div className={`${ROW} ${HEADER} ${CELL}`}>
-                <div
-                  className={`${MOVEICONCONTAINER}`}
-                  draggable={true}
-                  onDragStart={() => {
-                    [
-                      ...document.getElementsByClassName(`${ROW} ${GUTTER}`),
-                    ].map((el) => (el.style.visibility = "visible"));
-                    handlers.handleDragStart(index, rows.id);
-                  }}
-                  onDragEnd={(event) => {
-                    event.preventDefault();
-                    [
-                      ...document.getElementsByClassName(`${ROW} ${GUTTER}`),
-                    ].map((el) => (el.style.visibility = "hidden"));
-                  }}
-                >
-                  <FaUpDown />
-                </div>
-                <div className={`${ROW} ${HEADER} ${CELL} ${TEXTCONTAINER}`}>
-                  <EditableData
-                    primaryElement={el}
-                    lastClickedOnId={lastClickedOnId}
-                    handlers={handlers}
-                  />
-                </div>
-                <div className={`${DELETEICONCONTAINER}`}>
-                  <FontAwesomeIcon
-                    onClick={() => handlers.delete(el.id)}
-                    className={`${ROW} ${DELETEICON}`}
-                    icon={faMinusCircle}
-                  />
-                </div>
-              </div>
-              {columns.componentList.map((el, index) => {
-                return (
-                  <>
-                    {index === 0 && (
-                      <div className={`${COLUMN} ${GUTTER} ${CELL}`}></div>
-                    )}
-                    <div className={`${USERINIPUT} ${CELL}`}>
-                      <Input primaryElement={displayElement} disabled={true} />
-                    </div>
-                    <div className={`${COLUMN} ${GUTTER} ${CELL}`}></div>
-                  </>
-                );
-              })}
+              <RowHeaderCell
+                classDictionary={classDictionary}
+                rows={rows}
+                rowElement={el}
+                lastClickedOnId={lastClickedOnId}
+                handlers={handlers}
+                index={index}
+              />
+              <DisplayInputCells
+                columns={columns}
+                classDictionary={classDictionary}
+                displayElement={displayElement}
+                rowVal={null}
+              />
             </div>
-            <div
-              onDrop={(event) => handlers.handleOnDrop(event, index)}
-              onDragOver={(event) => handlers.handleOnDragOver(event)}
-              className={`${ROW} ${GUTTER}`}
-            ></div>
+            <RowGutter
+              handlers={handlers}
+              classDictionary={classDictionary}
+              index={index}
+            />
           </>
         );
       })}
     </div>
   );
 }
+
+const RowHeaderCell = ({
+  classDictionary,
+  handlers,
+  lastClickedOnId,
+  rows,
+  rowElement,
+  index,
+}) => {
+  const {
+    ROW,
+    GUTTER,
+    HEADER,
+    CELL,
+    MOVEICONCONTAINER,
+    TEXTCONTAINER,
+    DELETEICON,
+    DELETEICONCONTAINER,
+  } = classDictionary;
+  return (
+    <div className={`${ROW} ${HEADER} ${CELL}`}>
+      <div
+        className={`${MOVEICONCONTAINER}`}
+        draggable={true}
+        onDragStart={() => {
+          [...document.getElementsByClassName(`${ROW} ${GUTTER}`)].map(
+            (el) => (el.style.visibility = "visible")
+          );
+          handlers.handleDragStart(index, rows.id);
+        }}
+        onDragEnd={(event) => {
+          event.preventDefault();
+          [...document.getElementsByClassName(`${ROW} ${GUTTER}`)].map(
+            (el) => (el.style.visibility = "hidden")
+          );
+        }}
+      >
+        <FaUpDown />
+      </div>
+      <div className={`${ROW} ${HEADER} ${CELL} ${TEXTCONTAINER}`}>
+        <EditableData
+          primaryElement={rowElement}
+          lastClickedOnId={lastClickedOnId}
+          handlers={handlers}
+        />
+      </div>
+      <div className={`${DELETEICONCONTAINER}`}>
+        <FontAwesomeIcon
+          onClick={() => handlers.delete(rowElement.id)}
+          className={`${ROW} ${DELETEICON}`}
+          icon={faMinusCircle}
+        />
+      </div>
+    </div>
+  );
+};
+
+const DisplayInputCells = ({
+  columns,
+  classDictionary,
+  displayElement,
+  rowVal, // not doing anything with it yet
+}) => {
+  const { COLUMN, GUTTER, CELL, USERINIPUT } = classDictionary;
+  return columns.componentList.map((el, index) => {
+    return (
+      <>
+        {index === 0 && <div className={`${COLUMN} ${GUTTER} ${CELL}`}></div>}
+        <div className={`${USERINIPUT} ${CELL}`}>
+          <Input primaryElement={displayElement} disabled={true} />
+        </div>
+        <div className={`${COLUMN} ${GUTTER} ${CELL}`}></div>
+      </>
+    );
+  });
+};
+
+const RowGutter = ({ handlers, classDictionary, index }) => {
+  const { ROW, GUTTER } = classDictionary;
+  return (
+    <div
+      onDrop={(event) => handlers.handleOnDrop(event, index)}
+      onDragOver={(event) => handlers.handleOnDragOver(event)}
+      className={`${ROW} ${GUTTER}`}
+    ></div>
+  );
+};
+
+const HeaderRow = ({ classDictionary, handlers, columns, lastClickedOnId }) => {
+  const {
+    HEADER,
+    ROW,
+    BLANK,
+    CELL,
+    COLUMN,
+    GUTTER,
+    MOVEICONCONTAINER,
+    TEXTCONTAINER,
+    DELETEICONCONTAINER,
+    DELETEICON,
+  } = classDictionary;
+  return (
+    <div className={`${HEADER} ${ROW}`}>
+      <div className={`${BLANK} ${CELL} ${COLUMN} ${HEADER}`}></div>
+      {columns.componentList.map((el, index) => {
+        return (
+          <>
+            {index === 0 && (
+              <div
+                onDrop={(event) => handlers.handleOnDrop(event, index)}
+                onDragOver={(event) => handlers.handleOnDragOver(event)}
+                className={`${GUTTER} ${COLUMN} ${CELL}`}
+              ></div>
+            )}
+            <div className={`${COLUMN} ${CELL} ${HEADER}`}>
+              <div
+                className={`${COLUMN} ${MOVEICONCONTAINER}`}
+                draggable={true}
+                onDragStart={() => {
+                  [
+                    ...document.getElementsByClassName(
+                      `${COLUMN} ${GUTTER} ${CELL}`
+                    ),
+                  ].map((el) => (el.style.visibility = "visible"));
+                  handlers.handleDragStart(index, columns.id);
+                }}
+                onDragEnd={(event) => {
+                  event.preventDefault();
+                  [
+                    ...document.getElementsByClassName(
+                      `${COLUMN} ${GUTTER} ${CELL}`
+                    ),
+                  ].map((el) => (el.style.visibility = "hidden"));
+                }}
+              >
+                <FaLeftRight />
+              </div>
+              <div className={`${COLUMN} ${HEADER} ${CELL} ${TEXTCONTAINER}`}>
+                <EditableData
+                  primaryElement={el}
+                  lastClickedOnId={lastClickedOnId}
+                  handlers={handlers}
+                />
+              </div>
+              <div className={`${COLUMN} ${DELETEICONCONTAINER}`}>
+                <FontAwesomeIcon
+                  onClick={() => handlers.delete(el.id)}
+                  className={`${COLUMN} ${DELETEICON}`}
+                  icon={faMinusCircle}
+                />
+              </div>
+            </div>
+            <div
+              onDrop={(event) => handlers.handleOnDrop(event, index)}
+              onDragOver={(event) => handlers.handleOnDragOver(event)}
+              className={`${GUTTER} ${COLUMN} ${CELL}`}
+            ></div>
+          </>
+        );
+      })}
+    </div>
+  );
+};
 
 export default TableAlt;
