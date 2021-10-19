@@ -47,6 +47,7 @@
   background-color: rgba(225, 159, 60, 1);
   cursor: pointer;
   color: #d9e0e6;
+  transition: background-color 0.5s linear;
 }
 
 .form-container {
