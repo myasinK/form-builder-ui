@@ -102,7 +102,7 @@ function FormView({ form, lastClickedOnId, handlers }) {
     });
   } else {
     // if there are no objects to render
-    return <div className={"form-container"}>Form doesn't exist yet</div>;
+    return <div className={"no-form"}>Form doesn't exist yet</div>;
   }
 }
 
