@@ -2,12 +2,12 @@ class PrimaryElement {
   constructor(memberObject) {
     const {
       componentType = "not specified",
-      componentDescriptor = {},
+      componentDescriptor = false,
       htmlInnerText = "",
       htmlValueAttr = "value-not-specified",
       htmlDefaultValue = "default-value-not-specified",
       htmlClassAttr = "class-not-specified",
-      htmlPlaceholderAttr = "placeholder-not-specified",
+      htmlPlaceholderAttr = "",
       htmlStyleAttr = "style not specified",
       htmlNameAttr = "name-not-specified",
       parentId = "parent-list-id-not-specified",
@@ -37,6 +37,25 @@ class PrimaryElement {
     this.draggable = draggable;
     this.id = id || `${parentId}-${componentType}-${this.generateRandN()}`;
   }
+
+  getJSON = () => {
+    return {
+      componentDescriptor: Object.assign({}, this.componentDescriptor || false),
+      componentType: this.componentType,
+      htmlInnerText: this.htmlInnerText,
+      htmlValueAttr: this.htmlValueAttr,
+      htmlDefaultValue: this.htmlDefaultValue,
+      htmlClassAttr: this.htmlClassAttr,
+      htmlPlaceholderAttr: this.htmlPlaceholderAttr,
+      htmlStyleAttr: this.htmlStyleAttr,
+      htmlNameAttr: this.htmlNameAttr,
+      parentId: this.parentId,
+      htmlTagName: this.htmlTagName,
+      conditional: this.conditional,
+      draggable: this.draggable,
+      id: this.id,
+    };
+  };
 }
 
 export default PrimaryElement;
