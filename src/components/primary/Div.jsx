@@ -32,6 +32,8 @@ function Div({
       </div>
     );
   } else if (action === "drop") {
+    const destinationIndex = dragInfo.destinationIndex;
+    console.log("di", destinationIndex);
     return (
       <div
         onDrop={(event) =>
@@ -41,7 +43,7 @@ function Div({
         className={htmlClassAttr}
         id={id}
       >
-        {htmlInnerText}
+        {htmlInnerText + dragInfo.destinationIndex}
       </div>
     );
   } else {

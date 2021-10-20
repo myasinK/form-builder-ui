@@ -137,7 +137,6 @@ class formEventHandlers {
 
   handleDragStart = (originIndex, parentId) => {
     console.log(originIndex, parentId);
-    console.log("this got fired");
     this.dragInfo.originIndex = originIndex;
     this.dragInfo.parentId = parentId;
     const updatedDragInfo = Object.assign({}, this.dragInfo);
@@ -150,6 +149,7 @@ class formEventHandlers {
 
   handleOnDrop = (event, destinationIndex) => {
     event.preventDefault();
+    console.log(destinationIndex);
     function checkDestinationIndex(index, array) {
       if (index < 0 || index > array.length) {
         throw Error("bad destination index passed to handledrop()");
@@ -171,32 +171,32 @@ class formEventHandlers {
     const form = new ElementCollection(this.form);
     const parentObject = Object.assign({}, form.fetchObjectWithId(parentId)[0]);
     const componentList = Object.assign([], parentObject.componentList);
+
     try {
       checkDestinationIndex(destinationIndex, componentList);
       checkOriginIndex(originIndex, componentList);
     } catch (error) {
       console.log(error);
     }
+
     const clonedObjectThatIsBeingMoved = Object.assign(
       {},
       componentList[originIndex]
     );
     componentList.splice(destinationIndex, 0, clonedObjectThatIsBeingMoved); // this array is gaining an extra element here
 
+    console.log(originIndex, destinationIndex);
+
     let updatedComponentList;
     if (destinationIndex < originIndex) {
-      console.log(componentList);
       updatedComponentList = componentList.filter(
         (el, index) => !(index === originIndex + 1)
       );
-      console.log(updatedComponentList);
     } else if (destinationIndex > originIndex) {
-      console.log(componentList);
       updatedComponentList = componentList.filter(
         (el, index) => !(index === originIndex)
       );
     } else if (destinationIndex === originIndex) {
-      console.log(componentList);
       updatedComponentList = componentList.filter(
         (el, index) => !(index === originIndex)
       );
@@ -206,7 +206,6 @@ class formEventHandlers {
       checkComponentLength(componentList, updatedComponentList);
     } catch (error) {
       console.log(error);
-      console.log(updatedComponentList);
     }
 
     let updatedForm;
