@@ -43,7 +43,7 @@ function Div({
         className={htmlClassAttr}
         id={id}
       >
-        {htmlInnerText + dragInfo.destinationIndex}
+        {htmlInnerText}
       </div>
     );
   } else {

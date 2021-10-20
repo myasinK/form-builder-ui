@@ -90,7 +90,7 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
             <RowGutter
               handlers={handlers}
               classDictionary={classDictionary}
-              index={index}
+              index={index + 1}
             />
           </>
         );
@@ -251,7 +251,7 @@ const HeaderRow = ({ classDictionary, handlers, columns, lastClickedOnId }) => {
               </div>
             </div>
             <div
-              onDrop={(event) => handlers.handleOnDrop(event, index)}
+              onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
               onDragOver={(event) => handlers.handleOnDragOver(event)}
               className={`${GUTTER} ${COLUMN} ${CELL}`}
             ></div>
