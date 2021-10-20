@@ -1,24 +1,48 @@
 import InterfaceCollection from "../Interface/InterfaceCollection";
 import InterfaceElement from "../Interface/InterfaceElement";
+import ElementCollection from "../model/ElementCollection";
 import { definitions } from "../model/FormComponentTypes";
+import PrimaryElement from "../model/PrimaryElement";
 
 class formEventHandlers {
   constructor(form, formSetter, dragInfo, dragInfoSetter) {
     this.form =
-      form === null
-        ? new InterfaceCollection()
-        : Object.assign(new InterfaceCollection(), form);
+      form === null ? new InterfaceCollection() : Object.assign({}, form);
     this.formSetter = formSetter;
     this.dragInfo = dragInfo;
     this.dragInfoSetter = dragInfoSetter;
   }
 
+  generateResponseLabelJson = ({ parentId }) => {
+    const componentType = "response-label-editable-text";
+    return new PrimaryElement({
+      componentType,
+      componentDescriptor: null,
+      htmlInnerText: "Click to edit",
+      htmlValueAttr: null,
+      htmlDefaultValue: null,
+      htmlClassAttr: "editable response label",
+      htmlPlaceholderAttr: null,
+      htmlStyleAttr: null,
+      htmlNameAttr: null,
+      parentId,
+      htmlTagName: "span",
+      conditional: false,
+      draggable: false,
+      id: false,
+    }).getJSON();
+  };
+
   addResponse = (responsesId) => {
-    const responsesObj = this.form.fetchId(responsesId);
-    const updatedResponses = this.form.addNewResponseToResponses(
-      responsesObj[0]
-    );
-    const updatedForm = this.form.updateId(responsesId, updatedResponses, null);
+    // const responsesObj = this.form.fetchId(responsesId);
+    // const updatedResponses = this.form.addNewResponseToResponses(
+    //   responsesObj[0]
+    // );
+    // const updatedForm = this.form.updateId(responsesId, updatedResponses, null);
+    // this.formSetter(updatedForm);
+    const formCollection = new ElementCollection(this.form);
+    const updatedForm =
+      formCollection.createNewResponseAndAddToResponses(responsesId);
     this.formSetter(updatedForm);
   };
 
@@ -41,56 +65,67 @@ class formEventHandlers {
   };
 
   // create standalones should be merged into one method. Will need addition dictionary to relate type to tagName and innerText
-  createParagraphElement = (standaloneType, parentId) => {
-    if (definitions.formComponentTypes.STANDALONEPARAGRAPH === standaloneType) {
-      return new InterfaceElement({
-        componentType: standaloneType,
-        componentDescriptor: {},
-        htmlInnerText: "Click to edit paragraph text",
-        htmlClassAttr: "standalone-paragraph-entity",
-        parentId,
-        htmlTagName: "p",
-      }).getElement();
-    }
-  };
+  // createParagraphElement = (standaloneType, parentId) => {
+  //   if (definitions.formComponentTypes.STANDALONEPARAGRAPH === standaloneType) {
+  //     return new InterfaceElement({
+  //       componentType: standaloneType,
+  //       componentDescriptor: {},
+  //       htmlInnerText: "Click to edit paragraph text",
+  //       htmlClassAttr: "standalone-paragraph-entity",
+  //       parentId,
+  //       htmlTagName: "p",
+  //     }).getElement();
+  //   }
+  // };
 
-  createHeader = (standaloneType, parentId) => {
-    const htmlTagName = definitions.standaloneHtmlTagName[standaloneType];
-    return new InterfaceElement({
-      componentType: standaloneType,
-      componentDescriptor: {},
-      htmlInnerText: "Click to edit header text",
-      htmlClassAttr: "standalone-paragraph-entity",
-      parentId,
-      htmlTagName,
-    }).getElement();
-  };
+  // createHeader = (standaloneType, parentId) => {
+  //   const htmlTagName = definitions.standaloneHtmlTagName[standaloneType];
+  //   return new InterfaceElement({
+  //     componentType: standaloneType,
+  //     componentDescriptor: {},
+  //     htmlInnerText: "Click to edit header text",
+  //     htmlClassAttr: "standalone-paragraph-entity",
+  //     parentId,
+  //     htmlTagName,
+  //   }).getElement();
+  // };
 
   // probably will need to merge addStandalone with addNewQuestion
   addStandalone = (type) => {
-    const parentId = this.form.id;
-    let seededElement;
-    if (type.includes("paragraph")) {
-      seededElement = this.createParagraphElement(type, parentId);
-    } else if (type.includes("header")) {
-      seededElement = this.createHeader(type, parentId);
-    }
-    this.form.initializeNewStandaloneObject(type, seededElement);
-    const form = Object.assign(new InterfaceCollection(), this.form);
-    this.formSetter(form);
+    // const parentId = this.form.id;
+    // let seededElement;
+    // if (type.includes("paragraph")) {
+    //   seededElement = this.createParagraphElement(type, parentId);
+    // } else if (type.includes("header")) {
+    //   seededElement = this.createHeader(type, parentId);
+    // }
+    // this.form.initializeNewStandaloneObject(type, seededElement);
+    // const form = Object.assign(new InterfaceCollection(), this.form);
+    // this.formSetter(form);
+    // above is original implementation
+    const formJson = new ElementCollection(this.form)
+      .createNewStandaloneObjectAndAddToForm(type)
+      .getJSON();
+    this.formSetter(formJson);
   };
 
   addNewQuestion = (questionType) => {
-    this.form.initializeNewQuestionObject(questionType);
-    const form = Object.assign(new InterfaceCollection(), this.form);
-    this.formSetter(form);
+    // this.form.initializeNewQuestionObject(questionType);
+    // const form = Object.assign(new InterfaceCollection(), this.form);
+    // this.formSetter(form);
+    // above is original implementation
+    // const form = new ElementCollection(this.form);
+    const formJson = new ElementCollection(this.form)
+      .createNewQuestionAndAddToForm(questionType)
+      .getJSON();
+    this.formSetter(formJson);
   };
 
   startNewForm = (name = "Intake") => {
-    const newForm = new InterfaceCollection({
+    const newForm = new ElementCollection({
       parentId: name,
       componentType: "form",
-    });
+    }).getJSON();
     this.formSetter(newForm);
   };
 

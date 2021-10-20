@@ -21,7 +21,7 @@ class Descriptor {
           parentId: "",
           componentType: "disply-only-input",
           htmlTagName: this.endUserHtmlInputType,
-        }).getElement();
+        }).getJSON();
       } else if (this.isStandalone) {
         return null;
       }

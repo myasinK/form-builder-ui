@@ -27,7 +27,6 @@ function App() {
 
       <ComponentSelectorView handlers={handlers} />
       <div className={"form-container"}>
-        {/* <div id={"test-block"}></div> */}
         {form && (
           <FormView
             form={form}
