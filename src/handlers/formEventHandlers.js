@@ -47,7 +47,8 @@ class formEventHandlers {
   };
 
   delete = (targetId) => {
-    const updatedForm = this.form.deleteId(targetId);
+    const form = new ElementCollection(this.form);
+    const updatedForm = form.deleteId(targetId);
     this.formSetter(updatedForm);
   };
 
