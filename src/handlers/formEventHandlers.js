@@ -53,7 +53,8 @@ class formEventHandlers {
   };
 
   updateNamedMemberWithValue = (targetId, updateInstructions) => {
-    const updatedForm = this.form.updateId(targetId, null, updateInstructions);
+    const form = new ElementCollection(this.form);
+    const updatedForm = form.updateId(targetId, null, updateInstructions);
     this.formSetter(updatedForm);
   };
 
@@ -149,32 +150,76 @@ class formEventHandlers {
 
   handleOnDrop = (event, destinationIndex) => {
     event.preventDefault();
+    function checkDestinationIndex(index, array) {
+      if (index < 0 || index > array.length) {
+        throw Error("bad destination index passed to handledrop()");
+      }
+    }
+    function checkOriginIndex(index, array) {
+      if (index < 0 || index > array.length - 1) {
+        throw Error("bad origin index passed to handledrop()");
+      }
+    }
+    function checkComponentLength(initialArray, modifiedArray) {
+      if (!(modifiedArray.length + 1 === initialArray.length)) {
+        throw Error("Error in array manipulation/passing refs");
+      }
+    }
     const { originIndex, parentId } = this.dragInfo;
     this.dragInfoSetter({ originIndex: null, parentId: null });
 
-    const parentObject = Object.assign({}, this.form.fetchId(parentId)[0]);
+    const form = new ElementCollection(this.form);
+    const parentObject = Object.assign({}, form.fetchObjectWithId(parentId)[0]);
     const componentList = Object.assign([], parentObject.componentList);
-
-    const targetObjectToBeMoved = { ...componentList[originIndex] };
-    componentList[originIndex].id = "delete-this";
-    componentList.splice(destinationIndex, 0, targetObjectToBeMoved);
-    const updatedList = componentList.filter(
-      (el) => !(el.id === "delete-this")
-    );
-    if (this.form.id === parentId) {
-      this.form.componentList = updatedList;
-      const updatedForm = Object.assign({}, this.form);
-      this.formSetter(updatedForm);
-    } else {
-      // to be done later
-      parentObject.componentList = updatedList;
-      const updatedForm = this.form.updateId(
-        parentObject.id,
-        parentObject,
-        null
-      );
-      this.formSetter(updatedForm);
+    try {
+      checkDestinationIndex(destinationIndex, componentList);
+      checkOriginIndex(originIndex, componentList);
+    } catch (error) {
+      console.log(error);
     }
+    const clonedObjectThatIsBeingMoved = Object.assign(
+      {},
+      componentList[originIndex]
+    );
+    componentList.splice(destinationIndex, 0, clonedObjectThatIsBeingMoved); // this array is gaining an extra element here
+
+    let updatedComponentList;
+    if (destinationIndex < originIndex) {
+      console.log(componentList);
+      updatedComponentList = componentList.filter(
+        (el, index) => !(index === originIndex + 1)
+      );
+      console.log(updatedComponentList);
+    } else if (destinationIndex > originIndex) {
+      console.log(componentList);
+      updatedComponentList = componentList.filter(
+        (el, index) => !(index === originIndex)
+      );
+    } else if (destinationIndex === originIndex) {
+      console.log(componentList);
+      updatedComponentList = componentList.filter(
+        (el, index) => !(index === originIndex)
+      );
+    }
+
+    try {
+      checkComponentLength(componentList, updatedComponentList);
+    } catch (error) {
+      console.log(error);
+      console.log(updatedComponentList);
+    }
+
+    let updatedForm;
+    if (form.id === parentId) {
+      updatedForm = form.setComponentList(updatedComponentList);
+    } else {
+      updatedForm = form.updateId(parentId, null, {
+        propertyName: "componentList",
+        propertyValue: Object.assign([], updatedComponentList),
+      });
+    }
+
+    this.formSetter(updatedForm);
   };
 }
 

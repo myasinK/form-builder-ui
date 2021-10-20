@@ -40,6 +40,12 @@ export default class ElementCollection {
     return this;
   };
 
+  setComponentList = (arrayReference) => {
+    const clonedArray = Object.assign([], arrayReference);
+    this.componentList = clonedArray;
+    return this;
+  };
+
   fetchObjectWithId = (targetId) => {
     function fetch(targetId, origin, fetchedObj = []) {
       if (origin.id === targetId) {
