@@ -105,12 +105,11 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
               return (
                 <>
                   {index === 0 && (
-                    <Div
-                      primaryElement={dropRowElement}
-                      handlers={handlers}
-                      action={"drop"}
-                      dragInfo={{ parentId: rows.id, desinationIndex: index }}
-                    />
+                    <div
+                      className={"response-drop-area"}
+                      onDrop={(event) => handlers.handleOnDrop(event, index)}
+                      onDragOver={(event) => handlers.handleOnDragOver(event)}
+                    ></div>
                   )}
                   <div key={r.id} className={responseContainerClassName}>
                     <Span
@@ -139,12 +138,11 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                       icon={faMinusCircle}
                     />
                   </div>
-                  <Div
-                    primaryElement={dropRowElement}
-                    handlers={handlers}
-                    action={"drop"}
-                    dragInfo={{ parentId: rows.id, desinationIndex: index + 1 }}
-                  />
+                  <div
+                    className={"response-drop-area"}
+                    onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
+                    onDragOver={(event) => handlers.handleOnDragOver(event)}
+                  ></div>
                 </>
               );
             })}
@@ -163,12 +161,11 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
               return (
                 <>
                   {index === 0 && (
-                    <Div
-                      primaryElement={dropRowElement}
-                      handlers={handlers}
-                      action={"drop"}
-                      dragInfo={{ parentId: rows.id, desinationIndex: index }}
-                    />
+                    <div
+                      className={"response-drop-area"}
+                      onDrop={(event) => handlers.handleOnDrop(event, index)}
+                      onDragOver={(event) => handlers.handleOnDragOver(event)}
+                    ></div>
                   )}
                   <div key={r.id} className={responseContainerClassName}>
                     <Span
@@ -198,12 +195,11 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                       icon={faMinusCircle}
                     />
                   </div>
-                  <Div
-                    primaryElement={dropRowElement}
-                    handlers={handlers}
-                    action={"drop"}
-                    dragInfo={{ parentId: rows.id, desinationIndex: index + 1 }}
-                  />
+                  <div
+                    className={"response-drop-area"}
+                    onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
+                    onDragOver={(event) => handlers.handleOnDragOver(event)}
+                  ></div>
                 </>
               );
             })}

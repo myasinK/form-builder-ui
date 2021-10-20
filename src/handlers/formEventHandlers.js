@@ -1,34 +1,60 @@
 import InterfaceCollection from "../Interface/InterfaceCollection";
 import InterfaceElement from "../Interface/InterfaceElement";
+import ElementCollection from "../model/ElementCollection";
 import { definitions } from "../model/FormComponentTypes";
+import PrimaryElement from "../model/PrimaryElement";
 
 class formEventHandlers {
   constructor(form, formSetter, dragInfo, dragInfoSetter) {
     this.form =
-      form === null
-        ? new InterfaceCollection()
-        : Object.assign(new InterfaceCollection(), form);
+      form === null ? new InterfaceCollection() : Object.assign({}, form);
     this.formSetter = formSetter;
     this.dragInfo = dragInfo;
     this.dragInfoSetter = dragInfoSetter;
   }
 
+  generateResponseLabelJson = ({ parentId }) => {
+    const componentType = "response-label-editable-text";
+    return new PrimaryElement({
+      componentType,
+      componentDescriptor: null,
+      htmlInnerText: "Click to edit",
+      htmlValueAttr: null,
+      htmlDefaultValue: null,
+      htmlClassAttr: "editable response label",
+      htmlPlaceholderAttr: null,
+      htmlStyleAttr: null,
+      htmlNameAttr: null,
+      parentId,
+      htmlTagName: "span",
+      conditional: false,
+      draggable: false,
+      id: false,
+    }).getJSON();
+  };
+
   addResponse = (responsesId) => {
-    const responsesObj = this.form.fetchId(responsesId);
-    const updatedResponses = this.form.addNewResponseToResponses(
-      responsesObj[0]
-    );
-    const updatedForm = this.form.updateId(responsesId, updatedResponses, null);
+    // const responsesObj = this.form.fetchId(responsesId);
+    // const updatedResponses = this.form.addNewResponseToResponses(
+    //   responsesObj[0]
+    // );
+    // const updatedForm = this.form.updateId(responsesId, updatedResponses, null);
+    // this.formSetter(updatedForm);
+    const formCollection = new ElementCollection(this.form);
+    const updatedForm =
+      formCollection.createNewResponseAndAddToResponses(responsesId);
     this.formSetter(updatedForm);
   };
 
   delete = (targetId) => {
-    const updatedForm = this.form.deleteId(targetId);
+    const form = new ElementCollection(this.form);
+    const updatedForm = form.deleteId(targetId);
     this.formSetter(updatedForm);
   };
 
   updateNamedMemberWithValue = (targetId, updateInstructions) => {
-    const updatedForm = this.form.updateId(targetId, null, updateInstructions);
+    const form = new ElementCollection(this.form);
+    const updatedForm = form.updateId(targetId, null, updateInstructions);
     this.formSetter(updatedForm);
   };
 
@@ -41,56 +67,67 @@ class formEventHandlers {
   };
 
   // create standalones should be merged into one method. Will need addition dictionary to relate type to tagName and innerText
-  createParagraphElement = (standaloneType, parentId) => {
-    if (definitions.formComponentTypes.STANDALONEPARAGRAPH === standaloneType) {
-      return new InterfaceElement({
-        componentType: standaloneType,
-        componentDescriptor: {},
-        htmlInnerText: "Click to edit paragraph text",
-        htmlClassAttr: "standalone-paragraph-entity",
-        parentId,
-        htmlTagName: "p",
-      }).getElement();
-    }
-  };
+  // createParagraphElement = (standaloneType, parentId) => {
+  //   if (definitions.formComponentTypes.STANDALONEPARAGRAPH === standaloneType) {
+  //     return new InterfaceElement({
+  //       componentType: standaloneType,
+  //       componentDescriptor: {},
+  //       htmlInnerText: "Click to edit paragraph text",
+  //       htmlClassAttr: "standalone-paragraph-entity",
+  //       parentId,
+  //       htmlTagName: "p",
+  //     }).getElement();
+  //   }
+  // };
 
-  createHeader = (standaloneType, parentId) => {
-    const htmlTagName = definitions.standaloneHtmlTagName[standaloneType];
-    return new InterfaceElement({
-      componentType: standaloneType,
-      componentDescriptor: {},
-      htmlInnerText: "Click to edit header text",
-      htmlClassAttr: "standalone-paragraph-entity",
-      parentId,
-      htmlTagName,
-    }).getElement();
-  };
+  // createHeader = (standaloneType, parentId) => {
+  //   const htmlTagName = definitions.standaloneHtmlTagName[standaloneType];
+  //   return new InterfaceElement({
+  //     componentType: standaloneType,
+  //     componentDescriptor: {},
+  //     htmlInnerText: "Click to edit header text",
+  //     htmlClassAttr: "standalone-paragraph-entity",
+  //     parentId,
+  //     htmlTagName,
+  //   }).getElement();
+  // };
 
   // probably will need to merge addStandalone with addNewQuestion
   addStandalone = (type) => {
-    const parentId = this.form.id;
-    let seededElement;
-    if (type.includes("paragraph")) {
-      seededElement = this.createParagraphElement(type, parentId);
-    } else if (type.includes("header")) {
-      seededElement = this.createHeader(type, parentId);
-    }
-    this.form.initializeNewStandaloneObject(type, seededElement);
-    const form = Object.assign(new InterfaceCollection(), this.form);
-    this.formSetter(form);
+    // const parentId = this.form.id;
+    // let seededElement;
+    // if (type.includes("paragraph")) {
+    //   seededElement = this.createParagraphElement(type, parentId);
+    // } else if (type.includes("header")) {
+    //   seededElement = this.createHeader(type, parentId);
+    // }
+    // this.form.initializeNewStandaloneObject(type, seededElement);
+    // const form = Object.assign(new InterfaceCollection(), this.form);
+    // this.formSetter(form);
+    // above is original implementation
+    const formJson = new ElementCollection(this.form)
+      .createNewStandaloneObjectAndAddToForm(type)
+      .getJSON();
+    this.formSetter(formJson);
   };
 
   addNewQuestion = (questionType) => {
-    const updatedForm = this.form.initializeNewQuestionObject(questionType);
-    const form = Object.assign(new InterfaceCollection(), updatedForm);
-    this.formSetter(form);
+    // this.form.initializeNewQuestionObject(questionType);
+    // const form = Object.assign(new InterfaceCollection(), this.form);
+    // this.formSetter(form);
+    // above is original implementation
+    // const form = new ElementCollection(this.form);
+    const formJson = new ElementCollection(this.form)
+      .createNewQuestionAndAddToForm(questionType)
+      .getJSON();
+    this.formSetter(formJson);
   };
 
   startNewForm = (name = "Intake") => {
-    const newForm = new InterfaceCollection({
+    const newForm = new ElementCollection({
       parentId: name,
       componentType: "form",
-    });
+    }).getJSON();
     this.formSetter(newForm);
   };
 
@@ -99,6 +136,7 @@ class formEventHandlers {
   };
 
   handleDragStart = (originIndex, parentId) => {
+    console.log(originIndex, parentId);
     this.dragInfo.originIndex = originIndex;
     this.dragInfo.parentId = parentId;
     const updatedDragInfo = Object.assign({}, this.dragInfo);
@@ -111,33 +149,76 @@ class formEventHandlers {
 
   handleOnDrop = (event, destinationIndex) => {
     event.preventDefault();
+    console.log(destinationIndex);
+    function checkDestinationIndex(index, array) {
+      if (index < 0 || index > array.length) {
+        throw Error("bad destination index passed to handledrop()");
+      }
+    }
+    function checkOriginIndex(index, array) {
+      if (index < 0 || index > array.length - 1) {
+        throw Error("bad origin index passed to handledrop()");
+      }
+    }
+    function checkComponentLength(initialArray, modifiedArray) {
+      if (!(modifiedArray.length + 1 === initialArray.length)) {
+        throw Error("Error in array manipulation/passing refs");
+      }
+    }
     const { originIndex, parentId } = this.dragInfo;
     this.dragInfoSetter({ originIndex: null, parentId: null });
 
-    const parentObject = Object.assign({}, this.form.fetchId(parentId)[0]);
+    const form = new ElementCollection(this.form);
+    const parentObject = Object.assign({}, form.fetchObjectWithId(parentId)[0]);
     const componentList = Object.assign([], parentObject.componentList);
 
-    // clone object that needs to be moved
-    const objectBeingMoved = { ...componentList[originIndex] };
-    // flag object to be deleted
-    componentList[originIndex].id = "delete-this";
-    componentList.splice(destinationIndex, 0, objectBeingMoved);
-    const updatedList = componentList.filter(
-      (el) => !(el.id === "delete-this")
-    );
-    if (this.form.id === parentId) {
-      this.form.componentList = updatedList;
-      const updatedForm = Object.assign(new InterfaceCollection(), this.form);
-      this.formSetter(updatedForm);
-    } else {
-      parentObject.componentList = updatedList;
-      const updatedForm = this.form.updateId(
-        parentObject.id,
-        parentObject,
-        null
-      );
-      this.formSetter(updatedForm);
+    try {
+      checkDestinationIndex(destinationIndex, componentList);
+      checkOriginIndex(originIndex, componentList);
+    } catch (error) {
+      console.log(error);
     }
+
+    const clonedObjectThatIsBeingMoved = Object.assign(
+      {},
+      componentList[originIndex]
+    );
+    componentList.splice(destinationIndex, 0, clonedObjectThatIsBeingMoved); // this array is gaining an extra element here
+
+    console.log(originIndex, destinationIndex);
+
+    let updatedComponentList;
+    if (destinationIndex < originIndex) {
+      updatedComponentList = componentList.filter(
+        (el, index) => !(index === originIndex + 1)
+      );
+    } else if (destinationIndex > originIndex) {
+      updatedComponentList = componentList.filter(
+        (el, index) => !(index === originIndex)
+      );
+    } else if (destinationIndex === originIndex) {
+      updatedComponentList = componentList.filter(
+        (el, index) => !(index === originIndex)
+      );
+    }
+
+    try {
+      checkComponentLength(componentList, updatedComponentList);
+    } catch (error) {
+      console.log(error);
+    }
+
+    let updatedForm;
+    if (form.id === parentId) {
+      updatedForm = form.setComponentList(updatedComponentList);
+    } else {
+      updatedForm = form.updateId(parentId, null, {
+        propertyName: "componentList",
+        propertyValue: Object.assign([], updatedComponentList),
+      });
+    }
+
+    this.formSetter(updatedForm);
   };
 }
 

@@ -32,6 +32,8 @@ function Div({
       </div>
     );
   } else if (action === "drop") {
+    const destinationIndex = dragInfo.destinationIndex;
+    console.log("di", destinationIndex);
     return (
       <div
         onDrop={(event) =>
