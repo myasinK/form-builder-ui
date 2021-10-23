@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import FaLeftRight from "../icons/FaLeftRight";
 import FaUpDown from "../icons/FaUpDown";
+import cssClassDictionary from "../../model/cssClassDictionary";
 
 function TableAlt({ responses, handlers, lastClickedOnId }) {
   const rows = responses[0];
@@ -17,23 +18,6 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
   // move-icon-container (prefix/suffix row/column as needed)
   // text-container (prefix/suffix row/column as needed)
   // delete-icon-container (prefix/suffix row/column as needed)
-  const classDictionary = {
-    TABLECONTAINER: "table-container",
-    BLANK: "blank",
-    HEADER: "header",
-    BODY: "body",
-    ROW: "row",
-    COLUMN: "column",
-    CELL: "cell",
-    FIRST: "first",
-    GUTTER: "gutter",
-    MOVEICONCONTAINER: "move-icon-container",
-    TEXTCONTAINER: "text-container",
-    DELETEICONCONTAINER: "delete-icon-container",
-    DELETEICON: "delete-icon",
-    MOVEICON: "move-icon",
-    USERINIPUT: "user-input",
-  };
 
   const {
     TABLECONTAINER,
@@ -51,12 +35,12 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
     DELETEICON,
     MOVEICON,
     USERINIPUT,
-  } = classDictionary;
+  } = cssClassDictionary;
 
   return (
     <div className={TABLECONTAINER}>
       <HeaderRow
-        classDictionary={classDictionary}
+        classDictionary={cssClassDictionary}
         lastClickedOnId={lastClickedOnId}
         columns={columns}
         handlers={handlers}
@@ -67,13 +51,13 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
             {index === 0 && (
               <RowGutter
                 handlers={handlers}
-                classDictionary={classDictionary}
+                classDictionary={cssClassDictionary}
                 index={index}
               />
             )}
             <div className={`${ROW} ${BODY}`}>
               <RowHeaderCell
-                classDictionary={classDictionary}
+                classDictionary={cssClassDictionary}
                 rows={rows}
                 rowElement={el}
                 lastClickedOnId={lastClickedOnId}
@@ -82,14 +66,14 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
               />
               <DisplayInputCells
                 columns={columns}
-                classDictionary={classDictionary}
+                classDictionary={cssClassDictionary}
                 displayElement={displayElement}
                 rowVal={null}
               />
             </div>
             <RowGutter
               handlers={handlers}
-              classDictionary={classDictionary}
+              classDictionary={cssClassDictionary}
               index={index + 1}
             />
           </>

@@ -2,9 +2,7 @@ import React from "react";
 import InterfaceElement from "../../Interface/InterfaceElement";
 import Input from "../primary/Input";
 import Span from "../primary/Span";
-import Div from "../primary/Div";
 import { WrappedEditableObj } from "./EditableData";
-import Table from "./Table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMinusCircle,

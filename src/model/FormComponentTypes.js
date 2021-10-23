@@ -1,24 +1,3 @@
-const VALID_FORM_TYPES = {
-  QTEXT: "question-text",
-  RTEXT: "responses-text",
-  QTEXTTABULAR: "question-text-tabular",
-  RTEXTTABULAR_ROWS: "responses-text-tabular-rows",
-  RTEXTTABULAR_COLUMNS: "responses-text-tabular-columns",
-  QTEXTAREA: "question-textarea",
-  RTEXTAREA: "responses-textarea",
-  QRADIO: "question-radio",
-  RRADIO: "responses-radio",
-  QRADIOTABULAR: "question-radio-tabular",
-  RRADIOTABULAR_ROWS: "responses-radio-tabular-rows",
-  RRADIOTABULAR_COLUMNS: "responses-radio-tabular-columns",
-  QCHECKBOX: "question-checkbox",
-  RCHECKBOX: "responses-checkbox",
-  QCHECKBOXTABULAR: "question-checkbox-tabular",
-  RCHECKBOXTABULAR_ROWS: "responses-checkbox-tabular-rows",
-  RCHECKBOXTABULAR_COLUMNS: "responses-checkbox-tabular-columns",
-  PARAGRAPH: "paragraph",
-  HEADER1: "header1",
-};
 
 const definitions = {};
 
@@ -122,5 +101,4 @@ allValidTypes.map((type) => {
   return type;
 });
 
-export default VALID_FORM_TYPES;
 export { definitions };
