@@ -121,7 +121,7 @@ const RowHeaderCell = ({
       >
         <FaUpDown />
       </div>
-      <div className={`${ROW} ${HEADER} ${CELL} ${TEXTCONTAINER}`}>
+      <div className={`${ROW} ${HEADER} ${TEXTCONTAINER}`}>
         <EditableData
           primaryElement={rowElement}
           lastClickedOnId={lastClickedOnId}
@@ -145,15 +145,15 @@ const DisplayInputCells = ({
   displayElement,
   rowVal, // not doing anything with it yet
 }) => {
-  const { COLUMN, GUTTER, CELL, USERINIPUT } = classDictionary;
+  const { COLUMN, GUTTER, USERINIPUT, CELL } = classDictionary;
   return columns.componentList.map((el, index) => {
     return (
       <>
-        {index === 0 && <div className={`${COLUMN} ${GUTTER} ${CELL}`}></div>}
+        {index === 0 && <div className={`${COLUMN} ${GUTTER}`}></div>}
         <div className={`${USERINIPUT} ${CELL}`}>
           <Input primaryElement={displayElement} disabled={true} />
         </div>
-        <div className={`${COLUMN} ${GUTTER} ${CELL}`}></div>
+        <div className={`${COLUMN} ${GUTTER}`}></div>
       </>
     );
   });
@@ -193,7 +193,7 @@ const HeaderRow = ({ classDictionary, handlers, columns, lastClickedOnId }) => {
               <div
                 onDrop={(event) => handlers.handleOnDrop(event, index)}
                 onDragOver={(event) => handlers.handleOnDragOver(event)}
-                className={`${GUTTER} ${COLUMN} ${CELL}`}
+                className={`${GUTTER} ${COLUMN}`}
               ></div>
             )}
             <div className={`${COLUMN} ${CELL} ${HEADER}`}>
@@ -202,24 +202,20 @@ const HeaderRow = ({ classDictionary, handlers, columns, lastClickedOnId }) => {
                 draggable={true}
                 onDragStart={() => {
                   [
-                    ...document.getElementsByClassName(
-                      `${COLUMN} ${GUTTER} ${CELL}`
-                    ),
+                    ...document.getElementsByClassName(`${COLUMN} ${GUTTER}`),
                   ].map((el) => (el.style.visibility = "visible"));
                   handlers.handleDragStart(index, columns.id);
                 }}
                 onDragEnd={(event) => {
                   event.preventDefault();
                   [
-                    ...document.getElementsByClassName(
-                      `${COLUMN} ${GUTTER} ${CELL}`
-                    ),
+                    ...document.getElementsByClassName(`${COLUMN} ${GUTTER}`),
                   ].map((el) => (el.style.visibility = "hidden"));
                 }}
               >
                 <FaLeftRight />
               </div>
-              <div className={`${COLUMN} ${HEADER} ${CELL} ${TEXTCONTAINER}`}>
+              <div className={`${COLUMN} ${HEADER} ${TEXTCONTAINER}`}>
                 <EditableData
                   primaryElement={el}
                   lastClickedOnId={lastClickedOnId}
@@ -237,7 +233,7 @@ const HeaderRow = ({ classDictionary, handlers, columns, lastClickedOnId }) => {
             <div
               onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
               onDragOver={(event) => handlers.handleOnDragOver(event)}
-              className={`${GUTTER} ${COLUMN} ${CELL}`}
+              className={`${GUTTER} ${COLUMN}`}
             ></div>
           </>
         );

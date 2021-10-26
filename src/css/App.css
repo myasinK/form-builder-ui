@@ -263,6 +263,7 @@ div.cell {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  border: 1px solid black;
 }
 
 div.cell input[type="text"] {
@@ -276,7 +277,7 @@ div.row.gutter {
   visibility: hidden;
 }
 
-div.column.gutter.cell {
+div.column.gutter {
   width: 10px;
   min-width: 10px;
   min-height: 100%;
@@ -284,10 +285,16 @@ div.column.gutter.cell {
   visibility: hidden;
 }
 
-.column.header.cell.text-container {
+.column.header.text-container {
   width: fit-content;
 }
 
-.row.header.cell.text-container {
+.row.header.text-container {
   width: fit-content;
+}
+
+.user-input.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
