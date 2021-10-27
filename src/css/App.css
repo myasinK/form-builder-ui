@@ -212,35 +212,6 @@
   border: 1px dashed black;
   background-color: rgba(64, 100, 48, 0.9);
 }
-/* for table.jsx */
-/* th.column-drop-cell,
-td.column-drop-cell {
-  background-color: black;
-  min-width: 5px;
-  height: 10px;
-}
-
-.drop-row {
-  height: 10px;
-  background-color: black;
-}
-
-.column-header-cell {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-width: 90px;
-}
-
-.drag-hamburger-in-cell:hover {
-  cursor: grab;
-}
-
-.delete-column-icon:hover {
-  cursor: pointer;
-  color: rgba(255, 0, 0, 0.73);
-} */
-/* for table.jsx */
 
 div.table-container {
   display: flex;
@@ -257,14 +228,27 @@ div.row {
 div.row.delete-icon-container {
 }
 
+.delete-icon:hover {
+  color: tomato;
+  cursor: pointer;
+}
+
 div.cell {
-  width: 90px;
+  width: 130px;
   overflow: auto;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   border: 1px solid rgba(21, 83, 137, 1);
   border-radius: 5px;
+}
+
+div.column.cell.header,
+div.row.cell.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 div.cell input[type="text"] {
