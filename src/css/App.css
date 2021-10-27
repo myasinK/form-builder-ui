@@ -263,7 +263,8 @@ div.cell {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  border: 1px solid black;
+  border: 1px solid rgba(21, 83, 137, 1);
+  border-radius: 5px;
 }
 
 div.cell input[type="text"] {
@@ -297,4 +298,10 @@ div.column.gutter {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.cell.hover {
+  background-color: rgba(225, 159, 60, 0.66);
+  border: 1px solid transparent;
+  box-shadow: 2px 2px 5px 1px #ccc;
 }
