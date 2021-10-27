@@ -233,6 +233,11 @@ div.row.delete-icon-container {
   cursor: pointer;
 }
 
+.add-icon:hover {
+  color: rgba(0, 69, 38, 0.66);
+  cursor: pointer;
+}
+
 div.cell {
   width: 130px;
   overflow: auto;

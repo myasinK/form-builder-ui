@@ -47,13 +47,6 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
     draggable: true,
   }).getElement();
 
-  const dropRowElement = new InterfaceElement({
-    htmlInnerText: "",
-    htmlClassAttr: "response-drop-area",
-    htmlTagName: "span",
-    draggable: false,
-  }).getElement();
-
   if (isTabular) {
     return (
       <>
@@ -61,6 +54,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
           <FontAwesomeIcon
             onClick={() => handlers.addResponse(rows.id)}
             icon={faPlusCircle}
+            className={"add-icon"}
           />
           <span>Row</span>
         </div>
@@ -68,6 +62,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
           <FontAwesomeIcon
             onClick={() => handlers.addResponse(columns.id)}
             icon={faPlusCircle}
+            className={"add-icon"}
           />
           <span>Column</span>
         </div>
