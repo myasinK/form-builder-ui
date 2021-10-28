@@ -27,11 +27,11 @@ export default class ElementCollection {
 
   getJSON = () => {
     return {
-      componentType: this.componentType,
       componentDescriptor: Object.assign({}, this.componentDescriptor),
-      parentId: this.parentId,
       componentList: this.componentList,
+      componentType: this.componentType,
       id: this.id,
+      parentId: this.parentId,
     };
   };
 

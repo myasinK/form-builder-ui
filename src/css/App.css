@@ -275,6 +275,15 @@ div.row.delete-icon-container {
   cursor: pointer;
 }
 
+.settings-icon {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.settings-icon:hover {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 1);
+}
+
 div.cell {
   width: 130px;
   overflow: auto;
@@ -330,4 +339,16 @@ div.column.gutter {
   background-color: rgba(225, 159, 60, 0.66);
   border: 1px solid transparent;
   box-shadow: 2px 2px 5px 1px #ccc;
+}
+
+.config-options {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+label.config {
+  width: 90%;
 }

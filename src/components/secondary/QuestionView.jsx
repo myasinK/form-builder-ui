@@ -16,6 +16,9 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
     setIsOnAdvancedView(!isOnAdvancedView);
   };
 
+  const rows = responses[0];
+  const columns = responses.length > 1 ? responses[1] : null;
+
   return (
     <div className={className}>
       <div className={"question"}>
@@ -47,11 +50,55 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
         </div>
         <div className="question-back">
           Advanced Settings
-          <FontAwesomeIcon
-            className="settings-icon"
-            icon={faCog}
-            onClick={() => handleAdvancedToggle()}
-          />
+          <div className={"config-options rows"}>
+            <label className={"config"}>
+              {"Require a response"}
+              <input type={"checkbox"} className={"require-response"} />
+            </label>
+            {rows.componentList.map((rowElement, index) => {
+              return (
+                <>
+                  <label className={"config"}>
+                    {"Minimum numeric value: "}
+                    <input type="number" className={"minimum-num-value"} />
+                  </label>
+                  <label className={"config"}>
+                    {"Maximum numeric value: "}
+                    <input type="number" className={"maximum-num-value"} />
+                  </label>
+                  <label className={"config"}>
+                    {"Minimum character length: "}
+                    <input type="number" className={"minimum-char-length"} />
+                  </label>
+                  <label className={"config"}>
+                    {"Maximum character length: "}
+                    <input type="number" className={"maximum-char-length"} />
+                  </label>
+                  <label className={"config"}>
+                    {"Score value: "}
+                    <input className={"score-value"} type="number" />
+                  </label>
+                </>
+              );
+            })}
+          </div>
+          {columns && (
+            <div className={"config-options columns"}>
+              {columns.componentList.length}
+            </div>
+          )}
+          <div className={"buttons-panel-in-config-view"}>
+            <FontAwesomeIcon
+              className="settings-icon"
+              icon={faCog}
+              onClick={() => handleAdvancedToggle()}
+            />
+            <FontAwesomeIcon
+              className={"delete-question"}
+              onClick={() => handlers.delete(id)}
+              icon={faTrashAlt}
+            />
+          </div>
         </div>
       </div>
     </div>
