@@ -35,7 +35,6 @@ function App() {
             dragInfo={dragInfo}
           />
         )}
-        <input type="checkbox" />
       </div>
     </div>
   );
