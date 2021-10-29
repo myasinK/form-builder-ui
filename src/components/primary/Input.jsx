@@ -15,7 +15,7 @@ function Input({ primaryElement, handlers, disabled = true }) {
   if (htmlTagName === "textarea" || htmlType === "textarea") {
     return (
       <textarea
-        type={htmlType}
+        type={htmlTagName}
         value={htmlValueAttr}
         id={primaryElement.id}
         className={htmlClassAttr}
@@ -28,7 +28,7 @@ function Input({ primaryElement, handlers, disabled = true }) {
             propertyValue,
           });
         }}
-        disabled={disabled}
+        disabled={false}
       ></textarea>
     );
   } else {

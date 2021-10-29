@@ -1,29 +1,17 @@
-import React, { useState } from "react";
-import { WrappedEditableObj } from "../secondary/EditableData";
+import React from "react";
 import ResponsesContainer from "../secondary/ResponsesContainer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faCog } from "@fortawesome/free-solid-svg-icons";
+import Paragraph from "../primary/Paragraph";
+import ResponsesPreviewContainer from "./ResponsesPreviewContainer";
 
-function QuestionPreview({ questionObject, lastClickedOnId, handlers }) {
-  const { endUserHtmlInputType } = questionObject.componentDescriptor;
-
+function QuestionPreview({ questionObject, handlers }) {
   const [prompt, ...responses] = questionObject.componentList;
   // responses is going to be an array
 
   return (
-    <div className={""}>
-      <WrappedEditableObj
-        wrapperClassName={"prompt-container"}
-        primaryElement={prompt}
-        lastClickedOnId={lastClickedOnId}
-        handlers={handlers}
-      />
-      <div className={"responses-container"}>
-        <ResponsesContainer
-          responses={responses}
-          lastClickedOnId={lastClickedOnId}
-          handlers={handlers}
-        />
+    <div className={"question-preview-container"}>
+      <Paragraph primaryElement={prompt} />
+      <div className={"responses-preview-container"}>
+        <ResponsesPreviewContainer responses={responses} handlers={handlers} />
       </div>
     </div>
   );

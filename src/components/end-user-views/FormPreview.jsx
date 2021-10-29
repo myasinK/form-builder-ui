@@ -2,6 +2,7 @@ import React from "react";
 
 import InterfaceElement from "../../Interface/InterfaceElement";
 import QuestionView from "../secondary/QuestionView";
+import QuestionPreview from "./QuestionPreview";
 import StandaloneView from "../secondary/StandaloneView";
 
 function FormPreview({ form, handlers }) {
@@ -31,7 +32,7 @@ function FormPreview({ form, handlers }) {
         let dragBar = Object.assign({}, dragElement);
         dragBar.htmlInnerText = `#${questionCount}`;
         return (
-          <QuestionView key={q.id} questionObject={q} handlers={handlers} />
+          <QuestionPreview key={q.id} questionObject={q} handlers={handlers} />
         );
       } else if (q.componentType.includes("standalone")) {
         let dragBar = Object.assign({}, dragElement);
