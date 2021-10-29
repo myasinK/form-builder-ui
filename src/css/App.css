@@ -208,14 +208,6 @@
   width: 85%;
 }
 
-.delete-standalone,
-.delete-question {
-  align-self: flex-end;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  margin-top: 10px;
-}
-
 .delete-standalone:hover,
 .delete-question:hover {
   cursor: pointer;
@@ -351,4 +343,20 @@ div.column.gutter {
 
 label.config {
   width: 90%;
+}
+
+.buttons-panel-in-config-view {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.buttons-panel-in-config-view .settings-icon,
+.buttons-panel-in-config-view .delete-question {
+  margin-left: 10px;
+  margin-right: 10px;
 }

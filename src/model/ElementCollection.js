@@ -17,13 +17,14 @@ export default class ElementCollection {
       return rand[0];
       // return;
     };
-    this.componentType = componentType; // not a great variable name; collectionName might be a better
     this.componentDescriptor =
       componentDescriptor || new Descriptor(componentType).getJSON();
-    this.parentId = parentId;
     this.componentList = componentList;
+    this.componentType = componentType; // not a great variable name; collectionName might be a better
     this.id = id || `${parentId}-${componentType}-${this.generateRandN()}`;
     this.isRequired = false;
+    this.parentId = parentId;
+    this.scored = false;
   }
 
   getJSON = () => {
@@ -34,6 +35,7 @@ export default class ElementCollection {
       id: this.id,
       isRequired: this.isRequired,
       parentId: this.parentId,
+      scored: this.scored,
     };
   };
 

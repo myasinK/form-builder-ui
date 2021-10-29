@@ -8,16 +8,28 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
   let [isOnAdvancedView, setIsOnAdvancedView] = useState(false);
   let [isShowingCharControls, setIsShowingCharControls] = useState(false); // always hidden by default
   let [isShowingNumControls, setIsShowingNumControls] = useState(false); // always hidden by default
-  // this.minCharLength = null;
-  // this.minValue = null;
-  // this.maxCharLength = null;
-  // this.maxValue = null;
+  let [isShowingScoreControls, setIsShowingScoreControls] = useState(false); // always hidden by default
+  const { endUserHtmlInputType } = questionObject.componentDescriptor;
+  const shouldShowCharControls = endUserHtmlInputType === "text";
+  const shouldShowNumControls = endUserHtmlInputType === "number";
+  const mayBeScored =
+    endUserHtmlInputType === "radio" || endUserHtmlInputType === "checkbox";
   const handleToggleShowNumControls = () => {
     setIsShowingNumControls(!isShowingNumControls);
   };
 
   const handleToggleShowCharControls = () => {
     setIsShowingCharControls(!isShowingCharControls);
+  };
+
+  const handleToggleScoreControls = (targetId) => {
+    const updatedScoreToggle = !isShowingScoreControls;
+    const instructions = {
+      propertyName: "scored",
+      propertyValue: updatedScoreToggle,
+    };
+    setIsShowingScoreControls(updatedScoreToggle);
+    handlers.updateNamedMemberWithValue(targetId, instructions);
   };
 
   const handleChange = (event, targetId, propertyName) => {
@@ -72,17 +84,20 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
               onClick={() => handleAdvancedToggle()}
             />
           </div>
-          <FontAwesomeIcon
-            className="settings-icon"
-            icon={faCog}
-            onClick={() => handleAdvancedToggle()}
-          />
-          <FontAwesomeIcon
-            className={"delete-question"}
-            onClick={() => handlers.delete(id)}
-            icon={faTrashAlt}
-          />
+          <div className={"buttons-panel-in-config-view"}>
+            <FontAwesomeIcon
+              className="settings-icon"
+              icon={faCog}
+              onClick={() => handleAdvancedToggle()}
+            />
+            <FontAwesomeIcon
+              className={"delete-question"}
+              onClick={() => handlers.delete(id)}
+              icon={faTrashAlt}
+            />
+          </div>
         </div>
+        {/* Back face */}
         <div className="question-back">
           Advanced Settings
           <div className={"config-options rows"}>
@@ -96,26 +111,42 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
                 onClick={() => handleOnChangeRequiredCheckbox(rows.id)}
               />
             </label>
-            <label className={"config"}>
-              {"Show/hide character controls "}
-              <input
-                type={"checkbox"}
-                className={"character-controls"}
-                id={"config-character-controls"}
-                defaultValue={isRequiredChecked}
-                onClick={() => handleToggleShowCharControls()}
-              />
-            </label>
-            <label className={"config"}>
-              {"Show/hide numeric controls "}
-              <input
-                type={"checkbox"}
-                className={"numeric-controls"}
-                id={"config-numeric-controls"}
-                defaultValue={isRequiredChecked}
-                onClick={() => handleToggleShowNumControls()}
-              />
-            </label>
+            {mayBeScored && (
+              <label className={"config"}>
+                {"Question will need to be scored "}
+                <input
+                  type={"checkbox"}
+                  className={"show-score-controls"}
+                  id={"show-score-controls"}
+                  value={""}
+                  onClick={() => handleToggleScoreControls(rows.id)}
+                />
+              </label>
+            )}
+            {shouldShowCharControls && (
+              <label className={"config"}>
+                {"Show/hide character controls "}
+                <input
+                  type={"checkbox"}
+                  className={"character-controls"}
+                  id={"config-character-controls"}
+                  defaultValue={isRequiredChecked}
+                  onClick={() => handleToggleShowCharControls()}
+                />
+              </label>
+            )}
+            {shouldShowNumControls && (
+              <label className={"config"}>
+                {"Show/hide numeric controls "}
+                <input
+                  type={"checkbox"}
+                  className={"numeric-controls"}
+                  id={"config-numeric-controls"}
+                  defaultValue={isRequiredChecked}
+                  onClick={() => handleToggleShowNumControls()}
+                />
+              </label>
+            )}
             {rows.componentList.map((rowElement, index) => {
               const targetId = rowElement.id;
               return (
@@ -172,17 +203,19 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
                       </label>
                     </>
                   )}
-                  <label className={"config"}>
-                    {"Score value: "}
-                    <input
-                      className={"score-value"}
-                      type="number"
-                      onChange={(event) =>
-                        handleChange(event, targetId, "score-value")
-                      }
-                      value={rowElement.scoreValue}
-                    />
-                  </label>
+                  {isShowingScoreControls && (
+                    <label className={"config"}>
+                      {"Score value: "}
+                      <input
+                        className={"score-value"}
+                        type="number"
+                        onChange={(event) =>
+                          handleChange(event, targetId, "score-value")
+                        }
+                        value={rowElement.scoreValue}
+                      />
+                    </label>
+                  )}
                 </>
               );
             })}

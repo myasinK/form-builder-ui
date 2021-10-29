@@ -29,10 +29,10 @@ function App() {
       <div className={"form-container"}>
         {form && (
           <FormView
-            form={form}
-            lastClickedOnId={lastIdClicked}
-            handlers={handlers}
-            dragInfo={dragInfo}
+          form={form}
+          lastClickedOnId={lastIdClicked}
+          handlers={handlers}
+          dragInfo={dragInfo}
           />
         )}
       </div>
