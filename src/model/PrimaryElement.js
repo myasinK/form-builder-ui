@@ -1,20 +1,20 @@
 class PrimaryElement {
   constructor(memberObject) {
     const {
-      componentType = "not specified",
       componentDescriptor = false,
-      htmlInnerText = "",
-      htmlValueAttr = "value-not-specified",
-      htmlDefaultValue = "default-value-not-specified",
-      htmlClassAttr = "class-not-specified",
-      htmlPlaceholderAttr = "",
-      htmlStyleAttr = "style not specified",
-      htmlNameAttr = "name-not-specified",
-      parentId = "parent-list-id-not-specified",
-      htmlTagName = "optional-field",
+      componentType = "not specified",
       conditional = false,
       draggable = false,
+      htmlClassAttr = "class-not-specified",
+      htmlDefaultValue = "default-value-not-specified",
+      htmlInnerText = "",
+      htmlNameAttr = "name-not-specified",
+      htmlPlaceholderAttr = "",
+      htmlStyleAttr = "style not specified",
+      htmlTagName = "optional-field",
+      htmlValueAttr = "value-not-specified",
       id = null,
+      parentId = "parent-list-id-not-specified",
     } = memberObject;
     this.generateRandN = () => {
       const rand = new Uint16Array(1);
@@ -60,6 +60,11 @@ class PrimaryElement {
       conditional: this.conditional,
       draggable: this.draggable,
       id: this.id,
+      scoreValue: this.scoreValue,
+      minCharLength: this.minCharLength,
+      minValue: this.minValue,
+      maxCharLength: this.maxCharLength,
+      maxValue: this.maxValue,
     };
   };
 }

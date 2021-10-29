@@ -6,9 +6,43 @@ import { faTrashAlt, faCog } from "@fortawesome/free-solid-svg-icons";
 
 function QuestionView({ questionObject, lastClickedOnId, handlers }) {
   let [isOnAdvancedView, setIsOnAdvancedView] = useState(false);
+  let [isShowingCharControls, setIsShowingCharControls] = useState(false); // always hidden by default
+  let [isShowingNumControls, setIsShowingNumControls] = useState(false); // always hidden by default
+  // this.minCharLength = null;
+  // this.minValue = null;
+  // this.maxCharLength = null;
+  // this.maxValue = null;
+  const handleToggleShowNumControls = () => {
+    setIsShowingNumControls(!isShowingNumControls);
+  };
+
+  const handleToggleShowCharControls = () => {
+    setIsShowingCharControls(!isShowingCharControls);
+  };
+
+  const handleChange = (event, targetId, propertyName) => {
+    const propertyValue = event.target.value;
+    const instructions = {
+      propertyName,
+      propertyValue,
+    };
+    handlers.updateNamedMemberWithValue(targetId, instructions);
+  };
+
+  const handleOnChangeRequiredCheckbox = (targetId) => {
+    const updatedCheckedState = !isRequiredChecked;
+    const instructions = {
+      propertyName: "isRequired",
+      propertyValue: updatedCheckedState,
+    };
+    handlers.updateNamedMemberWithValue(targetId, instructions);
+    setIsRequiredChecked(updatedCheckedState);
+  };
   const { id = null } = questionObject;
 
-  const [prompt, ...responses] = questionObject.componentList; // responses is going to be an array
+  const [prompt, ...responses] = questionObject.componentList;
+  // responses is going to be an array
+
   const className = isOnAdvancedView
     ? "question-container hover"
     : "question-container";
@@ -17,6 +51,7 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
   };
 
   const rows = responses[0];
+  const [isRequiredChecked, setIsRequiredChecked] = useState(rows.isRequired);
   const columns = responses.length > 1 ? responses[1] : null;
 
   return (
@@ -52,41 +87,106 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
           Advanced Settings
           <div className={"config-options rows"}>
             <label className={"config"}>
-              {"Require a response"}
-              <input type={"checkbox"} className={"require-response"} />
+              {"Require a response "}
+              <input
+                type={"checkbox"}
+                className={"require-response"}
+                id={"config-require-response"}
+                defaultValue={isRequiredChecked}
+                onClick={() => handleOnChangeRequiredCheckbox(rows.id)}
+              />
+            </label>
+            <label className={"config"}>
+              {"Show/hide character controls "}
+              <input
+                type={"checkbox"}
+                className={"character-controls"}
+                id={"config-character-controls"}
+                defaultValue={isRequiredChecked}
+                onClick={() => handleToggleShowCharControls()}
+              />
+            </label>
+            <label className={"config"}>
+              {"Show/hide numeric controls "}
+              <input
+                type={"checkbox"}
+                className={"numeric-controls"}
+                id={"config-numeric-controls"}
+                defaultValue={isRequiredChecked}
+                onClick={() => handleToggleShowNumControls()}
+              />
             </label>
             {rows.componentList.map((rowElement, index) => {
+              const targetId = rowElement.id;
               return (
                 <>
-                  <label className={"config"}>
-                    {"Minimum numeric value: "}
-                    <input type="number" className={"minimum-num-value"} />
-                  </label>
-                  <label className={"config"}>
-                    {"Maximum numeric value: "}
-                    <input type="number" className={"maximum-num-value"} />
-                  </label>
-                  <label className={"config"}>
-                    {"Minimum character length: "}
-                    <input type="number" className={"minimum-char-length"} />
-                  </label>
-                  <label className={"config"}>
-                    {"Maximum character length: "}
-                    <input type="number" className={"maximum-char-length"} />
-                  </label>
+                  {isShowingNumControls && (
+                    <>
+                      <label className={"config"}>
+                        {"Minimum numeric value: "}
+                        <input
+                          type="number"
+                          className={"minimum-num-value"}
+                          onChange={(event) =>
+                            handleChange(event, targetId, "minValue")
+                          }
+                          value={rowElement.minValue}
+                        />
+                      </label>
+                      <label className={"config"}>
+                        {"Maximum numeric value: "}
+                        <input
+                          type="number"
+                          className={"maximum-num-value"}
+                          onChange={(event) =>
+                            handleChange(event, targetId, "maxValue")
+                          }
+                          value={rowElement.maxValue}
+                        />
+                      </label>
+                    </>
+                  )}
+                  {isShowingCharControls && (
+                    <>
+                      <label className={"config"}>
+                        {"Minimum character length: "}
+                        <input
+                          type="number"
+                          className={"minimum-char-length"}
+                          onChange={(event) =>
+                            handleChange(event, targetId, "minCharLength")
+                          }
+                          value={rowElement.minCharLength}
+                        />
+                      </label>
+                      <label className={"config"}>
+                        {"Maximum character length: "}
+                        <input
+                          type="number"
+                          className={"maximum-char-length"}
+                          onChange={(event) =>
+                            handleChange(event, targetId, "maxCharLength")
+                          }
+                          value={rowElement.maxCharLength}
+                        />
+                      </label>
+                    </>
+                  )}
                   <label className={"config"}>
                     {"Score value: "}
-                    <input className={"score-value"} type="number" />
+                    <input
+                      className={"score-value"}
+                      type="number"
+                      onChange={(event) =>
+                        handleChange(event, targetId, "score-value")
+                      }
+                      value={rowElement.scoreValue}
+                    />
                   </label>
                 </>
               );
             })}
           </div>
-          {columns && (
-            <div className={"config-options columns"}>
-              {columns.componentList.length}
-            </div>
-          )}
           <div className={"buttons-panel-in-config-view"}>
             <FontAwesomeIcon
               className="settings-icon"

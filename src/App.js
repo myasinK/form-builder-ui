@@ -22,7 +22,7 @@ function App() {
     >
       {/* <div id={"test-block1"}></div>
       <div id={"test-block2"}></div>
-      <div id={"test-block3"}></div> */}
+    <div id={"test-block3"}></div> */}
       {console.log(form)}
 
       <ComponentSelectorView handlers={handlers} />
@@ -35,6 +35,7 @@ function App() {
             dragInfo={dragInfo}
           />
         )}
+        <input type="checkbox" />
       </div>
     </div>
   );

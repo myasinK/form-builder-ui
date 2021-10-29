@@ -23,6 +23,7 @@ export default class ElementCollection {
     this.parentId = parentId;
     this.componentList = componentList;
     this.id = id || `${parentId}-${componentType}-${this.generateRandN()}`;
+    this.isRequired = false;
   }
 
   getJSON = () => {
@@ -31,6 +32,7 @@ export default class ElementCollection {
       componentList: this.componentList,
       componentType: this.componentType,
       id: this.id,
+      isRequired: this.isRequired,
       parentId: this.parentId,
     };
   };

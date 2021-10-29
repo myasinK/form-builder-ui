@@ -149,7 +149,6 @@ class formEventHandlers {
 
   handleOnDrop = (event, destinationIndex) => {
     event.preventDefault();
-    console.log(destinationIndex);
     function checkDestinationIndex(index, array) {
       if (index < 0 || index > array.length) {
         throw Error("bad destination index passed to handledrop()");
@@ -184,8 +183,6 @@ class formEventHandlers {
       componentList[originIndex]
     );
     componentList.splice(destinationIndex, 0, clonedObjectThatIsBeingMoved); // this array is gaining an extra element here
-
-    console.log(originIndex, destinationIndex);
 
     let updatedComponentList;
     if (destinationIndex < originIndex) {
