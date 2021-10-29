@@ -81,7 +81,6 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
               responses={responses}
               lastClickedOnId={lastClickedOnId}
               handlers={handlers}
-              onClick={() => handleAdvancedToggle()}
             />
           </div>
           <div className={"buttons-panel-in-config-view"}>

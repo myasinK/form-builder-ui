@@ -66,12 +66,6 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
           />
           <span>Column</span>
         </div>
-        {/* <Table
-          rows={rows}
-          columns={columns}
-          lastClickedOnId={lastClickedOnId}
-          handlers={handlers}
-        /> */}
         <TableAlt
           responses={responses}
           lastClickedOnId={lastClickedOnId}

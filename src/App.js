@@ -4,6 +4,7 @@ import clickRegistrar from "./handlers/clickRegistrar";
 import FormView from "./components/secondary/FormView";
 import formEventHandlers from "./handlers/formEventHandlers";
 import ComponentSelectorView from "./components/secondary/ComponentSelectorView";
+import FormPreview from "./components/end-user-views/FormPreview";
 
 function App() {
   let [lastIdClicked, setLastIdClicked] = useState(false);
@@ -29,12 +30,17 @@ function App() {
       <div className={"form-container"}>
         {form && (
           <FormView
-          form={form}
-          lastClickedOnId={lastIdClicked}
-          handlers={handlers}
-          dragInfo={dragInfo}
+            form={form}
+            lastClickedOnId={lastIdClicked}
+            handlers={handlers}
+            dragInfo={dragInfo}
           />
         )}
+      </div>
+
+      <div className={"preview-container"}>
+        <div className={"title"}>Preview</div>
+        {form && <FormPreview form={form} handlers={handlers} />}
       </div>
     </div>
   );

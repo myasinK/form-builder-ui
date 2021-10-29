@@ -1,6 +1,5 @@
 import React from "react";
 import InterfaceElement from "../../Interface/InterfaceElement";
-import Span from "../primary/Span";
 import Div from "../primary/Div";
 import QuestionView from "./QuestionView";
 import StandaloneView from "./StandaloneView";
