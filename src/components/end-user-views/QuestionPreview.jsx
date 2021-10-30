@@ -9,7 +9,9 @@ function QuestionPreview({ questionObject, handlers }) {
 
   return (
     <div className={"question-preview-container"}>
-      <Paragraph primaryElement={prompt} />
+      <div className={"prompt-preview-container"}>
+        <Paragraph primaryElement={prompt} />
+      </div>
       <div className={"responses-preview-container"}>
         <ResponsesPreviewContainer responses={responses} handlers={handlers} />
       </div>

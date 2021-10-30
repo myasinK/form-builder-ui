@@ -1,6 +1,5 @@
 import React from "react";
 import { definitions } from "../../model/FormComponentTypes";
-import Div from "../primary/Div";
 
 function ComponentSelectorView({ handlers }) {
   const formComponentTypesArray = Object.values(definitions.formComponentTypes);

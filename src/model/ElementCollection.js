@@ -25,10 +25,12 @@ export default class ElementCollection {
     this.isRequired = false;
     this.parentId = parentId;
     this.scored = false;
+    this.answers = (componentType === "question" && []) || "not applicable";
   }
 
   getJSON = () => {
     return {
+      answers: this.answers,
       componentDescriptor: Object.assign({}, this.componentDescriptor),
       componentList: this.componentList,
       componentType: this.componentType,

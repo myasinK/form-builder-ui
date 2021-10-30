@@ -297,3 +297,14 @@ body.row
 	label.cell 1+2n cells
 
 ===
+Define answers object
+textarea
+	[{rId:null,answer:answerValue}]
+	onChange => take qId, rId:null, answer:event.target.value > question[qId].answers
+	details: fetch q with qId, create clean copy, package answers json, update fetched question.answers with answers, update q[qId]
+text
+	[{rId:id,answer:answerValue},{rId:id,answer:answerValue},...]
+radio
+	[{rId:id,answer:answerValue}]
+checkbox
+	[{rId:id,answer:answerValue},{rId:id,answer:answerValue},...]

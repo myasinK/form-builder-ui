@@ -2,6 +2,7 @@ import React from "react";
 import Input from "../primary/Input";
 import Span from "../primary/Span";
 import TableAlt from "../secondary/TableAlt";
+import TablePreview from "./TablePreview";
 
 function ResponsesPreviewContainer({ responses, handlers }) {
   let rows,
@@ -33,11 +34,11 @@ function ResponsesPreviewContainer({ responses, handlers }) {
     "input-mode-container " + rows.componentDescriptor.endUserHtmlInputType;
 
   if (isTabular) {
-    return <TableAlt responses={responses} handlers={handlers} />;
+    return <TablePreview responses={responses} handlers={handlers} />;
   } else {
     if (respondentInputType === "textarea") {
       return (
-        <div className={responseContainerClassName}>
+        <div className={"response-preview-container"}>
           <Input
             disabled={false}
             handlers={handlers}
@@ -52,16 +53,16 @@ function ResponsesPreviewContainer({ responses, handlers }) {
             rows.componentList.map((r, index) => {
               return (
                 <>
-                  <div key={r.id} className={responseContainerClassName}>
-                    <div className={"input-and-label-container"}>
+                  <div key={r.id} className={"response-preview-container"}>
+                    <div className={"response-label-preview-container"}>
                       <Span primaryElement={r} />
-                      <div className={inputModeClassName}>
-                        <Input
-                          primaryElement={displayElement}
-                          handlers={handlers}
-                          disabled={false}
-                        />
-                      </div>
+                    </div>
+                    <div className={"response-input-preview-container"}>
+                      <Input
+                        primaryElement={displayElement}
+                        handlers={handlers}
+                        disabled={false}
+                      />
                     </div>
                   </div>
                 </>
@@ -75,15 +76,15 @@ function ResponsesPreviewContainer({ responses, handlers }) {
           {rows.componentList.length > 0 &&
             rows.componentList.map((r, index) => {
               return (
-                <div key={r.id} className={responseContainerClassName}>
-                  <div className={"input-and-label-container"}>
-                    <div className={inputModeClassName}>
-                      <Input
-                        primaryElement={displayElement}
-                        handlers={handlers}
-                        disabled={false}
-                      />
-                    </div>
+                <div key={r.id} className={"response-preview-container"}>
+                  <div className={"response-input-preview-container"}>
+                    <Input
+                      primaryElement={displayElement}
+                      handlers={handlers}
+                      disabled={false}
+                    />
+                  </div>
+                  <div className={"response-label-preview-container"}>
                     <Span primaryElement={r} />
                   </div>
                 </div>

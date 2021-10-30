@@ -28,7 +28,7 @@ function Input({ primaryElement, handlers, disabled = true }) {
             propertyValue,
           });
         }}
-        disabled={false}
+        disabled={disabled}
       ></textarea>
     );
   } else {
