@@ -4,6 +4,7 @@ function Input({
   primaryElement,
   handlers,
   disabled = true,
+  idSpecified = false,
   modClass = null,
   modId = null,
   handleOnChangeAnswer = null,
@@ -45,6 +46,58 @@ function Input({
         }}
         disabled={disabled}
       ></textarea>
+    );
+  } else if (htmlTagName === "text" || htmlType === "text") {
+    return (
+      <input
+        type={htmlTagName}
+        value={value ? value : htmlValueAttr}
+        id={idSpecified || id}
+        className={htmlClassAttr}
+        placeholder={htmlPlaceholderAttr}
+        name={htmlNameAttr}
+        disabled={disabled}
+        onChange={(event) => {
+          const propertyValue = event.target.value;
+          if (handleOnChangeAnswer) {
+            handleOnChangeAnswer({
+              id: labelId,
+              value: event.target.value,
+            });
+          } else {
+            handlers.updateNamedMemberWithValue(primaryElement.id, {
+              propertyName: "htmlInnerText",
+              propertyValue,
+            });
+          }
+        }}
+      />
+    );
+  } else if (htmlTagName === "radio" || htmlType === "radio") {
+    return (
+      <input
+        type={htmlTagName}
+        value={value ? value : htmlValueAttr}
+        id={modifiedId}
+        className={labelId}
+        placeholder={htmlPlaceholderAttr}
+        name={labelId}
+        disabled={disabled}
+        onChange={(event) => {
+          const propertyValue = event.target.value;
+          if (handleOnChangeAnswer) {
+            handleOnChangeAnswer({
+              id: labelId,
+              value: event.target.value,
+            });
+          } else {
+            handlers.updateNamedMemberWithValue(primaryElement.id, {
+              propertyName: "htmlInnerText",
+              propertyValue,
+            });
+          }
+        }}
+      />
     );
   } else {
     return (

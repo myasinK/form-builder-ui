@@ -110,7 +110,7 @@ function ResponsesPreviewContainer({ responses, handlers }) {
                       handleOnChangeAnswer={handlers.handleOnChangeTextPreview(
                         rows.id
                       )}
-                      labelId={r.id}
+                      labelId={rows.id}
                     />
                   </div>
                   <div className={"response-label-preview-container"}>

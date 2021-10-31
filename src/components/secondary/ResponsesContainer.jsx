@@ -81,6 +81,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
             disabled={true}
             handlers={handlers}
             primaryElement={displayElement}
+            idSpecified={rows.id}
           />
         </div>
       );
@@ -116,6 +117,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                         <Input
                           primaryElement={displayElement}
                           handlers={handlers}
+                          idSpecified={r.id}
                         />
                       </div>
                     </div>
@@ -166,6 +168,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                         <Input
                           primaryElement={displayElement}
                           handlers={handlers}
+                          idSpecified={r.id}
                         />
                       </div>
                       <WrappedEditableObj
