@@ -1,12 +1,14 @@
 import React from "react";
 
-function Header({ primaryElement }) {
-  const {
+function Header({ primaryElement, modClass = null, modId = null }) {
+  let {
     htmlInnerText = "",
     htmlClassAttr = "class-not-specified",
     htmlTagName,
     id,
   } = primaryElement;
+  htmlClassAttr = modClass ? modClass(htmlClassAttr) : htmlClassAttr;
+  id = modId ? modId(modId) : id;
   if (htmlTagName === "h1") {
     return (
       <h1 className={htmlClassAttr} id={id}>

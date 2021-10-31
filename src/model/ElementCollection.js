@@ -25,7 +25,7 @@ export default class ElementCollection {
     this.isRequired = false;
     this.parentId = parentId;
     this.scored = false;
-    this.answers = (componentType === "question" && []) || "not applicable";
+    this.answers = componentType.includes("responses") ? [] : "not applicable";
   }
 
   getJSON = () => {
@@ -244,8 +244,10 @@ const generateQuestionObject = (componentType, parentId, seed = true) => {
         componentType,
         parentId,
       });
-      responsesCollection.addToComponentList(response).getJSON();
-      blankQuestion.addToComponentList(responsesCollection);
+      const updatedResponses = responsesCollection
+        .addToComponentList(response)
+        .getJSON();
+      blankQuestion.addToComponentList(updatedResponses);
     });
     return blankQuestion.getJSON();
   } else {

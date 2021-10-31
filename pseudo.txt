@@ -308,3 +308,12 @@ radio
 	[{rId:id,answer:answerValue}]
 checkbox
 	[{rId:id,answer:answerValue},{rId:id,answer:answerValue},...]
+
+alt:
+textarea -> string (actual answer) handler will need -> qId, rId,
+input[text] -> array of strings handler will need -> qId, rId,
+input[radio] -> string (id)
+input[checkbox] -> array of id strings
+input[radio table] -> array of id strings
+input[checkbox table] -> array of id strings
+input[text table] -> array of objects {id, value}

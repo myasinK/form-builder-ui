@@ -5,13 +5,17 @@ function Div({
   handlers,
   action = "standard",
   dragInfo = null,
+  modClass = null,
+  modId = null,
 }) {
-  const {
+  let {
     htmlInnerText = "",
     htmlClassAttr = "class-not-specified",
     draggable,
     id,
   } = primaryElement;
+  htmlClassAttr = modClass ? modClass(htmlClassAttr) : htmlClassAttr;
+  id = modId ? modId(modId) : id;
   if (action === "standard") {
     return (
       <div className={htmlClassAttr} id={id}>

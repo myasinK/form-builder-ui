@@ -60,6 +60,7 @@ function EditableData({
               primaryElement,
               inputTagName
             )}
+            handleOnChangeAnswer={false}
             disabled={false}
           />
         )}

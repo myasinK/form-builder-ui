@@ -1,8 +1,8 @@
 import React from "react";
 import Input from "../primary/Input";
 import Span from "../primary/Span";
-import TableAlt from "../secondary/TableAlt";
 import TablePreview from "./TablePreview";
+import modString from "../../helpers/modString";
 
 function ResponsesPreviewContainer({ responses, handlers }) {
   let rows,
@@ -12,6 +12,8 @@ function ResponsesPreviewContainer({ responses, handlers }) {
     respondentInputType,
     displayElement,
     componentDescriptorRows;
+
+  const idPrefix = "preview-";
 
   if (responses.length === 1) {
     rows = responses[0];
@@ -28,40 +30,56 @@ function ResponsesPreviewContainer({ responses, handlers }) {
     displayElement = Object.assign({}, componentDescriptorRows.displayElement);
   }
 
-  const responseContainerClassName = "response-container";
-  const labelClassName = "response-label-container";
-  let inputModeClassName =
-    "input-mode-container " + rows.componentDescriptor.endUserHtmlInputType;
-
   if (isTabular) {
     return <TablePreview responses={responses} handlers={handlers} />;
   } else {
     if (respondentInputType === "textarea") {
+      const answerValue =
+        responses[0].answers.length > 0 ? responses[0].answers[0].value : "";
       return (
         <div className={"response-preview-container"}>
           <Input
             disabled={false}
             handlers={handlers}
             primaryElement={displayElement}
+            modId={modString(idPrefix, false, true, false)}
+            answer={{ value: answerValue }}
+            handleOnChangeAnswer={handlers.handleOnChangeTextareaPreview(
+              responses[0].id
+            )}
           />
         </div>
       );
     } else if (["text"].includes(respondentInputType)) {
+      const { answers } = rows;
       return (
         <>
           {rows.componentList.length > 0 &&
             rows.componentList.map((r, index) => {
+              const answer =
+                answers.length > 0 && answers.filter((a) => a.id === r.id)[0];
+
+              const answerValue = answer ? answer.value : "";
               return (
                 <>
                   <div key={r.id} className={"response-preview-container"}>
                     <div className={"response-label-preview-container"}>
-                      <Span primaryElement={r} />
+                      <Span
+                        primaryElement={r}
+                        modId={modString(idPrefix, false, true, false)}
+                      />
                     </div>
                     <div className={"response-input-preview-container"}>
                       <Input
                         primaryElement={displayElement}
+                        value={answerValue}
                         handlers={handlers}
                         disabled={false}
+                        modId={modString(idPrefix, false, true, false)}
+                        handleOnChangeAnswer={handlers.handleOnChangeTextPreview(
+                          rows.id
+                        )}
+                        labelId={r.id}
                       />
                     </div>
                   </div>
@@ -71,10 +89,15 @@ function ResponsesPreviewContainer({ responses, handlers }) {
         </>
       );
     } else if (["radio", "checkbox"].includes(respondentInputType)) {
+      const { answers } = rows;
       return (
         <>
           {rows.componentList.length > 0 &&
             rows.componentList.map((r, index) => {
+              const answer =
+                answers.length > 0 && answers.filter((a) => a.id === r.id)[0];
+
+              const answerValue = answer ? answer.value : "";
               return (
                 <div key={r.id} className={"response-preview-container"}>
                   <div className={"response-input-preview-container"}>
@@ -82,10 +105,19 @@ function ResponsesPreviewContainer({ responses, handlers }) {
                       primaryElement={displayElement}
                       handlers={handlers}
                       disabled={false}
+                      modId={modString(idPrefix, false, true, false)}
+                      value={answerValue}
+                      handleOnChangeAnswer={handlers.handleOnChangeTextPreview(
+                        rows.id
+                      )}
+                      labelId={r.id}
                     />
                   </div>
                   <div className={"response-label-preview-container"}>
-                    <Span primaryElement={r} />
+                    <Span
+                      primaryElement={r}
+                      modId={modString(idPrefix, false, true, false)}
+                    />
                   </div>
                 </div>
               );

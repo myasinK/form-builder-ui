@@ -97,6 +97,47 @@ class formEventHandlers {
     event.preventDefault();
   };
 
+  handleOnChangeTextareaPreview = (responsesId) => {
+    const form = new ElementCollection(this.form);
+    const setter = this.formSetter;
+    return function (userInput) {
+      const updateInstructions = {
+        propertyName: "answers",
+        propertyValue: [{ id: responsesId, value: userInput }],
+      };
+      const updatedForm = form.updateId(responsesId, null, updateInstructions);
+      setter(updatedForm);
+    };
+  };
+
+  handleOnChangeTextPreview = (responsesId) => {
+    const form = new ElementCollection(this.form);
+    const setter = this.formSetter;
+    return function (userResponseObject) {
+      const { id, value } = userResponseObject;
+      const { answers } = form.fetchObjectWithId(responsesId)[0];
+      const anyExistingResponses = answers.length > 0;
+      if (anyExistingResponses) {
+        answers.map((el) => {
+          if (el.id === id) {
+            el.value = value;
+            return el;
+          } else {
+            return el;
+          }
+        });
+      } else {
+        answers.push(userResponseObject);
+      }
+      const updateInstructions = {
+        propertyName: "answers",
+        propertyValue: answers,
+      };
+      const updatedForm = form.updateId(responsesId, null, updateInstructions);
+      setter(updatedForm);
+    };
+  };
+
   handleOnDrop = (event, destinationIndex) => {
     event.preventDefault();
     function checkDestinationIndex(index, array) {
