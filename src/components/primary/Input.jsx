@@ -78,8 +78,9 @@ function Input({
       <input
         type={htmlTagName}
         value={value ? value : htmlValueAttr}
+        checked={value ? true : false}
         id={modifiedId}
-        className={labelId}
+        className={labelId} // needs updated logic
         placeholder={htmlPlaceholderAttr}
         name={labelId}
         disabled={disabled}
@@ -90,12 +91,7 @@ function Input({
               id: labelId,
               value: event.target.value,
             });
-          } else {
-            handlers.updateNamedMemberWithValue(primaryElement.id, {
-              propertyName: "htmlInnerText",
-              propertyValue,
-            });
-          }
+          } 
         }}
       />
     );

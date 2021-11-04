@@ -2,7 +2,7 @@ import React from "react";
 import InterfaceElement from "../../Interface/InterfaceElement";
 import Input from "../primary/Input";
 import Span from "../primary/Span";
-import { WrappedEditableObj } from "./EditableData";
+import EditableData, { WrappedEditableObj } from "./EditableData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMinusCircle,
@@ -77,12 +77,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
     if (respondentInputType === "textarea") {
       return (
         <div className={responseContainerClassName}>
-          <Input
-            disabled={true}
-            handlers={handlers}
-            primaryElement={displayElement}
-            idSpecified={rows.id}
-          />
+          <textarea disabled={true}></textarea>
         </div>
       );
     } else if (["text"].includes(respondentInputType)) {
@@ -107,25 +102,24 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                       dragInfo={{ parentId: rows.id, originIndex: index }}
                     />
                     <div className={"input-and-label-container"}>
-                      <WrappedEditableObj
-                        wrapperClassName={labelClassName}
-                        primaryElement={r}
-                        lastClickedOnId={lastClickedOnId}
-                        handlers={handlers}
-                      />
-                      <div className={inputModeClassName}>
-                        <Input
-                          primaryElement={displayElement}
+                      <div className={"label-container"}>
+                        <EditableData
+                          primaryElement={r}
+                          lastClickedOnId={lastClickedOnId}
                           handlers={handlers}
-                          idSpecified={r.id}
                         />
                       </div>
+                      <div className={inputModeClassName}>
+                        <input type="text" disabled={true} />
+                      </div>
                     </div>
-                    <FontAwesomeIcon
-                      className={"delete-response-row"}
-                      onClick={() => handlers.delete(r.id)}
-                      icon={faMinusCircle}
-                    />
+                    <div className={"delete-response-icon-container"}>
+                      <FontAwesomeIcon
+                        className={"delete-response-row"}
+                        onClick={() => handlers.delete(r.id,rows.id)}
+                        icon={faMinusCircle}
+                      />
+                    </div>
                   </div>
                   <div
                     className={"response-drop-area"}
@@ -165,14 +159,13 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                     />
                     <div className={"input-and-label-container"}>
                       <div className={inputModeClassName}>
-                        <Input
-                          primaryElement={displayElement}
-                          handlers={handlers}
-                          idSpecified={r.id}
+                        <input
+                          type={respondentInputType}
+                          handlers={null}
+                          disabled={true}
                         />
                       </div>
-                      <WrappedEditableObj
-                        wrapperClassName={labelClassName}
+                      <EditableData
                         primaryElement={r}
                         lastClickedOnId={lastClickedOnId}
                         handlers={handlers}
@@ -181,7 +174,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
 
                     <FontAwesomeIcon
                       className={"delete-response-row"}
-                      onClick={() => handlers.delete(r.id)}
+                      onClick={() => handlers.delete(r.id,rows.id)}
                       icon={faMinusCircle}
                     />
                   </div>

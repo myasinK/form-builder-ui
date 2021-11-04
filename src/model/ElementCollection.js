@@ -17,6 +17,7 @@ export default class ElementCollection {
       return rand[0];
       // return;
     };
+    this.answers = componentType.includes("responses") ? [] : false;
     this.componentDescriptor =
       componentDescriptor || new Descriptor(componentType).getJSON();
     this.componentList = componentList;
@@ -25,7 +26,6 @@ export default class ElementCollection {
     this.isRequired = false;
     this.parentId = parentId;
     this.scored = false;
-    this.answers = componentType.includes("responses") ? [] : "not applicable";
   }
 
   getJSON = () => {
@@ -287,39 +287,6 @@ const generateResponsesObjects = (parentId, responsesTypeArray) => {
     new ElementCollection({ parentId, componentType: r }).getJSON()
   );
   // returns an array with 1 element unless it's for a tabular response, in which case it will have 2 elements (_.length === 2). Each element is a collection object
-};
-
-const generateDisplayInputElement = (endUserHtmlInputType) => {
-  const componentType = null;
-  const componentDescriptor = null;
-  const htmlInnerText = null;
-  const htmlValueAttr = null;
-  const htmlDefaultValue = null;
-  const htmlClassAttr = "display-input";
-  const htmlPlaceholderAttr = null;
-  const htmlStyleAttr = null;
-  const htmlNameAttr = null;
-  const parentId = null;
-  const htmlTagName = endUserHtmlInputType;
-  const conditional = null;
-  const draggable = null;
-  const id = null;
-  return new PrimaryElement({
-    componentType,
-    componentDescriptor,
-    htmlInnerText,
-    htmlValueAttr,
-    htmlDefaultValue,
-    htmlClassAttr,
-    htmlPlaceholderAttr,
-    htmlStyleAttr,
-    htmlNameAttr,
-    parentId,
-    htmlTagName,
-    conditional,
-    draggable,
-    id,
-  }).getJSON();
 };
 
 const generatePrompt = (parentId) => {

@@ -11,15 +11,12 @@ function EditableData({
   lastClickedOnId = null,
   handlers = null,
 }) {
-  const generateInputElementFromLabel = (
-    responseLabelElement,
-    inputTagName
-  ) => {
+  const generateInputElementFromLabel = (responseLabelElement, inputType) => {
     return new InterfaceElement({
       componentType: null,
       parentId: null,
       htmlValueAttr: responseLabelElement.htmlInnerText,
-      htmlTagName: inputTagName,
+      htmlTagName: inputType,
       id: responseLabelElement.id,
     }).getElement();
   };
@@ -34,13 +31,8 @@ function EditableData({
     }
   };
 
-  const PlainTextComponent = determinePlainTextComponentAndInputType(
-    primaryElement.htmlTagName
-  )[0];
-
-  const inputTagName = determinePlainTextComponentAndInputType(
-    primaryElement.htmlTagName
-  )[1];
+  const [PlainTextComponent, inputType] =
+    determinePlainTextComponentAndInputType(primaryElement.htmlTagName);
 
   const selfId = primaryElement.id;
   const didUserLastClickOnSelf = selfId === lastClickedOnId;
@@ -53,15 +45,28 @@ function EditableData({
         {!didUserLastClickOnSelf && (
           <PlainTextComponent primaryElement={primaryElement} />
         )}
-        {didUserLastClickOnSelf && (
-          <Input
-            handlers={handlers}
-            primaryElement={generateInputElementFromLabel(
-              primaryElement,
-              inputTagName
-            )}
-            handleOnChangeAnswer={false}
-            disabled={false}
+        {inputType === "textarea" && didUserLastClickOnSelf && (
+          <textarea
+            id={selfId}
+            onChange={(event) =>
+              handlers.updateNamedMemberWithValue(selfId, {
+                propertyName: "htmlInnerText",
+                propertyValue: event.target.value,
+              })
+            }
+            value={primaryElement.htmlInnerText}
+          ></textarea>
+        )}
+        {inputType === "text" && didUserLastClickOnSelf && (
+          <input
+            id={selfId}
+            onChange={(event) =>
+              handlers.updateNamedMemberWithValue(selfId, {
+                propertyName: "htmlInnerText",
+                propertyValue: event.target.value,
+              })
+            }
+            value={primaryElement.htmlInnerText}
           />
         )}
       </>

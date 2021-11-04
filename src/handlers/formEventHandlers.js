@@ -32,16 +32,36 @@ class formEventHandlers {
   };
 
   addResponse = (responsesId) => {
-    const formCollection = new ElementCollection(this.form);
-    const updatedForm =
+    let formCollection = new ElementCollection(this.form);
+    let updatedForm =
       formCollection.createNewResponseAndAddToResponses(responsesId);
     this.formSetter(updatedForm);
   };
 
-  delete = (targetId) => {
-    const form = new ElementCollection(this.form);
-    const updatedForm = form.deleteId(targetId);
-    this.formSetter(updatedForm);
+  delete = (targetId, parentId = false, optionalFlag = null) => {
+    const formCollection = new ElementCollection(this.form);
+    let updatedForm = formCollection.deleteId(targetId);
+    if (parentId) {
+      const ANSWERS = "answers";
+      // retrieve parent object
+      const responsesObject = formCollection.fetchObjectWithId(parentId)[0];
+      // extract property with name as defined in optionalFlag
+      const answers = Object.assign([], responsesObject[ANSWERS]);
+      // if optionalflag is "answers" delete object with id=targetId in answers
+      const updatedAnswers = answers.filter((el) => !(el.id === targetId));
+      // update parent object with new answers
+      responsesObject[ANSWERS] = updatedAnswers;
+      // update form with parent object
+      // delete targetId
+      const form = new ElementCollection(updatedForm).updateId(
+        parentId,
+        responsesObject
+      );
+      // update form in state
+      this.formSetter(form);
+    } else {
+      this.formSetter(updatedForm);
+    }
   };
 
   updateNamedMemberWithValue = (targetId, updateInstructions) => {
@@ -115,23 +135,83 @@ class formEventHandlers {
     const setter = this.formSetter;
     return function (userResponseObject) {
       const { id, value } = userResponseObject;
-      const { answers } = form.fetchObjectWithId(responsesId)[0];
+      let { answers } = form.fetchObjectWithId(responsesId)[0];
       const anyExistingResponses = answers.length > 0;
+      const hasBeenAnsweredBefore =
+        answers.filter((el) => el.id === id).length === 1;
       if (anyExistingResponses) {
-        answers.map((el) => {
-          if (el.id === id) {
-            el.value = value;
-            return el;
-          } else {
-            return el;
-          }
-        });
+        if (hasBeenAnsweredBefore) {
+          answers = answers.map((el) => {
+            if (el.id === id) {
+              el.value = value;
+              return el;
+            } else {
+              return el;
+            }
+          });
+        } else {
+          // if there are answers but this specific one hasn't been answered
+          answers.push(userResponseObject);
+        }
       } else {
         answers.push(userResponseObject);
       }
       const updateInstructions = {
         propertyName: "answers",
         propertyValue: answers,
+      };
+      const updatedForm = form.updateId(responsesId, null, updateInstructions);
+      setter(updatedForm);
+    };
+  };
+
+  handleOnChangeCheckboxPreview = (responsesId) => {
+    const form = new ElementCollection(this.form);
+    const setter = this.formSetter;
+    const { answers } = form.fetchObjectWithId(responsesId)[0];
+    console.log("fetched thing", form.fetchObjectWithId(responsesId)[0]);
+    return function (userInputObject) {
+      const selectedAnswer = userInputObject.value === true;
+      const thisHasBeenAnsweredBefore =
+        answers.filter((el) => el.id === userInputObject.id).length > 0;
+      console.log(
+        "filter: ",
+        answers.filter((el) => el.id === userInputObject.id)
+      );
+      let updatedAnswers = [];
+
+      if (thisHasBeenAnsweredBefore) {
+        console.log("has been answered before");
+        updatedAnswers = answers.map((el) => {
+          if (el.id === userInputObject.id) {
+            el.value = userInputObject.value;
+            return Object.assign({}, el);
+          } else {
+            return el;
+          }
+        });
+      } else {
+        console.log("hasn't been answered before");
+        answers.push(userInputObject);
+        updatedAnswers = Object.assign([], answers);
+      }
+
+      const updateInstructions = {
+        propertyName: "answers",
+        propertyValue: updatedAnswers,
+      };
+      const updatedForm = form.updateId(responsesId, null, updateInstructions);
+      setter(updatedForm);
+    };
+  };
+
+  handleOnChangeRadioPreview = (responsesId) => {
+    const form = new ElementCollection(this.form);
+    const setter = this.formSetter;
+    return function (userInputObject) {
+      const updateInstructions = {
+        propertyName: "answers",
+        propertyValue: [userInputObject],
       };
       const updatedForm = form.updateId(responsesId, null, updateInstructions);
       setter(updatedForm);

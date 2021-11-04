@@ -29,6 +29,7 @@ function ResponsesPreviewContainer({ responses, handlers }) {
     isTabular = componentDescriptorRows.isTabular;
     displayElement = Object.assign({}, componentDescriptorRows.displayElement);
   }
+  const { answers } = rows;
 
   if (isTabular) {
     return <TablePreview responses={responses} handlers={handlers} />;
@@ -38,57 +39,55 @@ function ResponsesPreviewContainer({ responses, handlers }) {
         responses[0].answers.length > 0 ? responses[0].answers[0].value : "";
       return (
         <div className={"response-preview-container"}>
-          <Input
-            disabled={false}
-            handlers={handlers}
-            primaryElement={displayElement}
-            modId={modString(idPrefix, false, true, false)}
-            answer={{ value: answerValue }}
-            handleOnChangeAnswer={handlers.handleOnChangeTextareaPreview(
-              responses[0].id
-            )}
-          />
+          <textarea
+            onChange={(event) =>
+              handlers.handleOnChangeTextareaPreview(responses[0].id)(
+                event.target.value
+              )
+            }
+            value={answerValue}
+          ></textarea>
         </div>
       );
-    } else if (["text"].includes(respondentInputType)) {
-      const { answers } = rows;
+    } else if (
+      ["text"].includes(respondentInputType) &&
+      rows.componentList.length > 0
+    ) {
       return (
         <>
-          {rows.componentList.length > 0 &&
-            rows.componentList.map((r, index) => {
-              const answer =
-                answers.length > 0 && answers.filter((a) => a.id === r.id)[0];
+          {rows.componentList.map((r, index) => {
+            const answer =
+              answers.length > 0 && answers.filter((a) => a.id === r.id)[0];
 
-              const answerValue = answer ? answer.value : "";
-              return (
-                <>
-                  <div key={r.id} className={"response-preview-container"}>
-                    <div className={"response-label-preview-container"}>
-                      <Span
-                        primaryElement={r}
-                        modId={modString(idPrefix, false, true, false)}
-                      />
-                    </div>
-                    <div className={"response-input-preview-container"}>
-                      <Input
-                        primaryElement={displayElement}
-                        value={answerValue}
-                        handlers={handlers}
-                        disabled={false}
-                        modId={modString(idPrefix, false, true, false)}
-                        handleOnChangeAnswer={handlers.handleOnChangeTextPreview(
-                          rows.id
-                        )}
-                        labelId={r.id}
-                      />
-                    </div>
+            const answerValue = answer ? answer.value : "";
+            return (
+              <>
+                <div key={r.id} className={"response-preview-container"}>
+                  <div className={"response-label-preview-container"}>
+                    <Span
+                      primaryElement={r}
+                      modId={modString(idPrefix, false, true, false)}
+                    />
                   </div>
-                </>
-              );
-            })}
+                  <div className={"response-input-preview-container"}>
+                    <input
+                      value={answerValue}
+                      type={"text"}
+                      onChange={(event) =>
+                        handlers.handleOnChangeTextPreview(rows.id)({
+                          id: r.id,
+                          value: event.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+              </>
+            );
+          })}
         </>
       );
-    } else if (["radio", "checkbox"].includes(respondentInputType)) {
+    } else if (["radio"].includes(respondentInputType)) {
       const { answers } = rows;
       return (
         <>
@@ -96,21 +95,63 @@ function ResponsesPreviewContainer({ responses, handlers }) {
             rows.componentList.map((r, index) => {
               const answer =
                 answers.length > 0 && answers.filter((a) => a.id === r.id)[0];
-
+              const name =
+                respondentInputType === "radio"
+                  ? `answer-${rows.id}`
+                  : `answer-${r.id}`;
               const answerValue = answer ? answer.value : "";
               return (
                 <div key={r.id} className={"response-preview-container"}>
                   <div className={"response-input-preview-container"}>
-                    <Input
-                      primaryElement={displayElement}
-                      handlers={handlers}
-                      disabled={false}
+                    <input
+                      type={respondentInputType}
+                      name={name}
+                      onChange={(event) =>
+                        handlers.handleOnChangeRadioPreview(rows.id)({
+                          id: r.id,
+                          value: event.target.checked,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className={"response-label-preview-container"}>
+                    <Span
+                      primaryElement={r}
                       modId={modString(idPrefix, false, true, false)}
-                      value={answerValue}
-                      handleOnChangeAnswer={handlers.handleOnChangeTextPreview(
-                        rows.id
-                      )}
-                      labelId={rows.id}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+        </>
+      );
+    } else if (["checkbox"].includes(respondentInputType)) {
+      const { answers } = rows;
+      return (
+        <>
+          {rows.componentList.length > 0 &&
+            rows.componentList.map((r, index) => {
+              const answer =
+                answers.length > 0 && answers.filter((a) => a.id === r.id)[0];
+              const nameAttributeIfRadioOrCheckbox =
+                respondentInputType === "radio"
+                  ? `answer-${rows.id}`
+                  : `answer-${r.id}`;
+              const answerValue = answer ? answer.value : "";
+              const checked = answer ? answer.value : false;
+              return (
+                <div key={r.id} className={"response-preview-container"}>
+                  <div className={"response-input-preview-container"}>
+                    <input
+                      checked={checked}
+                      type={respondentInputType}
+                      name={nameAttributeIfRadioOrCheckbox}
+                      onChange={(event) =>
+                        handlers.handleOnChangeCheckboxPreview(rows.id)({
+                          id: r.id,
+                          value: event.target.checked,
+                        })
+                      }
                     />
                   </div>
                   <div className={"response-label-preview-container"}>
