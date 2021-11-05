@@ -40,10 +40,34 @@ function App() {
 
       <div className={"preview-container"}>
         <div className={"title"}>Preview</div>
+        {form && <ScoreContainer form={form} />}
         {form && <FormPreview form={form} handlers={handlers} />}
       </div>
     </div>
   );
 }
+
+const ScoreContainer = ({ form }) => {
+  const scoredQuestionsOnly = form.componentList.filter(
+    (el) => el.componentType.includes("question") && el.componentList[1].scored
+  );
+  let totalScore = 0;
+  scoredQuestionsOnly.map((el) => {
+    const { answers } = el.componentList[1];
+    const scoreForThisQuestion = answers
+      .map((el) => parseInt(el.score))
+      .reduce(function (previous, current) {
+        return previous + current;
+      }, 0);
+    totalScore += parseInt(scoreForThisQuestion);
+  });
+  return (
+    <div className={"scores-container"}>
+      <div className={"total-score"} id={"total-score"}>
+        {totalScore}
+      </div>
+    </div>
+  );
+};
 
 export default App;

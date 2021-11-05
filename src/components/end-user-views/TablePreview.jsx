@@ -112,13 +112,8 @@ const RowHeaderCell = ({
 }) => {
   const {
     ROW,
-    GUTTER,
     HEADER,
     CELL,
-    MOVEICONCONTAINER,
-    TEXTCONTAINER,
-    DELETEICON,
-    DELETEICONCONTAINER,
   } = classDictionary;
   return (
     <div
@@ -161,7 +156,7 @@ const DisplayInputCells = ({
   handleMouseEnter,
   handleMouseLeave,
 }) => {
-  const { COLUMN, GUTTER, USERINIPUT, CELL } = classDictionary;
+  const { USERINIPUT, CELL } = classDictionary;
   return columns.componentList.map((el, index) => {
     const columnElementId = el.id;
     return (
@@ -199,11 +194,7 @@ const HeaderRow = ({
     BLANK,
     CELL,
     COLUMN,
-    GUTTER,
-    MOVEICONCONTAINER,
     TEXTCONTAINER,
-    DELETEICONCONTAINER,
-    DELETEICON,
   } = classDictionary;
   return (
     <div className={`${HEADER} ${ROW}`}>

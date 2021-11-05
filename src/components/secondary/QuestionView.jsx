@@ -68,7 +68,6 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
   };
 
   const [isRequiredChecked, setIsRequiredChecked] = useState(rows.isRequired);
-  const columns = responses.length > 1 ? responses[1] : null;
 
   return (
     <div className={className}>

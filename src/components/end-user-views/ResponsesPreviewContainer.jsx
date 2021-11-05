@@ -1,33 +1,27 @@
 import React from "react";
-import Input from "../primary/Input";
 import Span from "../primary/Span";
 import TablePreview from "./TablePreview";
 import modString from "../../helpers/modString";
 
 function ResponsesPreviewContainer({ responses, handlers }) {
   let rows,
-    columns,
     isTabular,
     componentDescriptor,
     respondentInputType,
-    displayElement,
     componentDescriptorRows;
 
   const idPrefix = "preview-";
 
+  rows = responses[0];
   if (responses.length === 1) {
-    rows = responses[0];
     componentDescriptor = rows.componentDescriptor;
     isTabular = componentDescriptor.isTabular;
     respondentInputType = componentDescriptor.displayElement.htmlTagName;
-    displayElement = Object.assign({}, componentDescriptor.displayElement);
   } else if (responses.length === 2) {
     // i.e. if it's a table
-    [rows, columns] = responses;
     componentDescriptorRows = rows.componentDescriptor;
     respondentInputType = componentDescriptorRows.displayElement.htmlTagName;
     isTabular = componentDescriptorRows.isTabular;
-    displayElement = Object.assign({}, componentDescriptorRows.displayElement);
   }
   const { answers } = rows;
 
@@ -35,13 +29,12 @@ function ResponsesPreviewContainer({ responses, handlers }) {
     return <TablePreview responses={responses} handlers={handlers} />;
   } else {
     if (respondentInputType === "textarea") {
-      const answerValue =
-        responses[0].answers.length > 0 ? responses[0].answers[0].value : "";
+      const answerValue = rows.answers.length > 0 ? rows.rows.value : "";
       return (
         <div className={"response-preview-container"}>
           <textarea
             onChange={(event) =>
-              handlers.handleOnChangeTextareaPreview(responses[0].id)(
+              handlers.handleOnChangeTextareaPreview(rows.id)(
                 event.target.value
               )
             }
@@ -100,6 +93,7 @@ function ResponsesPreviewContainer({ responses, handlers }) {
                   ? `answer-${rows.id}`
                   : `answer-${r.id}`;
               const answerValue = answer ? answer.value : false;
+              const scoreValue = r.scoreValue;
               return (
                 <div key={r.id} className={"response-preview-container"}>
                   <div className={"response-input-preview-container"}>
@@ -111,6 +105,7 @@ function ResponsesPreviewContainer({ responses, handlers }) {
                         handlers.handleOnChangeRadioPreview(rows.id)({
                           id: r.id,
                           value: event.target.checked,
+                          score: event.target.checked ? scoreValue : 0,
                         })
                       }
                     />
@@ -139,6 +134,7 @@ function ResponsesPreviewContainer({ responses, handlers }) {
                   ? `answer-${rows.id}`
                   : `answer-${r.id}`;
               const answerValue = answer ? answer.value : false;
+              const scoreValue = r.scoreValue;
               return (
                 <div key={r.id} className={"response-preview-container"}>
                   <div className={"response-input-preview-container"}>
@@ -150,6 +146,7 @@ function ResponsesPreviewContainer({ responses, handlers }) {
                         handlers.handleOnChangeCheckboxPreview(rows.id)({
                           id: r.id,
                           value: event.target.checked,
+                          score: event.target.checked ? scoreValue : 0,
                         })
                       }
                     />

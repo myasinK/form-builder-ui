@@ -174,13 +174,11 @@ class formEventHandlers {
     };
   };
 
-  handleOnChangeCheckboxPreview = (responsesId) => {
+  handleOnChangeCheckboxPreview = (responsesId, scoreValue = false) => {
     const form = new ElementCollection(this.form);
     const setter = this.formSetter;
     const { answers } = form.fetchObjectWithId(responsesId)[0];
-    console.log("fetched thing", form.fetchObjectWithId(responsesId)[0]);
     return function (userInputObject) {
-      const selectedAnswer = userInputObject.value === true;
       const thisHasBeenAnsweredBefore =
         answers.filter((el) => el.id === userInputObject.id).length > 0;
       console.log(
@@ -190,17 +188,16 @@ class formEventHandlers {
       let updatedAnswers = [];
 
       if (thisHasBeenAnsweredBefore) {
-        console.log("has been answered before");
         updatedAnswers = answers.map((el) => {
           if (el.id === userInputObject.id) {
             el.value = userInputObject.value;
+            el.score = userInputObject.score
             return Object.assign({}, el);
           } else {
             return el;
           }
         });
       } else {
-        console.log("hasn't been answered before");
         answers.push(userInputObject);
         updatedAnswers = Object.assign([], answers);
       }

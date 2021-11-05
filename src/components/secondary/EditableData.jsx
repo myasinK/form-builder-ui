@@ -1,6 +1,4 @@
 import React from "react";
-import Input from "../primary/Input";
-import InterfaceElement from "../../Interface/InterfaceElement";
 import Paragraph from "../primary/Paragraph";
 import Span from "../primary/Span";
 import withWrapper from "../../hoc/withWrapper";
@@ -11,15 +9,6 @@ function EditableData({
   lastClickedOnId = null,
   handlers = null,
 }) {
-  const generateInputElementFromLabel = (responseLabelElement, inputType) => {
-    return new InterfaceElement({
-      componentType: null,
-      parentId: null,
-      htmlValueAttr: responseLabelElement.htmlInnerText,
-      htmlTagName: inputType,
-      id: responseLabelElement.id,
-    }).getElement();
-  };
 
   const determinePlainTextComponentAndInputType = (tagName) => {
     if (tagName === "paragraph" || tagName === "p") {

@@ -1,8 +1,7 @@
 import React from "react";
 import InterfaceElement from "../../Interface/InterfaceElement";
-import Input from "../primary/Input";
 import Span from "../primary/Span";
-import EditableData, { WrappedEditableObj } from "./EditableData";
+import EditableData from "./EditableData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMinusCircle,
@@ -17,7 +16,6 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
     isTabular,
     componentDescriptor,
     respondentInputType,
-    displayElement,
     componentDescriptorRows;
 
   if (responses.length === 1) {
@@ -25,18 +23,15 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
     componentDescriptor = rows.componentDescriptor;
     isTabular = componentDescriptor.isTabular;
     respondentInputType = componentDescriptor.displayElement.htmlTagName;
-    displayElement = Object.assign({}, componentDescriptor.displayElement);
   } else if (responses.length === 2) {
     // i.e. if it's a table
     [rows, columns] = responses;
     componentDescriptorRows = rows.componentDescriptor;
     respondentInputType = componentDescriptorRows.displayElement.htmlTagName;
     isTabular = componentDescriptorRows.isTabular;
-    displayElement = Object.assign({}, componentDescriptorRows.displayElement);
   }
 
   const responseContainerClassName = "response-container";
-  const labelClassName = "response-label-container";
   let inputModeClassName =
     "input-mode-container " + rows.componentDescriptor.endUserHtmlInputType;
 
@@ -116,7 +111,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
                     <div className={"delete-response-icon-container"}>
                       <FontAwesomeIcon
                         className={"delete-response-row"}
-                        onClick={() => handlers.delete(r.id,rows.id)}
+                        onClick={() => handlers.delete(r.id, rows.id)}
                         icon={faMinusCircle}
                       />
                     </div>
@@ -174,7 +169,7 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
 
                     <FontAwesomeIcon
                       className={"delete-response-row"}
-                      onClick={() => handlers.delete(r.id,rows.id)}
+                      onClick={() => handlers.delete(r.id, rows.id)}
                       icon={faMinusCircle}
                     />
                   </div>

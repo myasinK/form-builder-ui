@@ -1,27 +1,16 @@
 import React from "react";
-
 import InterfaceElement from "../../Interface/InterfaceElement";
-import QuestionView from "../secondary/QuestionView";
 import QuestionPreview from "./QuestionPreview";
 import StandaloneView from "../secondary/StandaloneView";
 
 function FormPreview({ form, handlers }) {
   const thereAreObjectsToRender = form.componentList.length > 0;
 
-  const formId = form.id;
-
   const dragElement = new InterfaceElement({
     htmlInnerText: "drag bar (for questions/standalone objects)",
     htmlClassAttr: "question-drag-bar",
     htmlTagName: "span",
     draggable: true,
-  }).getElement();
-
-  const dropElement = new InterfaceElement({
-    htmlInnerText: "",
-    htmlClassAttr: "question-drop-area",
-    htmlTagName: "span",
-    draggable: false,
   }).getElement();
 
   if (thereAreObjectsToRender) {
