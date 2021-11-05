@@ -64,6 +64,15 @@ class formEventHandlers {
     }
   };
 
+  handleUpdateNominalScoreValue = (event, targetId, propertyName) => {
+    const propertyValue = event.target.value;
+    const instructions = {
+      propertyName,
+      propertyValue,
+    };
+    this.updateNamedMemberWithValue(targetId, instructions);
+  };
+
   updateNamedMemberWithValue = (targetId, updateInstructions) => {
     const form = new ElementCollection(this.form);
     const updatedForm = form.updateId(targetId, null, updateInstructions);

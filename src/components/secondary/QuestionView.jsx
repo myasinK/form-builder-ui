@@ -5,10 +5,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCog } from "@fortawesome/free-solid-svg-icons";
 
 function QuestionView({ questionObject, lastClickedOnId, handlers }) {
+  const { id = null } = questionObject;
+
+  const [prompt, ...responses] = questionObject.componentList;
+  // responses is going to be an array
+
+  const handleAdvancedToggle = () => {
+    setIsOnAdvancedView(!isOnAdvancedView);
+  };
+
+  const rows = responses[0];
+  // const { answers } = rows;
   let [isOnAdvancedView, setIsOnAdvancedView] = useState(false);
+  const className = isOnAdvancedView
+    ? "question-container hover"
+    : "question-container";
   let [isShowingCharControls, setIsShowingCharControls] = useState(false); // always hidden by default
   let [isShowingNumControls, setIsShowingNumControls] = useState(false); // always hidden by default
-  let [isShowingScoreControls, setIsShowingScoreControls] = useState(false); // always hidden by default
   const { endUserHtmlInputType } = questionObject.componentDescriptor;
   const shouldShowCharControls = endUserHtmlInputType === "text";
   const shouldShowNumControls = endUserHtmlInputType === "number";
@@ -22,6 +35,9 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
     setIsShowingCharControls(!isShowingCharControls);
   };
 
+  let [isShowingScoreControls, setIsShowingScoreControls] = useState(
+    rows.scored
+  ); // always hidden by default
   const handleToggleScoreControls = (targetId) => {
     const updatedScoreToggle = !isShowingScoreControls;
     const instructions = {
@@ -50,19 +66,7 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
     handlers.updateNamedMemberWithValue(targetId, instructions);
     setIsRequiredChecked(updatedCheckedState);
   };
-  const { id = null } = questionObject;
 
-  const [prompt, ...responses] = questionObject.componentList;
-  // responses is going to be an array
-
-  const className = isOnAdvancedView
-    ? "question-container hover"
-    : "question-container";
-  const handleAdvancedToggle = () => {
-    setIsOnAdvancedView(!isOnAdvancedView);
-  };
-
-  const rows = responses[0];
   const [isRequiredChecked, setIsRequiredChecked] = useState(rows.isRequired);
   const columns = responses.length > 1 ? responses[1] : null;
 
@@ -117,7 +121,7 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
                   type={"checkbox"}
                   className={"show-score-controls"}
                   id={"show-score-controls"}
-                  value={""}
+                  value={rows.scored}
                   onClick={() => handleToggleScoreControls(rows.id)}
                 />
               </label>
@@ -209,7 +213,11 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
                         className={"score-value"}
                         type="number"
                         onChange={(event) =>
-                          handleChange(event, targetId, "score-value")
+                          handlers.handleUpdateNominalScoreValue(
+                            event,
+                            targetId,
+                            "scoreValue"
+                          )
                         }
                         value={rowElement.scoreValue}
                       />

@@ -41,7 +41,7 @@ class PrimaryElement {
     this.maxCharLength = null;
     this.maxValue = null;
     this.parentId = parentId;
-    this.scoreValue = null;
+    this.scoreValue = 0;
   }
 
   getJSON = () => {
