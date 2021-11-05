@@ -257,8 +257,10 @@ const generateQuestionObject = (componentType, parentId, seed = true) => {
 
 const addResponseToResponsesObject = (responsesObject) => {
   const parentId = responsesObject.id;
+  const { answers } = responsesObject;
   const responseElement = generateResponseLabelJson({ parentId });
   const responsesCollection = new ElementCollection(responsesObject);
+  responsesCollection.answers = answers;
   return responsesCollection.addToComponentList(responseElement).getJSON();
 };
 

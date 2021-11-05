@@ -99,13 +99,14 @@ function ResponsesPreviewContainer({ responses, handlers }) {
                 respondentInputType === "radio"
                   ? `answer-${rows.id}`
                   : `answer-${r.id}`;
-              const answerValue = answer ? answer.value : "";
+              const answerValue = answer ? answer.value : false;
               return (
                 <div key={r.id} className={"response-preview-container"}>
                   <div className={"response-input-preview-container"}>
                     <input
                       type={respondentInputType}
                       name={name}
+                      checked={answerValue}
                       onChange={(event) =>
                         handlers.handleOnChangeRadioPreview(rows.id)({
                           id: r.id,
@@ -137,13 +138,12 @@ function ResponsesPreviewContainer({ responses, handlers }) {
                 respondentInputType === "radio"
                   ? `answer-${rows.id}`
                   : `answer-${r.id}`;
-              const answerValue = answer ? answer.value : "";
-              const checked = answer ? answer.value : false;
+              const answerValue = answer ? answer.value : false;
               return (
                 <div key={r.id} className={"response-preview-container"}>
                   <div className={"response-input-preview-container"}>
                     <input
-                      checked={checked}
+                      checked={answerValue}
                       type={respondentInputType}
                       name={nameAttributeIfRadioOrCheckbox}
                       onChange={(event) =>
