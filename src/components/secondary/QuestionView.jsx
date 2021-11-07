@@ -69,6 +69,25 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
 
   const [isRequiredChecked, setIsRequiredChecked] = useState(rows.isRequired);
 
+  let [canUserAddNewSection, setCanUserAddNewSection] = useState(false);
+
+  const handleWhenUserTypesSectionName = (event) => {
+    const currentSectionName = event.target.value;
+    const answersArray = handlers.getAnswers();
+    const sectionNamesArray = answersArray.map((answer) =>
+      answer.section ? answer.section : false
+    );
+    // check if name exists already
+    if (sectionNamesArray.includes(currentSectionName)) {
+      // set addsectionbutton to false
+      setCanUserAddNewSection(false);
+    } else {
+      // set addsectionbutton to true (perform other checks here)
+      setCanUserAddNewSection(currentSectionName);
+    }
+    console.log(sectionNamesArray);
+  };
+
   return (
     <div className={className}>
       <div className={"question"}>
@@ -113,6 +132,34 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
                 onClick={() => handleOnChangeRequiredCheckbox(rows.id)}
               />
             </label>
+            {isShowingScoreControls && (
+              <div className={"section-names-container"}>
+                <div className={"new-section-definition-container"}>
+                  <span className={"section-input-label-container"}>
+                    Define new section
+                  </span>
+                  <span className={"section-input-container"}>
+                    <input
+                      type="text"
+                      onChange={(event) =>
+                        handleWhenUserTypesSectionName(event)
+                      }
+                    />
+                  </span>
+                  <span
+                    onClick={() =>
+                      handlers.setSectionName(rows.id, canUserAddNewSection)
+                    }
+                  >
+                    Click to create a section
+                  </span>
+                </div>
+                <div className={"existing-sections-container"}>
+                  <span>Section 1</span>
+                  <span>Section 2</span>
+                </div>
+              </div>
+            )}
             {mayBeScored && (
               <label className={"config"}>
                 {"Question will need to be scored "}

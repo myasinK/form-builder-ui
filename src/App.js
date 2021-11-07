@@ -40,31 +40,55 @@ function App() {
 
       <div className={"preview-container"}>
         <div className={"title"}>Preview</div>
-        {form && <ScoreContainer form={form} />}
+        {form && <ScoreContainer form={form} handlers={handlers} />}
         {form && <FormPreview form={form} handlers={handlers} />}
       </div>
     </div>
   );
 }
 
-const ScoreContainer = ({ form }) => {
-  const scoredQuestionsOnly = form.componentList.filter(
-    (el) => el.componentType.includes("question") && el.componentList[1].scored
-  );
-  let totalScore = 0;
-  scoredQuestionsOnly.map((el) => {
-    const { answers } = el.componentList[1];
-    const scoreForThisQuestion = answers
-      .map((el) => parseInt(el.score))
-      .reduce(function (previous, current) {
-        return previous + current;
-      }, 0);
-    totalScore += parseInt(scoreForThisQuestion);
-  });
+const ScoreContainer = ({ form, handlers }) => {
+  let score = { total: 0 };
+  let sectionsArray = [];
+  if (form.componentList.length > 0) {
+    const scoredResponsesArray = form.componentList
+      .filter((q) => q.componentType.includes("question"))
+      .map((question) => question.componentList[1])
+      .filter((responses) => responses.scored);
+    sectionsArray = scoredResponsesArray
+      .map((responses) => responses.sectionName)
+      .filter((name) => !(name === false));
+    const thereAreSections = sectionsArray.length > 0;
+    if (thereAreSections) {
+      sectionsArray.forEach((sectionName) => {
+        Object.defineProperty(score, sectionName, { value: 0, writable: true });
+      });
+    }
+    scoredResponsesArray.forEach((responsesObject) => {
+      const { answers } = responsesObject;
+      const scoreValueForThisQuestion = answers
+        .map((answer) => parseInt(answer.score))
+        .reduce(function (previous, current) {
+          return previous + current;
+        }, 0);
+      score.total += scoreValueForThisQuestion;
+      if (responsesObject.sectionName) {
+        score[responsesObject.sectionName] += scoreValueForThisQuestion;
+      }
+    });
+  }
   return (
     <div className={"scores-container"}>
       <div className={"total-score"} id={"total-score"}>
-        {totalScore}
+        {score.total}
+      </div>
+      <div className={"section-scores"}>
+        {sectionsArray.map((sectionName) => (
+          <div className={"section-details"}>
+            <span className={"section-name"}>{`${sectionName} Total: `}</span>
+            <span className={"section-score"}>{score[sectionName]}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

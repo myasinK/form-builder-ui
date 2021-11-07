@@ -177,28 +177,26 @@ class formEventHandlers {
   handleOnChangeCheckboxPreview = (responsesId, scoreValue = false) => {
     const form = new ElementCollection(this.form);
     const setter = this.formSetter;
-    const { answers } = form.fetchObjectWithId(responsesId)[0];
+    let { answers, sectionName } = form.fetchObjectWithId(responsesId)[0];
     return function (userInputObject) {
+      userInputObject["sectionName"] = sectionName;
       const thisHasBeenAnsweredBefore =
         answers.filter((el) => el.id === userInputObject.id).length > 0;
-      console.log(
-        "filter: ",
-        answers.filter((el) => el.id === userInputObject.id)
-      );
       let updatedAnswers = [];
 
       if (thisHasBeenAnsweredBefore) {
         updatedAnswers = answers.map((el) => {
           if (el.id === userInputObject.id) {
             el.value = userInputObject.value;
-            el.score = userInputObject.score
+            el.score = userInputObject.score;
+            el["sectionName"] = sectionName;
             return Object.assign({}, el);
           } else {
             return el;
           }
         });
       } else {
-        answers.push(userInputObject);
+        answers.push(Object.assign({}, userInputObject));
         updatedAnswers = Object.assign([], answers);
       }
 
@@ -215,13 +213,88 @@ class formEventHandlers {
     const form = new ElementCollection(this.form);
     const setter = this.formSetter;
     return function (userInputObject) {
+      const { sectionName } = form.fetchObjectWithId(responsesId)[0];
+      userInputObject["sectionName"] = sectionName;
       const updateInstructions = {
         propertyName: "answers",
-        propertyValue: [userInputObject],
+        propertyValue: [Object.assign({}, userInputObject)],
       };
       const updatedForm = form.updateId(responsesId, null, updateInstructions);
       setter(updatedForm);
     };
+  };
+
+  getAnswers = () => {
+    return this.form.componentList
+      .filter((el) => el.componentType.includes("question"))
+      .map((el) => el.componentList[1].answers);
+  };
+
+  generateScore = (form) => {
+    console.log("score");
+    const scoredQuestionsOnly = form.componentList.filter(
+      (el) =>
+        el.componentType.includes("question") && el.componentList[1].scored
+    );
+    const responsesObjects = scoredQuestionsOnly.map(
+      (el) => el.componentList[1]
+    );
+
+    const sectionNamesDefined = responsesObjects
+      .map((el) => {
+        if (el.sectionName) {
+          return el.sectionName;
+        } else {
+          return false;
+        }
+      })
+      .filter((el) => !(el === false));
+
+    let score = { total: 0 };
+    sectionNamesDefined.forEach((name) => {
+      Object.defineProperty(score, "sectionName", {
+        value: name,
+        writable: true,
+      });
+    });
+    console.log("section names", sectionNamesDefined);
+    return sectionNamesDefined;
+    // let score = { total: 0 };
+    // sectionNamesDefined.map((sectionName) =>
+    //   Object.defineProperty(score, sectionName, { value: 0, writable: true })
+    // );
+    // scoredQuestionsOnly.map((el) => {
+    //   const { answers, sectionName } = el.componentList[1];
+    //   console.log(sectionName);
+    //   const scoreForThisQuestion = answers
+    //     .map((el) => parseInt(el.score))
+    //     .reduce(function (previous, current) {
+    //       return previous + current;
+    //     }, 0);
+
+    //   if (sectionName) {
+    //     console.log("there's a section name");
+    //     score[sectionName] += scoreForThisQuestion;
+    //   } else {
+    //     console.log("there's no section name");
+    //   }
+    //   score.total += scoreForThisQuestion;
+    // });
+    // console.log(score);
+    // return Object.assign({}, score);
+  };
+
+  setSectionName = (responsesId, sectionName) => {
+    const form = new ElementCollection(this.form);
+    const targetResponsesObject = form.fetchObjectWithId(responsesId)[0];
+    targetResponsesObject.sectionName = sectionName;
+    const updatedAnswers = targetResponsesObject.answers.map((el) => {
+      el["sectionName"] = sectionName || false;
+      return el;
+    });
+    targetResponsesObject.answers = updatedAnswers;
+    const updatedForm = form.updateId(responsesId, targetResponsesObject);
+    this.formSetter(updatedForm);
   };
 
   handleOnDrop = (event, destinationIndex) => {

@@ -5,11 +5,15 @@ import PrimaryElement from "./PrimaryElement";
 export default class ElementCollection {
   constructor(obj = {}) {
     const {
+      answers = false,
       componentType = "",
-      parentId = "",
       componentList = [],
       componentDescriptor = false,
       id = null,
+      isRequired = false,
+      parentId = "",
+      scored = false,
+      sectionName = false,
     } = obj;
     this.generateRandN = () => {
       const rand = new Uint16Array(1);
@@ -17,15 +21,16 @@ export default class ElementCollection {
       return rand[0];
       // return;
     };
-    this.answers = componentType.includes("responses") ? [] : false;
+    this.answers = answers || componentType.includes("responses") ? [] : false;
     this.componentDescriptor =
       componentDescriptor || new Descriptor(componentType).getJSON();
     this.componentList = componentList;
     this.componentType = componentType; // not a great variable name; collectionName might be a better
     this.id = id || `${parentId}-${componentType}-${this.generateRandN()}`;
-    this.isRequired = false;
+    this.isRequired = isRequired;
     this.parentId = parentId;
-    this.scored = false;
+    this.sectionName = sectionName;
+    this.scored = scored;
   }
 
   getJSON = () => {
@@ -37,6 +42,7 @@ export default class ElementCollection {
       id: this.id,
       isRequired: this.isRequired,
       parentId: this.parentId,
+      sectionName: this.sectionName,
       scored: this.scored,
     };
   };
@@ -257,10 +263,8 @@ const generateQuestionObject = (componentType, parentId, seed = true) => {
 
 const addResponseToResponsesObject = (responsesObject) => {
   const parentId = responsesObject.id;
-  const { answers } = responsesObject;
   const responseElement = generateResponseLabelJson({ parentId });
   const responsesCollection = new ElementCollection(responsesObject);
-  responsesCollection.answers = answers;
   return responsesCollection.addToComponentList(responseElement).getJSON();
 };
 
