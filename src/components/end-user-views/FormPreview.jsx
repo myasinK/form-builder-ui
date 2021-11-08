@@ -27,7 +27,8 @@ function FormPreview({ form, handlers }) {
         let dragBar = Object.assign({}, dragElement);
         dragBar.htmlInnerText = "";
         return (
-          <StandaloneView key={q.id} standaloneObject={q} handlers={handlers} />
+          // <StandaloneView key={q.id} standaloneObject={q} handlers={handlers} />
+          null
         );
       } else return null;
     });

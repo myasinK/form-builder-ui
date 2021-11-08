@@ -80,7 +80,7 @@ const ScoreContainer = ({ form, handlers }) => {
   return (
     <div className={"scores-container"}>
       <div className={"total-score"} id={"total-score"}>
-        {score.total}
+        Total score: {score.total}
       </div>
       <div className={"section-scores"}>
         {sectionsArray.map((sectionName) => (
