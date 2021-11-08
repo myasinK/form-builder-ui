@@ -1,7 +1,7 @@
 import React from "react";
 import InterfaceElement from "../../Interface/InterfaceElement";
 import QuestionPreview from "./QuestionPreview";
-import StandaloneView from "../secondary/StandaloneView";
+// import StandaloneView from "../secondary/StandaloneView";
 
 function FormPreview({ form, handlers }) {
   const thereAreObjectsToRender = form.componentList.length > 0;
