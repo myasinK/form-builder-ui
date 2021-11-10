@@ -224,6 +224,61 @@ class formEventHandlers {
     };
   };
 
+  handleOnChangeInputTabularPreview = (rowsId) => {
+    const form = new ElementCollection(this.form);
+    const setter = this.formSetter;
+    return function (userInputObject) {
+      const { answers, sectionName } = form.fetchObjectWithId(rowsId)[0];
+      // const { uid, inputType, rowId, columnId, value, score } = userInputObject;
+      userInputObject["sectionName"] = sectionName && sectionName;
+      const hasThisBeenAnsweredAlready = (userInputObject, answers) => {
+        if (userInputObject.inputType === "radio") {
+          return (
+            answers.filter((answer) => answer.rowId === userInputObject.rowId)
+              .length === 1
+          );
+        } else {
+          return (
+            answers.filter((answer) => answer.uid === userInputObject.uid)
+              .length === 1
+          );
+        }
+      };
+
+      let updatedAnswers;
+      if (hasThisBeenAnsweredAlready(userInputObject, answers)) {
+        updatedAnswers = answers.map((answer) => {
+          if (
+            userInputObject.inputType === "radio" &&
+            answer.rowId === userInputObject.rowId
+          ) {
+            answer = Object.assign({}, userInputObject);
+            return answer;
+          } else if (
+            ["text", "checkbox"].includes(userInputObject.inputType) &&
+            answer.uid === userInputObject.uid
+          ) {
+            answer = Object.assign({}, userInputObject);
+            return answer;
+          } else {
+            return answer;
+          }
+        });
+      } else {
+        answers.push(userInputObject);
+        updatedAnswers = Object.assign([], answers);
+      }
+
+      const updateInstructions = {
+        propertyName: "answers",
+        propertyValue: Object.assign([], updatedAnswers),
+      };
+
+      const updatedForm = form.updateId(rowsId, null, updateInstructions);
+      setter(updatedForm);
+    };
+  };
+
   getAnswers = () => {
     return this.form.componentList
       .filter((el) => el.componentType.includes("question"))

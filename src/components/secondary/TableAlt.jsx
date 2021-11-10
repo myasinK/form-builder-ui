@@ -1,5 +1,4 @@
 import React from "react";
-import Input from "../primary/Input";
 import EditableData from "./EditableData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +13,6 @@ function TableAlt({ responses, handlers, lastClickedOnId }) {
   const handleMouseEnter = (event, json) => {
     event.preventDefault();
     const { row, column } = json;
-    console.log(json);
     if (row) {
       const nodeListRowCells = document.querySelectorAll(`.cell.${row}`);
       const rowCellsArray = Array.from(nodeListRowCells);
@@ -193,7 +191,8 @@ const DisplayInputCells = ({
             handleMouseLeave(event, { row: rowElementId, column: el.id })
           }
         >
-          <Input primaryElement={displayElement} disabled={true} />
+          {/* <Input primaryElement={displayElement} disabled={true} /> */}
+          <input type={displayElement.htmlTagName} disabled={true} />
         </div>
         <div className={`${COLUMN} ${GUTTER}`}></div>
       </>

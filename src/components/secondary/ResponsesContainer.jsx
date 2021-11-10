@@ -45,15 +45,13 @@ function ResponsesContainer({ responses, lastClickedOnId, handlers }) {
   if (isTabular) {
     return (
       <>
-        <div>
+        <div className={"table add-buttons-container"}>
           <FontAwesomeIcon
             onClick={() => handlers.addResponse(rows.id)}
             icon={faPlusCircle}
             className={"add-icon"}
           />
           <span>Row</span>
-        </div>
-        <div>
           <FontAwesomeIcon
             onClick={() => handlers.addResponse(columns.id)}
             icon={faPlusCircle}

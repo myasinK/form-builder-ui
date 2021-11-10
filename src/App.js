@@ -5,6 +5,7 @@ import FormView from "./components/secondary/FormView";
 import formEventHandlers from "./handlers/formEventHandlers";
 import ComponentSelectorView from "./components/secondary/ComponentSelectorView";
 import FormPreview from "./components/end-user-views/FormPreview";
+// import TableVersionThree from "./components/secondary/TableVersionThree";
 
 function App() {
   let [lastIdClicked, setLastIdClicked] = useState(false);
@@ -37,6 +38,8 @@ function App() {
           />
         )}
       </div>
+
+      {/* <TableVersionThree /> */}
 
       <div className={"preview-container"}>
         <div className={"title"}>Preview</div>

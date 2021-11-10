@@ -15,6 +15,7 @@ class PrimaryElement {
       htmlValueAttr = "value-not-specified",
       id = null,
       parentId = "parent-list-id-not-specified",
+      scoreValue = 0,
     } = memberObject;
     this.generateRandN = () => {
       const rand = new Uint16Array(1);
@@ -41,7 +42,7 @@ class PrimaryElement {
     this.maxCharLength = null;
     this.maxValue = null;
     this.parentId = parentId;
-    this.scoreValue = 0;
+    this.scoreValue = scoreValue;
   }
 
   getJSON = () => {
@@ -60,11 +61,11 @@ class PrimaryElement {
       conditional: this.conditional,
       draggable: this.draggable,
       id: this.id,
-      scoreValue: this.scoreValue,
       minCharLength: this.minCharLength,
       minValue: this.minValue,
       maxCharLength: this.maxCharLength,
       maxValue: this.maxValue,
+      scoreValue: this.scoreValue,
     };
   };
 }

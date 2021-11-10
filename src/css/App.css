@@ -10,6 +10,11 @@
   align-items: center;
 }
 
+.table.add-buttons-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .container-form-components {
   position: fixed;
   display: flex;

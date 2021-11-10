@@ -1,5 +1,4 @@
 import React from "react";
-import Input from "../primary/Input";
 import cssClassDictionary from "../../model/cssClassDictionary";
 import Span from "../primary/Span";
 
@@ -10,7 +9,6 @@ function TablePreview({ responses, handlers, lastClickedOnId }) {
   const handleMouseEnter = (event, json) => {
     event.preventDefault();
     const { row, column } = json;
-    console.log(json);
     if (row) {
       const nodeListRowCells = document.querySelectorAll(`.cell.${row}`);
       const rowCellsArray = Array.from(nodeListRowCells);
@@ -59,13 +57,6 @@ function TablePreview({ responses, handlers, lastClickedOnId }) {
         const rowElementId = el.id;
         return (
           <>
-            {/* {index === 0 && (
-              <RowGutter
-                handlers={handlers}
-                classDictionary={cssClassDictionary}
-                index={index}
-              />
-            )} */}
             <div className={`${ROW} ${BODY}`}>
               <RowHeaderCell
                 classDictionary={cssClassDictionary}
@@ -86,13 +77,10 @@ function TablePreview({ responses, handlers, lastClickedOnId }) {
                 rowElementId={rowElementId}
                 handleMouseEnter={handleMouseEnter}
                 handleMouseLeave={handleMouseLeave}
+                handlers={handlers}
+                rowsId={rows.id}
               />
             </div>
-            {/* <RowGutter
-              handlers={handlers}
-              classDictionary={cssClassDictionary}
-              index={index + 1}
-            /> */}
           </>
         );
       })}
@@ -110,11 +98,7 @@ const RowHeaderCell = ({
   handleMouseEnter,
   handleMouseLeave,
 }) => {
-  const {
-    ROW,
-    HEADER,
-    CELL,
-  } = classDictionary;
+  const { ROW, HEADER, CELL } = classDictionary;
   return (
     <div
       className={`${ROW} ${HEADER} ${CELL} ${rowElement.id}`}
@@ -125,24 +109,6 @@ const RowHeaderCell = ({
         handleMouseLeave(event, { row: rowElement.id, column: false })
       }
     >
-      {/* <div
-        className={`${MOVEICONCONTAINER}`}
-        draggable={true}
-        onDragStart={() => {
-          [...document.getElementsByClassName(`${ROW} ${GUTTER}`)].map(
-            (el) => (el.style.visibility = "visible")
-          );
-          handlers.handleDragStart(index, rows.id);
-        }}
-        onDragEnd={(event) => {
-          event.preventDefault();
-          [...document.getElementsByClassName(`${ROW} ${GUTTER}`)].map(
-            (el) => (el.style.visibility = "hidden")
-          );
-        }}
-      >
-        <FaUpDown />
-      </div> */}
       <Span primaryElement={rowElement} />
     </div>
   );
@@ -155,13 +121,21 @@ const DisplayInputCells = ({
   rowElementId,
   handleMouseEnter,
   handleMouseLeave,
+  handlers,
+  rowsId,
 }) => {
   const { USERINIPUT, CELL } = classDictionary;
   return columns.componentList.map((el, index) => {
     const columnElementId = el.id;
+    let name = "";
+    let { scoreValue } = el;
+    if (!(displayElement.htmlTagName === "radio")) {
+      name = `${rowElementId}--${columnElementId}`;
+    } else if (displayElement.htmlTagName === "radio") {
+      name = `${rowElementId}`;
+    }
     return (
       <>
-        {/* {index === 0 && <div className={`${COLUMN} ${GUTTER}`}></div>} */}
         <div
           className={`${USERINIPUT} ${CELL} ${rowElementId} ${columnElementId}`}
           onMouseEnter={(event) =>
@@ -171,9 +145,37 @@ const DisplayInputCells = ({
             handleMouseLeave(event, { row: rowElementId, column: el.id })
           }
         >
-          <Input primaryElement={displayElement} disabled={true} />
+          <input
+            type={displayElement.htmlTagName}
+            disabled={false}
+            name={name}
+            onChange={(event) => {
+              let value;
+              let score = scoreValue;
+              if (
+                displayElement.htmlTagName === "checkbox" ||
+                displayElement.htmlTagName === "radio"
+              ) {
+                value = event.target.checked;
+                score = value && score;
+              } else {
+                value = event.target.value;
+                score = false;
+              }
+              let userInputObject = {
+                uid: `${rowElementId}-${el.id}`,
+                inputType: displayElement.htmlTagName,
+                rowId: rowElementId,
+                columnId: el.id,
+                value,
+                score,
+              };
+              handlers.handleOnChangeInputTabularPreview(rowsId)(
+                userInputObject
+              );
+            }}
+          />
         </div>
-        {/* <div className={`${COLUMN} ${GUTTER}`}></div> */}
       </>
     );
   });
@@ -188,27 +190,13 @@ const HeaderRow = ({
   handleMouseEnter,
   handleMouseLeave,
 }) => {
-  const {
-    HEADER,
-    ROW,
-    BLANK,
-    CELL,
-    COLUMN,
-    TEXTCONTAINER,
-  } = classDictionary;
+  const { HEADER, ROW, BLANK, CELL, COLUMN, TEXTCONTAINER } = classDictionary;
   return (
     <div className={`${HEADER} ${ROW}`}>
       <div className={`${BLANK} ${CELL} ${COLUMN} ${HEADER}`}></div>
       {columns.componentList.map((el, index) => {
         return (
           <>
-            {/* {index === 0 && (
-              <div
-                onDrop={(event) => handlers.handleOnDrop(event, index)}
-                onDragOver={(event) => handlers.handleOnDragOver(event)}
-                className={`${GUTTER} ${COLUMN}`}
-              ></div>
-            )} */}
             <div
               className={`${COLUMN} ${CELL} ${HEADER} ${el.id} ${rowElementId}`}
               onMouseEnter={(event) =>
@@ -218,33 +206,10 @@ const HeaderRow = ({
                 handleMouseLeave(event, { row: false, column: el.id })
               }
             >
-              {/* <div
-                className={`${COLUMN} ${MOVEICONCONTAINER}`}
-                draggable={true}
-                onDragStart={() => {
-                  [
-                    ...document.getElementsByClassName(`${COLUMN} ${GUTTER}`),
-                  ].map((el) => (el.style.visibility = "visible"));
-                  handlers.handleDragStart(index, columns.id);
-                }}
-                onDragEnd={(event) => {
-                  event.preventDefault();
-                  [
-                    ...document.getElementsByClassName(`${COLUMN} ${GUTTER}`),
-                  ].map((el) => (el.style.visibility = "hidden"));
-                }}
-              >
-                <FaLeftRight />
-              </div> */}
               <div className={`${COLUMN} ${HEADER} ${TEXTCONTAINER}`}>
                 <Span primaryElement={el} />
               </div>
             </div>
-            {/* <div
-              onDrop={(event) => handlers.handleOnDrop(event, index + 1)}
-              onDragOver={(event) => handlers.handleOnDragOver(event)}
-              className={`${GUTTER} ${COLUMN}`}
-            ></div> */}
           </>
         );
       })}
