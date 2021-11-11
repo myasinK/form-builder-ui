@@ -14,6 +14,7 @@ export default class ElementCollection {
       parentId = "",
       scored = false,
       sectionName = false,
+      triggeredBy = false,
     } = obj;
     this.generateRandN = () => {
       const rand = new Uint16Array(1);
@@ -31,6 +32,7 @@ export default class ElementCollection {
     this.parentId = parentId;
     this.sectionName = sectionName;
     this.scored = scored;
+    this.triggeredBy = triggeredBy;
   }
 
   getJSON = () => {
@@ -44,6 +46,7 @@ export default class ElementCollection {
       parentId: this.parentId,
       sectionName: this.sectionName,
       scored: this.scored,
+      triggeredBy: this.triggeredBy,
     };
   };
 
@@ -159,7 +162,7 @@ export default class ElementCollection {
       origin,
       updateInstructions
     );
-    return Object.assign({}, updatedCollection);
+    return Object.assign({}, updatedCollection); // returns object without methods
   };
 
   pushToObjectWithId = (payload, targetId) => {

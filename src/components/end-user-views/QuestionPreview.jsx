@@ -15,7 +15,11 @@ function QuestionPreview({ questionObject, handlers }) {
         />
       </div>
       <div className={"responses-preview-container"}>
-        <ResponsesPreviewContainer responses={responses} handlers={handlers} />
+        <ResponsesPreviewContainer
+          responses={responses}
+          handlers={handlers}
+          questionId={questionObject.id}
+        />
       </div>
     </div>
   );

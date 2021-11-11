@@ -5,20 +5,78 @@ import PrimaryElement from "../model/PrimaryElement";
 class formEventHandlers {
   constructor(
     form,
-    formSetter,
+    setForm,
     dragInfo,
-    dragInfoSetter,
+    setDragInfo,
     sections,
-    setSections
+    setSections,
+    triggers,
+    setTriggers,
+    triggeredIds,
+    setTriggeredIds
   ) {
     this.form =
       form === null ? new InterfaceCollection() : Object.assign({}, form);
-    this.formSetter = formSetter;
+    this.formSetter = setForm;
     this.dragInfo = dragInfo;
-    this.dragInfoSetter = dragInfoSetter;
+    this.dragInfoSetter = setDragInfo;
     this.sections = sections;
     this.setSections = setSections;
+    this.setTriggeredIds = setTriggeredIds;
+    this.setTriggers = setTriggers;
+    this.triggers = triggers;
+    this.triggeredIds = triggeredIds;
   }
+
+  handleSetTriggerForQuestion = (targetQId, triggerObject) => {
+    // object will have members qid, rid, trigger
+    const { qId, rId, trigger } = triggerObject;
+    const form = new ElementCollection(this.form);
+
+    if (trigger) {
+      const updatedForm = form.updateId(targetQId, null, {
+        propertyName: "triggeredBy",
+        propertyValue: Object.assign({}, triggerObject),
+      });
+      this.formSetter(updatedForm);
+    } else {
+      const updatedForm = form.updateId(targetQId, null, {
+        propertyName: "triggeredBy",
+        propertyValue: false,
+      });
+      this.formSetter(updatedForm);
+    }
+  };
+
+  handleTriggerSelection = (event, object) => {
+    // object will have members qid, rid, trigger
+    const { qId, rId, trigger } = object;
+    const setTriggers = this.setTriggers;
+    if (trigger) {
+      const hasTriggerBeenSetForThis =
+        this.triggers.filter((t) => t.qId === qId && t.rId === rId).length ===
+        1;
+      if (hasTriggerBeenSetForThis) {
+        const updatedTriggers = this.triggers.map((t) => {
+          if (t.qId === qId && t.rId === rId) {
+            t = Object.assign({}, object);
+            return t;
+          } else {
+            return t;
+          }
+        });
+        setTriggers(updatedTriggers);
+      } else {
+        const triggers = Object.assign([], this.triggers);
+        triggers.push(object);
+        setTriggers(triggers);
+      }
+    } else {
+      const triggers = Object.assign([], this.triggers);
+      const updatedTriggers = triggers.filter((t) => !(t.qId === qId));
+      setTriggers(updatedTriggers);
+    }
+  };
 
   generateResponseLabelJson = ({ parentId }) => {
     const componentType = "response-label-editable-text";
@@ -124,10 +182,7 @@ class formEventHandlers {
   };
 
   handleDragStart = (originIndex, parentId) => {
-    console.log(originIndex, parentId);
-    this.dragInfo.originIndex = originIndex;
-    this.dragInfo.parentId = parentId;
-    const updatedDragInfo = Object.assign({}, this.dragInfo);
+    const updatedDragInfo = { originIndex, parentId };
     this.dragInfoSetter(updatedDragInfo);
   };
 
@@ -218,9 +273,12 @@ class formEventHandlers {
     };
   };
 
-  handleOnChangeRadioPreview = (responsesId) => {
+  handleOnChangeRadioPreview = (responsesId, questionId) => {
     const form = new ElementCollection(this.form);
-    const setter = this.formSetter;
+    const formSetter = this.formSetter;
+    const triggeredIds = Object.assign([], this.triggeredIds);
+    const setTriggeredIds = this.setTriggeredIds;
+    const triggers = Object.assign([], this.triggers);
     return function (userInputObject) {
       const { sectionName } = form.fetchObjectWithId(responsesId)[0];
       userInputObject["sectionName"] = sectionName;
@@ -229,7 +287,16 @@ class formEventHandlers {
         propertyValue: [Object.assign({}, userInputObject)],
       };
       const updatedForm = form.updateId(responsesId, null, updateInstructions);
-      setter(updatedForm);
+      if (
+        triggers.filter(
+          (t) => t.qId === questionId && t.rId === userInputObject.id
+        ).length === 1
+      ) {
+        triggeredIds.push({ qId: questionId, rId: userInputObject.id });
+        const updatedTriggeredIds = Object.assign([], triggeredIds);
+        setTriggeredIds(updatedTriggeredIds);
+      }
+      formSetter(updatedForm);
     };
   };
 
@@ -295,7 +362,6 @@ class formEventHandlers {
   };
 
   generateScore = (form) => {
-    console.log("score");
     const scoredQuestionsOnly = form.componentList.filter(
       (el) =>
         el.componentType.includes("question") && el.componentList[1].scored
@@ -321,31 +387,7 @@ class formEventHandlers {
         writable: true,
       });
     });
-    console.log("section names", sectionNamesDefined);
     return sectionNamesDefined;
-    // let score = { total: 0 };
-    // sectionNamesDefined.map((sectionName) =>
-    //   Object.defineProperty(score, sectionName, { value: 0, writable: true })
-    // );
-    // scoredQuestionsOnly.map((el) => {
-    //   const { answers, sectionName } = el.componentList[1];
-    //   console.log(sectionName);
-    //   const scoreForThisQuestion = answers
-    //     .map((el) => parseInt(el.score))
-    //     .reduce(function (previous, current) {
-    //       return previous + current;
-    //     }, 0);
-
-    //   if (sectionName) {
-    //     console.log("there's a section name");
-    //     score[sectionName] += scoreForThisQuestion;
-    //   } else {
-    //     console.log("there's no section name");
-    //   }
-    //   score.total += scoreForThisQuestion;
-    // });
-    // console.log(score);
-    // return Object.assign({}, score);
   };
 
   setSectionName = (responsesId, sectionName) => {
@@ -361,7 +403,6 @@ class formEventHandlers {
 
     const sections = Object.assign([], this.sections);
     const sectionIds = sections.map((s) => s.id);
-    const sectionNames = sections.map((s) => s.sectionName);
     if (!sectionIds.includes(responsesId)) {
       sections.push({ id: responsesId, sectionName });
       this.setSections(Object.assign([], sections));

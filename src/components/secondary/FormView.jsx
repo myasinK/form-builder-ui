@@ -52,14 +52,13 @@ function FormView({ form, lastClickedOnId, handlers }) {
               lastClickedOnId={lastClickedOnId}
               handlers={handlers}
             />
-            {
-              <Div
-                primaryElement={dropElement}
-                handlers={handlers}
-                action={"drop"}
-                dragInfo={{ parentId: formId, destinationIndex: index + 1 }}
-              />
-            }
+
+            <Div
+              primaryElement={dropElement}
+              handlers={handlers}
+              action={"drop"}
+              dragInfo={{ parentId: formId, destinationIndex: index + 1 }}
+            />
           </>
         );
       } else if (q.componentType.includes("standalone")) {

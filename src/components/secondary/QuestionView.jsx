@@ -78,6 +78,12 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
     const currentSectionName = event.target.value;
   };
 
+  let [showTriggers, setShowTriggers] = useState(false);
+
+  const handleShouldThisBeTriggeredByAnotherQuestion = (bool) => {
+    setShowTriggers(bool);
+  };
+
   return (
     <div className={className}>
       <div className={"question"}>
@@ -164,6 +170,119 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
                 </div>
               </div>
             )}
+
+            <div className={"triggered-by-container"}>
+              <div className={"triggered-by-prompt-container"}>
+                Should this question be triggered by another question in this
+                form?
+              </div>
+              <div className={"triggered-by-radios-container"}>
+                <span className={"triggered-by-yes-container"}>
+                  <input
+                    name={questionObject.id}
+                    type={"radio"}
+                    onChange={() => setShowTriggers(true)}
+                  />{" "}
+                  Yes
+                </span>
+                <span className={"triggered-by-no-container"}>
+                  {" "}
+                  <input
+                    name={questionObject.id}
+                    type={"radio"}
+                    onChange={() => setShowTriggers(false)}
+                  />{" "}
+                  No
+                </span>
+              </div>
+              {showTriggers && (
+                <div className={"potential-triggers-container"}>
+                  <div className={"potential-triggers-preamble"}>
+                    Select the question that should trigger this
+                  </div>
+                  {handlers.triggers.length === 0 && (
+                    <div className={"no-trigger"}>No triggers available</div>
+                  )}
+                  {handlers.triggers.length > 0 && (
+                    <div className={"available-triggers-container"}>
+                      {handlers.triggers.map((trigger, index) => (
+                        <>
+                          <div>
+                            <input
+                              type={"radio"}
+                              name={`available-trigger-option`}
+                              onChange={() =>
+                                handlers.handleSetTriggerForQuestion(
+                                  questionObject.id,
+                                  Object.assign({}, trigger)
+                                )
+                              }
+                            />
+                            {trigger.qId}
+                          </div>
+                          {handlers.triggers.length - 1 === index && (
+                            <div>
+                              <input
+                                type={"radio"}
+                                name={`available-trigger-option`}
+                                onChange={() =>
+                                  handlers.handleSetTriggerForQuestion(
+                                    questionObject.id,
+                                    { qId: false, rId: false, trigger: false }
+                                  )
+                                }
+                              />
+                              {"Unset trigger"}
+                            </div>
+                          )}
+                        </>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {!questionObject.componentDescriptor.isTabular &&
+              questionObject.componentDescriptor.endUserHtmlInputType ===
+                "radio" && (
+                <div className={"conditionality-container"}>
+                  <div
+                    className={"conditionality-prompt-and-checkbox-container"}
+                  >
+                    <span className={"conditionality-prompt-container"}>
+                      Should this question trigger another question(s)? If so,
+                      select the specific user response that should be the
+                      trigger
+                    </span>
+                  </div>
+                  <div className={"answers-options-container"}>
+                    {rows.componentList.map((el, index) => {
+                      return (
+                        <>
+                          <div className={"answer-option-container"}>
+                            <span className={"radio-option-container"}>
+                              <input
+                                type={"checkbox"}
+                                onChange={(event) =>
+                                  handlers.handleTriggerSelection(event, {
+                                    qId: questionObject.id,
+                                    rId: el.id,
+                                    trigger: event.target.checked,
+                                  })
+                                }
+                              />
+                            </span>
+                            <span className={"option-prompt-container"}>
+                              {el.htmlInnerText}
+                            </span>
+                          </div>
+                        </>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             {mayBeScored && (
               <label className={"config"}>
                 {"Question will need to be scored "}

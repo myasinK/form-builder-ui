@@ -3,7 +3,7 @@ import Span from "../primary/Span";
 import TablePreview from "./TablePreview";
 import modString from "../../helpers/modString";
 
-function ResponsesPreviewContainer({ responses, handlers }) {
+function ResponsesPreviewContainer({ responses, handlers, questionId = null }) {
   let rows,
     isTabular,
     componentDescriptor,
@@ -102,7 +102,10 @@ function ResponsesPreviewContainer({ responses, handlers }) {
                       name={name}
                       checked={answerValue}
                       onChange={(event) =>
-                        handlers.handleOnChangeRadioPreview(rows.id)({
+                        handlers.handleOnChangeRadioPreview(
+                          rows.id,
+                          questionId
+                        )({
                           id: r.id,
                           value: event.target.checked,
                           score: event.target.checked ? scoreValue : 0,

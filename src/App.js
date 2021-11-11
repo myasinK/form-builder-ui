@@ -15,6 +15,8 @@ function App() {
     parentId: false,
   });
   let [sections, setSections] = useState([]);
+  let [triggers, setTriggers] = useState([]);
+  let [triggeredIds, setTriggeredIds] = useState([]);
 
   const handlers = new formEventHandlers(
     form,
@@ -22,7 +24,11 @@ function App() {
     dragInfo,
     setDragInfo,
     sections,
-    setSections
+    setSections,
+    triggers,
+    setTriggers,
+    triggeredIds,
+    setTriggeredIds
   );
 
   return (
@@ -52,7 +58,13 @@ function App() {
       <div className={"preview-container"}>
         <div className={"title"}>Preview</div>
         {form && <ScoreContainer form={form} handlers={handlers} />}
-        {form && <FormPreview form={form} handlers={handlers} />}
+        {form && (
+          <FormPreview
+            form={form}
+            handlers={handlers}
+            triggeredIds={triggeredIds}
+          />
+        )}
       </div>
     </div>
   );
