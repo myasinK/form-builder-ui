@@ -14,8 +14,16 @@ function App() {
     originIndex: false,
     parentId: false,
   });
+  let [sections, setSections] = useState([]);
 
-  const handlers = new formEventHandlers(form, setForm, dragInfo, setDragInfo);
+  const handlers = new formEventHandlers(
+    form,
+    setForm,
+    dragInfo,
+    setDragInfo,
+    sections,
+    setSections
+  );
 
   return (
     <div

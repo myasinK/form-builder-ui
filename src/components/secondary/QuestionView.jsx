@@ -7,6 +7,8 @@ import { faTrashAlt, faCog } from "@fortawesome/free-solid-svg-icons";
 function QuestionView({ questionObject, lastClickedOnId, handlers }) {
   const { id = null } = questionObject;
 
+  const { isTabular } = questionObject.componentDescriptor;
+
   const [prompt, ...responses] = questionObject.componentList;
   // responses is going to be an array
 
@@ -15,6 +17,7 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
   };
 
   const rows = responses[0];
+  const columns = isTabular && responses[1];
   // const { answers } = rows;
   let [isOnAdvancedView, setIsOnAdvancedView] = useState(false);
   const className = isOnAdvancedView
@@ -69,23 +72,10 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
 
   const [isRequiredChecked, setIsRequiredChecked] = useState(rows.isRequired);
 
-  let [canUserAddNewSection, setCanUserAddNewSection] = useState(false);
+  let [canUserAddNewSection, setCanUserAddNewSection] = useState(false); // this will be either false or the current section name
 
   const handleWhenUserTypesSectionName = (event) => {
     const currentSectionName = event.target.value;
-    const answersArray = handlers.getAnswers();
-    const sectionNamesArray = answersArray.map((answer) =>
-      answer.section ? answer.section : false
-    );
-    // check if name exists already
-    if (sectionNamesArray.includes(currentSectionName)) {
-      // set addsectionbutton to false
-      setCanUserAddNewSection(false);
-    } else {
-      // set addsectionbutton to true (perform other checks here)
-      setCanUserAddNewSection(currentSectionName);
-    }
-    console.log(sectionNamesArray);
   };
 
   return (
@@ -142,21 +132,35 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
                     <input
                       type="text"
                       onChange={(event) =>
-                        handleWhenUserTypesSectionName(event)
+                        handlers.setSectionName(rows.id, event.target.value)
                       }
+                      value={rows.sectionName || ""}
                     />
-                  </span>
-                  <span
-                    onClick={() =>
-                      handlers.setSectionName(rows.id, canUserAddNewSection)
-                    }
-                  >
-                    Click to create a section
                   </span>
                 </div>
                 <div className={"existing-sections-container"}>
-                  <span>Section 1</span>
-                  <span>Section 2</span>
+                  {handlers.sections.map((section) => {
+                    const thisQuestionIsPartOfSection =
+                      questionObject.componentList[1].sectionName;
+                    return (
+                      <div className={"section-container"}>
+                        <input
+                          name={questionObject.id}
+                          type={"radio"}
+                          value={section.sectionName}
+                          checked={
+                            section.sectionName === thisQuestionIsPartOfSection
+                          }
+                          onChange={(event) =>
+                            handlers.setSectionName(rows.id, event.target.value)
+                          }
+                        />
+                        <span className={"section-title"}>
+                          {section.sectionName}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -196,82 +200,162 @@ function QuestionView({ questionObject, lastClickedOnId, handlers }) {
                 />
               </label>
             )}
-            {rows.componentList.map((rowElement, index) => {
-              const targetId = rowElement.id;
-              return (
-                <>
-                  {isShowingNumControls && (
-                    <>
+
+            {!isTabular &&
+              rows.componentList.map((rowElement, index) => {
+                const targetId = rowElement.id;
+                return (
+                  <>
+                    {isShowingNumControls && (
+                      <>
+                        <label className={"config"}>
+                          {"Minimum numeric value: "}
+                          <input
+                            type="number"
+                            className={"minimum-num-value"}
+                            onChange={(event) =>
+                              handleChange(event, targetId, "minValue")
+                            }
+                            value={rowElement.minValue}
+                          />
+                        </label>
+                        <label className={"config"}>
+                          {"Maximum numeric value: "}
+                          <input
+                            type="number"
+                            className={"maximum-num-value"}
+                            onChange={(event) =>
+                              handleChange(event, targetId, "maxValue")
+                            }
+                            value={rowElement.maxValue}
+                          />
+                        </label>
+                      </>
+                    )}
+                    {isShowingCharControls && (
+                      <>
+                        <label className={"config"}>
+                          {"Minimum character length: "}
+                          <input
+                            type="number"
+                            className={"minimum-char-length"}
+                            onChange={(event) =>
+                              handleChange(event, targetId, "minCharLength")
+                            }
+                            value={rowElement.minCharLength}
+                          />
+                        </label>
+                        <label className={"config"}>
+                          {"Maximum character length: "}
+                          <input
+                            type="number"
+                            className={"maximum-char-length"}
+                            onChange={(event) =>
+                              handleChange(event, targetId, "maxCharLength")
+                            }
+                            value={rowElement.maxCharLength}
+                          />
+                        </label>
+                      </>
+                    )}
+                    {isShowingScoreControls && (
                       <label className={"config"}>
-                        {"Minimum numeric value: "}
+                        {"Score value: "}
                         <input
+                          className={"score-value"}
                           type="number"
-                          className={"minimum-num-value"}
                           onChange={(event) =>
-                            handleChange(event, targetId, "minValue")
+                            handlers.handleUpdateNominalScoreValue(
+                              event,
+                              targetId,
+                              "scoreValue"
+                            )
                           }
-                          value={rowElement.minValue}
+                          value={rowElement.scoreValue}
                         />
                       </label>
+                    )}
+                  </>
+                );
+              })}
+
+            {isTabular &&
+              columns.componentList.map((columnElement, index) => {
+                const targetId = columnElement.id;
+                return (
+                  <>
+                    {isShowingNumControls && (
+                      <>
+                        <label className={"config"}>
+                          {"Minimum numeric value: "}
+                          <input
+                            type="number"
+                            className={"minimum-num-value"}
+                            onChange={(event) =>
+                              handleChange(event, targetId, "minValue")
+                            }
+                            value={columnElement.minValue}
+                          />
+                        </label>
+                        <label className={"config"}>
+                          {"Maximum numeric value: "}
+                          <input
+                            type="number"
+                            className={"maximum-num-value"}
+                            onChange={(event) =>
+                              handleChange(event, targetId, "maxValue")
+                            }
+                            value={columnElement.maxValue}
+                          />
+                        </label>
+                      </>
+                    )}
+                    {isShowingCharControls && (
+                      <>
+                        <label className={"config"}>
+                          {"Minimum character length: "}
+                          <input
+                            type="number"
+                            className={"minimum-char-length"}
+                            onChange={(event) =>
+                              handleChange(event, targetId, "minCharLength")
+                            }
+                            value={columnElement.minCharLength}
+                          />
+                        </label>
+                        <label className={"config"}>
+                          {"Maximum character length: "}
+                          <input
+                            type="number"
+                            className={"maximum-char-length"}
+                            onChange={(event) =>
+                              handleChange(event, targetId, "maxCharLength")
+                            }
+                            value={columnElement.maxCharLength}
+                          />
+                        </label>
+                      </>
+                    )}
+                    {isShowingScoreControls && (
                       <label className={"config"}>
-                        {"Maximum numeric value: "}
+                        {`[${columnElement.htmlInnerText}] Score value: `}
                         <input
+                          className={"score-value"}
                           type="number"
-                          className={"maximum-num-value"}
                           onChange={(event) =>
-                            handleChange(event, targetId, "maxValue")
+                            handlers.handleUpdateNominalScoreValue(
+                              event,
+                              targetId,
+                              "scoreValue"
+                            )
                           }
-                          value={rowElement.maxValue}
+                          value={columnElement.scoreValue}
                         />
                       </label>
-                    </>
-                  )}
-                  {isShowingCharControls && (
-                    <>
-                      <label className={"config"}>
-                        {"Minimum character length: "}
-                        <input
-                          type="number"
-                          className={"minimum-char-length"}
-                          onChange={(event) =>
-                            handleChange(event, targetId, "minCharLength")
-                          }
-                          value={rowElement.minCharLength}
-                        />
-                      </label>
-                      <label className={"config"}>
-                        {"Maximum character length: "}
-                        <input
-                          type="number"
-                          className={"maximum-char-length"}
-                          onChange={(event) =>
-                            handleChange(event, targetId, "maxCharLength")
-                          }
-                          value={rowElement.maxCharLength}
-                        />
-                      </label>
-                    </>
-                  )}
-                  {isShowingScoreControls && (
-                    <label className={"config"}>
-                      {"Score value: "}
-                      <input
-                        className={"score-value"}
-                        type="number"
-                        onChange={(event) =>
-                          handlers.handleUpdateNominalScoreValue(
-                            event,
-                            targetId,
-                            "scoreValue"
-                          )
-                        }
-                        value={rowElement.scoreValue}
-                      />
-                    </label>
-                  )}
-                </>
-              );
-            })}
+                    )}
+                  </>
+                );
+              })}
           </div>
           <div className={"buttons-panel-in-config-view"}>
             <FontAwesomeIcon

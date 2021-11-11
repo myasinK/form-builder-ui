@@ -3,12 +3,21 @@ import ElementCollection from "../model/ElementCollection";
 import PrimaryElement from "../model/PrimaryElement";
 
 class formEventHandlers {
-  constructor(form, formSetter, dragInfo, dragInfoSetter) {
+  constructor(
+    form,
+    formSetter,
+    dragInfo,
+    dragInfoSetter,
+    sections,
+    setSections
+  ) {
     this.form =
       form === null ? new InterfaceCollection() : Object.assign({}, form);
     this.formSetter = formSetter;
     this.dragInfo = dragInfo;
     this.dragInfoSetter = dragInfoSetter;
+    this.sections = sections;
+    this.setSections = setSections;
   }
 
   generateResponseLabelJson = ({ parentId }) => {
@@ -349,6 +358,23 @@ class formEventHandlers {
     });
     targetResponsesObject.answers = updatedAnswers;
     const updatedForm = form.updateId(responsesId, targetResponsesObject);
+
+    const sections = Object.assign([], this.sections);
+    const sectionIds = sections.map((s) => s.id);
+    const sectionNames = sections.map((s) => s.sectionName);
+    if (!sectionIds.includes(responsesId)) {
+      sections.push({ id: responsesId, sectionName });
+      this.setSections(Object.assign([], sections));
+    } else {
+      const updatedSections = sections.map((section) => {
+        if (section.id === responsesId) {
+          section.sectionName = sectionName;
+          return section;
+        } else return section;
+      });
+      this.setSections(Object.assign([], updatedSections));
+    }
+
     this.formSetter(updatedForm);
   };
 
